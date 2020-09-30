@@ -52,11 +52,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
   double dy = 0.0;
 
   double getPos (gyroscope, currentPos) {
-    dy = -.35*currentPos+gyroscope*50.0*0.33;
+    dy = ((-.35*currentPos)+(-gyroscope*1000.0))*0.033;
     getCurrentPos = dy + currentPos;
-    dy = -.35*getCurrentPos+gyroscope*50.0*0.33;
+    dy = ((-.35*getCurrentPos)+(-gyroscope*1000.0))*0.033;
     print(getCurrentPos);
-    print(dy);
     return dy;
   }
 
@@ -93,6 +92,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
+            SizedBox(
+              width: 100.0,
+              height: 200.0,
+            ),
             AnimatedBuilder(
               animation: _controller,
               child: Container(
@@ -108,6 +111,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                 );
               },
             ),
+            SizedBox(
+              width: 100.0,
+              height: 100.0,
+            ),
             Padding(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -117,16 +124,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
               ),
               padding: const EdgeInsets.all(1.0),
             ),
-            Padding(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text('Time: $time'),
-                ],
-              ),
-              padding: const EdgeInsets.all(1.0),
-            ),
-
           ],
         ),
       ),
