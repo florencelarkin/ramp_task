@@ -21,30 +21,23 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
   AnimationController _controller;
 
 
-  //add sensor for going over line
-  //make sure the speed thing actually works correctly
-  //put actual car image and make better bg image
-
   Stopwatch stopwatch = new Stopwatch()..start();
   int time = 0;
   double instVelocity = 0;
-  double _lowerValue = 50;
-  double _upperValue = 180;
-  double width = 100;
-  double carStartPos = -5;
-  double joyStickPos = 0;
-  double _x = 5;
-  double _y = 5;
+  double _lowerValue = 50.0;
+  double _upperValue = 50.0;
+  double width = 100.0;
+  double carStartPos = -5.0;
+  double joyStickPos = 0.0;
+  double getCurrentPos = 10.0;
+  double dy = 0.0;
 
-
-
-  double getAcceleration(velocity, elapsedTime) {
-    double acceleration = 0;
-    acceleration = velocity / elapsedTime;
-    print(acceleration);
-    return acceleration;
+  double getPos (joyStick, currentPos) {
+      dy = ((-.35*currentPos)+(-joyStick*150.0))*0.033;
+      getCurrentPos = dy + currentPos;
+      dy = ((-.35*getCurrentPos)+(-joyStick*150.0))*0.033;
+    return dy;
   }
-
 
 
 
@@ -61,8 +54,11 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
         ),
 
           child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
+            SizedBox(
+              height: 200.0,
+            ),
             AnimatedBuilder(
               animation: _controller,
               child: Container(
@@ -73,20 +69,43 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
               ),
               builder: (BuildContext context, Widget child) {
                 return Transform.translate(
-                  offset: Offset(0.0, (-.35*carStartPos+15*joyStickPos)*(1/60)),
+                  offset: Offset(0.0, joyStickPos),
                   child: child,
                 );
               },
             ),
-            /*Expanded(
-              child: FlutterSlider(
-                values: [_lowerValue, _upperValue],
-                min: 0,
-                max: 200,
-                axis: Axis.vertical,
-                tooltip: FlutterSliderTooltip(
-                  disabled: true,
+
+            Container(
+              height: 100.0,
+              child: SliderTheme(
+                data: SliderTheme.of(context).copyWith(
+                  thumbShape: RoundSliderThumbShape(enabledThumbRadius: 15.0),
+                  overlayShape: RoundSliderOverlayShape(overlayRadius: 30.0),
+                  thumbColor: Color(0xFFEB1555),
+                  activeTrackColor: Colors.white,
+                  overlayColor: Color(0x29EB1555),
+                  inactiveTrackColor: Color(0xFF8D8E98),
                 ),
+                child: Slider(
+                  value: joyStickPos,
+                  min: -100.0,
+                  max: 100.0,
+                  onChanged: (double newValue) {
+                    setState(() {
+                      joyStickPos = newValue;
+                    });
+                  },
+                ),
+              ),
+              /*child: FlutterSlider(
+                values: [_lowerValue, _upperValue],
+                min: -100,
+                max: 100,
+                axis: Axis.vertical,
+                selectByTap: false,
+                *//*tooltip: FlutterSliderTooltip(
+                  disabled: true,
+                ),*//*
                 handlerAnimation: FlutterSliderHandlerAnimation(
                     curve: Curves.elasticOut,
                     duration: Duration(milliseconds: 500),
@@ -99,42 +118,33 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
                     color: Colors.black.withOpacity(0),
                     child: Container(
                       color: Colors.black.withOpacity(0),
-                        child: Icon(Icons.directions_car, size: 50),
+                        child: Icon(Icons.radio_button_unchecked, size: 50),
                     ),
                   ),
                 ),
                 trackBar: FlutterSliderTrackBar(
+
                   inactiveTrackBar: BoxDecoration(
-                    color: Colors.black.withOpacity(0)
+                    color: Colors.grey
                   ),
                   activeTrackBar: BoxDecoration(
-                      color: Colors.black.withOpacity(0)
+                      color: Colors.grey
                   ),
                 ),
                 onDragging: (handlerIndex, lowerValue, upperValue) {
                   _lowerValue = lowerValue;
                   _upperValue = upperValue;
                   setState(() {
+                    joyStickPos = _upperValue;
+
                     time = stopwatch.elapsedMilliseconds;
-                    instVelocity = lowerValue / time;
                     //getAcceleration(instVelocity, time);
                   });
+
                 },
-              ),
-            ),*/
-              Container(
-                child: JoystickView(
-                  showArrows: false,
-                  onDirectionChanged: (x,y) {
-                    _x = x;
-                    _y = y;
-                    setState(() {
-                      joyStickPos = y;
-                    });
-                  },
-                ),
-              ),
-            Text('$instVelocity'),
+              ),*/
+            ),
+
           ],
     ),
       ),
