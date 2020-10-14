@@ -67,30 +67,38 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
               },
             ),
             Container(
-              height: 50.0,
+              height: 100.0,
                 child: Transform.scale(
                   scale: 0.25,
                   child: Transform.rotate(
                     angle: pi/2,
-                    child: Slider(
-                      inactiveColor: Colors.black,
-                      activeColor: Colors.black,
-                      value: joyStickPos,
-                      min: -100.0,
-                      max: 100.0,
-                      onChanged: (double newValue) {
-                        setState(() {
-                          joyStickPos = newValue / 100;
-                          print(newValue);
-                          dy = ((-.35*getCurrentPos)+(-joyStickPos*50.0))*0.033;
-                          getCurrentPos = dy + getCurrentPos;
-                        });
-                      },
-                      onChangeEnd: (double newValue) {
-                        setState(() {
-                          newValue = 0;
-                        });
-                      },
+                    child: SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        trackHeight: 30.0,
+                        thumbColor: Colors.white,
+                        activeTrackColor: Colors.white,
+                        inactiveTrackColor: Colors.white,
+                      ),
+                      child: Slider(
+                        inactiveColor: Colors.white,
+                        activeColor: Colors.white,
+                        value: joyStickPos,
+                        min: -100.0,
+                        max: 100.0,
+                        onChanged: (double newValue) {
+                          setState(() {
+                            joyStickPos = newValue / 100;
+                            print(newValue);
+                            dy = ((-.2*getCurrentPos)+(joyStickPos*50.0))*0.033;
+                            getCurrentPos = dy + getCurrentPos;
+                          });
+                        },
+                       /* onChangeEnd: (double newValue) {
+                          setState(() {
+                            newValue = 0;
+                          });
+                        },*/
+                      ),
                     ),
                   ),
                 ),
