@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -23,6 +24,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
   double joyStickPos = 0.0;
   double getCurrentPos = 10.0;
   double dy = 0.0;
+  int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60;
 
   double getPos (joyStick, currentPos) {
       dy = ((-.35*currentPos)+(-joyStick*50.0))*0.033;
@@ -48,6 +50,10 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
           child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
+            CountdownTimer(
+              endTime: endTime,
+              textStyle: TextStyle(fontSize: 30, color: Colors.pink),
+            ),
             SizedBox(
               height: 100.0,
             ),
