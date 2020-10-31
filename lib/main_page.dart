@@ -1,7 +1,9 @@
+import 'package:driving_task/continue_trial.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
+import 'dart:async';
+import 'data.dart';
 
 
 class MainPage extends StatefulWidget {
@@ -12,6 +14,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
 
   AnimationController _timerController;
+  AnimationController _carController;
 
   void initState() {
     super.initState();
@@ -20,10 +23,13 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
     _timerController = AnimationController(duration: Duration(seconds: 10),
         vsync: this);
     _timerController.forward();
+    Timer(Duration(seconds: 10), () {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => ContinuationPage(),),);
+      _timerController.stop();
+      _carController.stop();
+    });
   }
 
-
-  AnimationController _carController;
   Stopwatch stopwatch = new Stopwatch()..start();
   int time = 0;
   double carStartPos = -5.0;
@@ -31,6 +37,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
   double getCurrentPos = 10.0;
   double dy = 0.0;
   Color timerColor = Colors.blue;
+  Future<Data> _futureData;
 
   String get timerString {
     Duration duration = _timerController.duration * _timerController.value;
@@ -51,10 +58,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
       appBar: AppBar(title: Text('Driving Task'),),
       body: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("images/graphic_design_is_my_passion.png"),
-            fit: BoxFit.cover,
-          ),
+          color: Colors.black,
         ),
 
           child: Row(
@@ -73,13 +77,21 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
               Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
+                Container(
+                  height: 150.0,
+                  child: Image.asset("images/stopsign.png"),
+                ),
+                Container(
+                  height: 2.0,
+                  width: 220.0,
+                  color: Colors.white,
+                ),
                 SizedBox(height:150.0),
                 AnimatedBuilder(
                   animation: _carController,
                   child: Container(
                     width: 50.0,
                     height: 50.0,
-                    color: Colors.black,
                     child: Icon(Icons.directions_car, size: 50),
                   ),
                   builder: (BuildContext context, Widget child) {
@@ -115,7 +127,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
                               print(getCurrentPos);
                               dy = ((-.2*getCurrentPos)+(joyStickPos*50.0))*0.033;
                               getCurrentPos = dy + getCurrentPos;
-                              if (getCurrentPos < -80) {
+                              if (getCurrentPos < -80 && getCurrentPos > -205) {
                                 timerColor = Colors.green;
                               }
                               else {
