@@ -1,4 +1,5 @@
 import 'package:driving_task/countdown_page.dart';
+import 'quit_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'data.dart';
@@ -31,13 +32,26 @@ class _ContinuationPageState extends State<ContinuationPage> {
           SizedBox(
             height: 100.0,
           ),
-          RaisedButton(
-              color: Colors.green,
-              child: Text('YES'),
-              onPressed: () {
-                _futureData = createData('data test');
-                Navigator.push(context, MaterialPageRoute(builder: (context) => CountdownPage(),),);
-          })
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              RaisedButton(
+                  color: Colors.green,
+                  child: Text('YES'),
+                  onPressed: () {
+                    _futureData = createData('data test', 'data test 1', 'data test 2');
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CountdownPage(),),);
+              }),
+              RaisedButton(
+                  color: Colors.red,
+                  child: Text('NO'),
+                  onPressed: () {
+                    _futureData = createData('data test', 'data test 1', 'data test 2');
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => QuitPage(),),);
+                  }),
+            ],
+          ),
+
         ],
       ),
     );
