@@ -15,18 +15,26 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
 
   AnimationController _timerController;
   AnimationController _carController;
+  AnimationController _countdownController;
 
   void initState() {
     super.initState();
+    _countdownController = AnimationController(duration: Duration(seconds: 4),
+        vsync: this);
+    _countdownController.forward();
+    _countdownController.reverse(from: _countdownController.value == 0.0 ? 1.0 : _countdownController.value);
+
+
     _carController = AnimationController(duration: const Duration(seconds: 10),
         vsync: this)..repeat();
-    _timerController = AnimationController(duration: Duration(seconds: 10),
+    _timerController = AnimationController(duration: Duration(seconds: 14),
         vsync: this);
     _timerController.forward();
-    Timer(Duration(seconds: 10), () {
+    Timer(Duration(seconds: 14), () {
       Navigator.push(context, MaterialPageRoute(builder: (context) => ContinuationPage(),),);
       _timerController.stop();
       _carController.stop();
+      _countdownController.stop();
     });
   }
 
@@ -37,12 +45,20 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
   double getCurrentPos = 10.0;
   double dy = 0.0;
   Color timerColor = Colors.blue;
-  Future<Data> _futureData;
 
   String get timerString {
-    Duration duration = _timerController.duration * _timerController.value;
-    print(_timerController.value);
-    return '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
+    Duration duration = _countdownController.duration * _countdownController.value;
+    return '${(duration.inSeconds % 60).toString()}';
+  }
+
+  Color get countdownColor {
+    Duration duration = _countdownController.duration * _countdownController.value;
+    if (duration.inSeconds > 0) {
+      return Colors.white;
+    }
+    else {
+      return Colors.black;
+    }
   }
 
   double getPos (joyStick, currentPos) {
@@ -65,6 +81,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               AnimatedBuilder(
+                //add if statement to make timer not start for 4 seconds
                 animation: _timerController,
                 builder: (BuildContext context, Widget child) {
                   return Container(
@@ -86,7 +103,21 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
                   width: 220.0,
                   color: Colors.white,
                 ),
-                SizedBox(height:150.0),
+                AnimatedBuilder(
+                  animation: _countdownController,
+                  builder: (BuildContext context, Widget child) {
+                    return Container(
+                      height: 150.0,
+
+                      child: Text(timerString,
+                        style: TextStyle(
+                          fontSize: 50.0,
+                          fontWeight: FontWeight.bold,
+                          color: countdownColor,
+                        ),),
+                    );
+                  },
+                ),
                 AnimatedBuilder(
                   animation: _carController,
                   child: Container(
@@ -124,7 +155,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
                           onChanged: (double newValue) {
                             setState(() {
                               joyStickPos = newValue / 100;
-                              print(getCurrentPos);
                               dy = ((-.2*getCurrentPos)+(joyStickPos*50.0))*0.033;
                               getCurrentPos = dy + getCurrentPos;
                               if (getCurrentPos < -80 && getCurrentPos > -205) {
