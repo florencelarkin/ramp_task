@@ -86,7 +86,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
                 builder: (BuildContext context, Widget child) {
                   return Container(
                     color: timerColor,
-                    height: _timerController.value * MediaQuery.of(context).size.height,
+                    height: timerString == '0' ? _timerController.value * MediaQuery.of(context).size.height : 0.0,
                     width: 50.0,
                   );
                 },
@@ -154,15 +154,20 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
                           max: 100.0,
                           onChanged: (double newValue) {
                             setState(() {
-                              joyStickPos = newValue / 100;
-                              dy = ((-.2*getCurrentPos)+(joyStickPos*50.0))*0.033;
-                              getCurrentPos = dy + getCurrentPos;
-                              if (getCurrentPos < -80 && getCurrentPos > -205) {
-                                timerColor = Colors.green;
+                              if (timerString == '0') {
+                                joyStickPos = newValue / 100;
+                                dy = ((-.2 * getCurrentPos) +
+                                    (joyStickPos * 50.0)) * 0.033;
+                                getCurrentPos = dy + getCurrentPos;
+                                if (getCurrentPos < -80 &&
+                                    getCurrentPos > -205) {
+                                  timerColor = Colors.green;
+                                }
+                                else {
+                                  timerColor = Colors.blue;
+                                }
                               }
-                              else {
-                                timerColor = Colors.blue;
-                              }
+                              else {}
                             });
                           },
                           onChangeEnd: (double newValue) {
