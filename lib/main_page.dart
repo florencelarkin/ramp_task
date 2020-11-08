@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
-import 'data.dart';
 
 
 class MainPage extends StatefulWidget {
@@ -95,11 +94,11 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Container(
-                  height: 150.0,
+                  height: MediaQuery.of(context).size.height * 0.20,
                   child: Image.asset("images/stopsign.png"),
                 ),
                 Container(
-                  height: 2.0,
+                  height: MediaQuery.of(context).size.height * 0.005,
                   width: 220.0,
                   color: Colors.white,
                 ),
@@ -107,8 +106,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
                   animation: _countdownController,
                   builder: (BuildContext context, Widget child) {
                     return Container(
-                      height: 150.0,
-
+                      height: MediaQuery.of(context).size.height * 0.20,
                       child: Text(timerString,
                         style: TextStyle(
                           fontSize: 50.0,
@@ -122,7 +120,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
                   animation: _carController,
                   child: Container(
                     width: 50.0,
-                    height: 50.0,
+                    height: MediaQuery.of(context).size.height * 0.08,
                     child: Icon(Icons.directions_car, size: 50),
                   ),
                   builder: (BuildContext context, Widget child) {
@@ -133,7 +131,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
                   },
                 ),
                 Container(
-                  height: 100.0,
+                  height: MediaQuery.of(context).size.height * 0.2,
                   width: 300.0,
                   child: Transform.scale(
                     scale: 0.25,
@@ -160,7 +158,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
                                     (joyStickPos * 50.0)) * 0.033;
                                 getCurrentPos = dy + getCurrentPos;
                                 if (getCurrentPos < -80 &&
-                                    getCurrentPos > -205) {
+                                    getCurrentPos > -185) {
                                   timerColor = Colors.green;
                                 }
                                 else {
