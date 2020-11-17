@@ -3,6 +3,7 @@ import 'quit_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'data.dart';
+import 'package:uuid/uuid.dart';
 
 class ContinuationPage extends StatefulWidget {
   @override
@@ -10,6 +11,8 @@ class ContinuationPage extends StatefulWidget {
 }
 
 class _ContinuationPageState extends State<ContinuationPage> {
+
+  var uuid = Uuid();
 
   Future<Data> _futureData;
 
@@ -39,14 +42,14 @@ class _ContinuationPageState extends State<ContinuationPage> {
                   color: Colors.green,
                   child: Text('YES'),
                   onPressed: () {
-                    _futureData = createData('data test', 'data test 1', 'data test 2');
+                    _futureData = createData(uuid.v1(), 'participant id test', 'data test');
                     Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(),),);
               }),
               RaisedButton(
                   color: Colors.red,
                   child: Text('NO'),
                   onPressed: () {
-                    _futureData = createData('data test', 'data test 1', 'data test 2');
+                    _futureData = createData(uuid.v1(), 'participant id test', 'data test');
                     Navigator.push(context, MaterialPageRoute(builder: (context) => QuitPage(),),);
                   }),
             ],

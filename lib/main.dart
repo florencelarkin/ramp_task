@@ -1,7 +1,5 @@
+import 'package:driving_task/instruction_page.dart';
 import 'package:flutter/material.dart';
-import 'main_page.dart';
-import 'continue_trial.dart';
-
 
 void main() => runApp(DrivingTask());
 
@@ -13,7 +11,7 @@ class DrivingTask extends StatelessWidget {
         primaryColor: Color(0xFF0A0E21),
         scaffoldBackgroundColor: Color(0xFF0A0E21),
       ),
-      home: ContinuationPage(),
+      home: InstructionPage(),
     );
   }
 }

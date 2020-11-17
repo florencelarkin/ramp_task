@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
+import 'car_engine.dart';
 
+CarEngine carEngine = CarEngine();
 
 class MainPage extends StatefulWidget {
   @override
@@ -60,12 +62,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
     }
   }
 
-  double getPos (joyStick, currentPos) {
-      dy = ((-.35*currentPos)+(-joyStick*50.0))*0.033;
-      getCurrentPos = dy + currentPos;
-      dy = ((-.35*getCurrentPos)+(-joyStick*50.0))*0.033;
-    return dy;
-  }
 
   @override
   Widget build(BuildContext context) {

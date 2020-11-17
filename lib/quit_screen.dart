@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class QuitPage extends StatefulWidget {
   @override
@@ -23,7 +24,11 @@ class _QuitPageState extends State<QuitPage> {
               ),
             ),
           ),
-
+          RaisedButton(
+              color: Colors.green,
+              child: Text('CLICK HERE TO EXIT THE APP'),
+              onPressed: ()=> SystemNavigator.pop(),
+          ),
         ],
       ),
     );

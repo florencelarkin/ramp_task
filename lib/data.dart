@@ -10,6 +10,8 @@ Future<Data> createData(String title, String x, String y) async {
     },
     body: jsonEncode(<String, String>{
       'title': title,
+      'id': x,
+      'data': y,
     }),
   );
 
