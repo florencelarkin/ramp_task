@@ -5,7 +5,7 @@ import 'dart:math';
 import 'dart:async';
 import 'car_engine.dart';
 
-CarEngine carEngine = CarEngine();
+
 
 class MainPage extends StatefulWidget {
   @override
@@ -46,6 +46,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
   double getCurrentPos = 10.0;
   double dy = 0.0;
   Color timerColor = Colors.blue;
+  CarEngine carEngine = CarEngine();
 
   String get timerString {
     Duration duration = _countdownController.duration * _countdownController.value;
@@ -150,9 +151,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
                             setState(() {
                               if (timerString == '0') {
                                 joyStickPos = newValue / 100;
-                                dy = ((-.2 * getCurrentPos) +
-                                    (joyStickPos * 50.0)) * 0.033;
-                                getCurrentPos = dy + getCurrentPos;
+                                getCurrentPos = carEngine.getPos(joyStickPos, getCurrentPos);
                                 if (getCurrentPos < -80 &&
                                     getCurrentPos > -185) {
                                   timerColor = Colors.green;
