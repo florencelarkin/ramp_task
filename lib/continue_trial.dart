@@ -14,6 +14,8 @@ class _ContinuationPageState extends State<ContinuationPage> {
 
   var uuid = Uuid();
 
+
+
   Future<Data> _futureData;
 
   @override
@@ -42,14 +44,14 @@ class _ContinuationPageState extends State<ContinuationPage> {
                   color: Colors.green,
                   child: Text('YES'),
                   onPressed: () {
-                    _futureData = createData(uuid.v1(), 'participant id test', 'data test');
+                    _futureData = createData(uuid.v1(), 'data test');
                     Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(),),);
               }),
               RaisedButton(
                   color: Colors.red,
                   child: Text('NO'),
                   onPressed: () {
-                    _futureData = createData(uuid.v1(), 'participant id test', 'data test');
+                    _futureData = createData(uuid.v1(), 'data test');
                     Navigator.push(context, MaterialPageRoute(builder: (context) => QuitPage(),),);
                   }),
             ],

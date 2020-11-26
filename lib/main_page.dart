@@ -17,6 +17,16 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
   AnimationController _timerController;
   AnimationController _carController;
   AnimationController _countdownController;
+  Timer timer;
+
+  Stopwatch stopwatch = new Stopwatch()..start();
+  int time = 0;
+  double carStartPos = -5.0;
+  double joyStickPos = 0.0;
+  double getCurrentPos = 10.0;
+  double dy = 0.0;
+  Color timerColor = Colors.blue;
+  CarEngine carEngine = CarEngine();
 
   void initState() {
     super.initState();
@@ -31,22 +41,18 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
     _timerController = AnimationController(duration: Duration(seconds: 14),
         vsync: this);
     _timerController.forward();
+
+    timer = Timer.periodic(Duration(milliseconds: 17), (Timer t) => carEngine.getPos(joyStickPos, getCurrentPos));
+
+
     Timer(Duration(seconds: 14), () {
       Navigator.push(context, MaterialPageRoute(builder: (context) => ContinuationPage(),),);
       _timerController.stop();
       _carController.stop();
       _countdownController.stop();
+      timer.cancel();
     });
   }
-
-  Stopwatch stopwatch = new Stopwatch()..start();
-  int time = 0;
-  double carStartPos = -5.0;
-  double joyStickPos = 0.0;
-  double getCurrentPos = 10.0;
-  double dy = 0.0;
-  Color timerColor = Colors.blue;
-  CarEngine carEngine = CarEngine();
 
   String get timerString {
     Duration duration = _countdownController.duration * _countdownController.value;
@@ -77,7 +83,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               AnimatedBuilder(
-                //add if statement to make timer not start for 4 seconds
                 animation: _timerController,
                 builder: (BuildContext context, Widget child) {
                   return Container(
@@ -131,13 +136,14 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
                   height: MediaQuery.of(context).size.height * 0.2,
                   width: 300.0,
                   child: Transform.scale(
-                    scale: 0.25,
+                    scale: 0.5,
                     child: Transform.rotate(
                       angle: pi/2,
                       child: SliderTheme(
                         data: SliderTheme.of(context).copyWith(
                           trackHeight: 30.0,
                           thumbColor: Colors.white,
+                          thumbShape: RoundSliderThumbShape(enabledThumbRadius: 70.0),
                           activeTrackColor: Colors.white,
                           inactiveTrackColor: Colors.white,
                         ),
@@ -165,6 +171,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
                           },
                           onChangeEnd: (double newValue) {
                             setState(() {
+                              joyStickPos = 0.0;
+                              getCurrentPos = getCurrentPos + 100;
                               newValue = 0;
                             });
                           },

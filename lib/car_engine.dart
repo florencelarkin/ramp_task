@@ -1,8 +1,5 @@
 
 class CarEngine {
-
-  double joyStickPos = 0.0;
-  double getCurrentPos = 10.0;
   double dy = 0.0;
 
   double getPos (joyStickPos, getCurrentPos) {
@@ -11,4 +8,5 @@ class CarEngine {
     getCurrentPos = dy + getCurrentPos;
     return getCurrentPos;
   }
+
 }
