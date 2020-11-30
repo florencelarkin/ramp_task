@@ -2,15 +2,31 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
+class Data {
+
+  final String title;
+  final String content;
+
+
+  Data({this.title, this.content});
+
+  factory Data.fromJson(Map<String, dynamic> json) {
+    return Data(
+      title: json['title'],
+      content: json['x'],
+    );
+  }
+}
+
 Future<Data> createData(String title, String x) async {
   final http.Response response = await http.post(
-    'http://localhost:5000/posts',
+    'http://127.0.0.1:5000//posts',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(<String, String>{
       'title': title,
-      'data': x,
+      'content': x,
     }),
   );
 
@@ -25,20 +41,4 @@ Future<Data> createData(String title, String x) async {
 
 
 
-class Data {
-  final int id;
-  final String title;
-  final String x;
-  final String y;
 
-  Data({this.id, this.title, this.x, this.y});
-
-  factory Data.fromJson(Map<String, dynamic> json) {
-    return Data(
-      id: json['id'],
-      title: json['title'],
-      x: json['x'],
-      y: json['y']
-    );
-  }
-}

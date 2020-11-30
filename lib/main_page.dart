@@ -28,6 +28,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
   Color timerColor = Colors.blue;
   CarEngine carEngine = CarEngine();
 
+  @override
   void initState() {
     super.initState();
     _countdownController = AnimationController(duration: Duration(seconds: 4),
@@ -42,7 +43,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
         vsync: this);
     _timerController.forward();
 
-    timer = Timer.periodic(Duration(milliseconds: 17), (Timer t) => carEngine.getPos(joyStickPos, getCurrentPos));
+    timer = Timer.periodic(Duration(milliseconds: 100), (Timer t) => carEngine.getPos(joyStickPos, getCurrentPos));
 
 
     Timer(Duration(seconds: 14), () {
@@ -53,6 +54,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
       timer.cancel();
     });
   }
+
+
 
   String get timerString {
     Duration duration = _countdownController.duration * _countdownController.value;
@@ -157,7 +160,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
                             setState(() {
                               if (timerString == '0') {
                                 joyStickPos = newValue / 100;
-                                getCurrentPos = carEngine.getPos(joyStickPos, getCurrentPos);
+                                /*getCurrentPos = carEngine.getPos(joyStickPos, getCurrentPos);*/
                                 if (getCurrentPos < -80 &&
                                     getCurrentPos > -185) {
                                   timerColor = Colors.green;

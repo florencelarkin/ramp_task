@@ -6,6 +6,7 @@ class CarEngine {
     dy = ((-.2 * getCurrentPos) +
         (joyStickPos * 60.0)) * 0.033;
     getCurrentPos = dy + getCurrentPos;
+    print(getCurrentPos);
     return getCurrentPos;
   }
 
