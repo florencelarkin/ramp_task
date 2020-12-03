@@ -8,11 +8,15 @@ import 'car_engine.dart';
 
 
 class MainPage extends StatefulWidget {
+  MainPage({@required this.maxVelocity});
+  final double maxVelocity;
   @override
-  _MainPageState createState() => _MainPageState();
+  _MainPageState createState() => _MainPageState(maxVelocity: maxVelocity);
 }
 
 class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
+  _MainPageState({@required this.maxVelocity});
+  double maxVelocity;
 
   AnimationController _timerController;
   AnimationController _carController;
@@ -27,11 +31,13 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
   double getCurrentPos = 10.0;
   double dy = 0.0;
   Color timerColor = Colors.blue;
-  CarEngine carEngine = CarEngine();
+
 
   @override
   void initState() {
     super.initState();
+    CarEngine carEngine = CarEngine(maxVelocity: maxVelocity);
+
     //animation controllers
     _countdownController = AnimationController(duration: Duration(seconds: 4),
         vsync: this);
@@ -54,9 +60,18 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
       _carController.stop();
       _countdownController.stop();
       carTimer.cancel();
+      colorTimer.cancel();
     });
+
   }
 
+  @override
+  void dispose() {
+    _countdownController.dispose();
+    _timerController.dispose();
+    _carController.dispose();
+    super.dispose();
+  }
 
 
   String get timerString {
