@@ -17,7 +17,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
   AnimationController _timerController;
   AnimationController _carController;
   AnimationController _countdownController;
-  Timer timer;
+  Timer carTimer;
+  Timer colorTimer;
 
   Stopwatch stopwatch = new Stopwatch()..start();
   int time = 0;
@@ -31,27 +32,28 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
   @override
   void initState() {
     super.initState();
+    //animation controllers
     _countdownController = AnimationController(duration: Duration(seconds: 4),
         vsync: this);
     _countdownController.forward();
     _countdownController.reverse(from: _countdownController.value == 0.0 ? 1.0 : _countdownController.value);
-
-
     _carController = AnimationController(duration: const Duration(seconds: 10),
         vsync: this)..repeat();
     _timerController = AnimationController(duration: Duration(seconds: 14),
         vsync: this);
     _timerController.forward();
 
-    timer = Timer.periodic(Duration(milliseconds: 100), (Timer t) => carEngine.getPos(joyStickPos, getCurrentPos));
+    //calls functions that check for joystick movement and car position
+    carTimer = Timer.periodic(Duration(milliseconds: 17), (Timer t) => getCurrentPos = carEngine.getPos(joyStickPos, getCurrentPos));
+    colorTimer = Timer.periodic(Duration(milliseconds: 17), (Timer t) => getCurrentPos < -80 && getCurrentPos > -182 ? timerColor = Colors.green : timerColor = Colors.blue);
 
-
+    //Timer for the end of the trial
     Timer(Duration(seconds: 14), () {
       Navigator.push(context, MaterialPageRoute(builder: (context) => ContinuationPage(),),);
       _timerController.stop();
       _carController.stop();
       _countdownController.stop();
-      timer.cancel();
+      carTimer.cancel();
     });
   }
 
@@ -160,23 +162,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
                             setState(() {
                               if (timerString == '0') {
                                 joyStickPos = newValue / 100;
-                                /*getCurrentPos = carEngine.getPos(joyStickPos, getCurrentPos);*/
-                                if (getCurrentPos < -80 &&
-                                    getCurrentPos > -185) {
-                                  timerColor = Colors.green;
-                                }
-                                else {
-                                  timerColor = Colors.blue;
-                                }
                               }
                               else {}
-                            });
-                          },
-                          onChangeEnd: (double newValue) {
-                            setState(() {
-                              joyStickPos = 0.0;
-                              getCurrentPos = getCurrentPos + 100;
-                              newValue = 0;
                             });
                           },
                         ),
