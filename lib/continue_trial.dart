@@ -8,12 +8,14 @@ import 'data.dart';
 import 'package:uuid/uuid.dart';
 
 class ContinuationPage extends StatefulWidget {
+
   @override
   _ContinuationPageState createState() => _ContinuationPageState();
 }
 
 class _ContinuationPageState extends State<ContinuationPage> {
 
+  double maxVelocity;
   var uuid = Uuid();
   int velocity = 160;
 
@@ -81,14 +83,12 @@ class _ContinuationPageState extends State<ContinuationPage> {
                   color: Colors.green,
                   child: Text('START'),
                   onPressed: () {
-                    _futureData = createData(uuid.v1(), 'data test');
                     Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(maxVelocity: velocity.toDouble()),),);
               }),
               RaisedButton(
                   color: Colors.red,
                   child: Text('EXIT'),
                   onPressed: () {
-                    _futureData = createData(uuid.v1(), 'data test');
                     Navigator.push(context, MaterialPageRoute(builder: (context) => QuitPage(),),);
                   }),
             ],

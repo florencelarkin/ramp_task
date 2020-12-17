@@ -4,29 +4,32 @@ import 'dart:convert';
 
 class Data {
 
-  final String title;
-  final String content;
+  final String studyCode;
+  final String guid;
+  final String output;
 
 
-  Data({this.title, this.content});
+  Data({this.studyCode, this.guid, this.output});
 
   factory Data.fromJson(Map<String, dynamic> json) {
     return Data(
-      title: json['title'],
-      content: json['x'],
+      studyCode: json['studyCode'],
+      guid: json['guid'],
+      output: json['output'],
     );
   }
 }
 
-Future<Data> createData(String title, String x) async {
+Future<Data> createData(String studyCode, String guid, String data) async {
   final http.Response response = await http.post(
     'http://127.0.0.1:5000//posts',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(<String, String>{
-      'title': title,
-      'content': x,
+      'studyCode': studyCode,
+      'guid': guid,
+      'data': data,
     }),
   );
 

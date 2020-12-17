@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
 import 'car_engine.dart';
+import 'data.dart';
+import 'package:uuid/uuid.dart';
 
 
 
@@ -31,6 +33,10 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
   double getCurrentPos = 10.0;
   double dy = 0.0;
   Color timerColor = Colors.blue;
+  double carVelocity = 0.0;
+  var uuid = Uuid();
+  List dataList = [];
+  Future<Data> _futureData;
 
 
   @override
@@ -55,6 +61,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
 
     //Timer for the end of the trial
     Timer(Duration(seconds: 14), () {
+      _futureData = createData('12345',uuid.v1(), dataList.toString());
       Navigator.push(context, MaterialPageRoute(builder: (context) => ContinuationPage(),),);
       _timerController.stop();
       _carController.stop();
@@ -87,6 +94,14 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
     else {
       return Colors.black;
     }
+  }
+
+  List outputList () {
+    List data = [];
+    carVelocity = getCurrentPos / stopwatch.elapsedMilliseconds / 3; //TODO: not sure how they calculated velocity in the original, may have to change this
+    String calculatedVelocity = carVelocity.toString();
+    data.addAll([stopwatch.elapsedMilliseconds.toString(), joyStickPos.toString(),getCurrentPos.toString(), calculatedVelocity,'8']);
+    return data;
   }
 
 
@@ -177,6 +192,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
                             setState(() {
                               if (timerString == '0') {
                                 joyStickPos = newValue / 100;
+                                dataList.add(outputList());
+                                //TODO: may have to put this in the motion function instead?
                               }
                               else {}
                             });
