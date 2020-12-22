@@ -6,6 +6,8 @@ import 'dart:async';
 import 'car_engine.dart';
 import 'data.dart';
 import 'package:uuid/uuid.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 
 
@@ -62,6 +64,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
     //Timer for the end of the trial
     Timer(Duration(seconds: 14), () {
       _futureData = createData('12345',uuid.v1(), dataList.toString());
+      saveFile();
+      readFile();
       Navigator.push(context, MaterialPageRoute(builder: (context) => ContinuationPage(),),);
       _timerController.stop();
       _carController.stop();
@@ -98,10 +102,30 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
 
   List outputList () {
     List data = [];
-    carVelocity = getCurrentPos / stopwatch.elapsedMilliseconds / 3; //TODO: not sure how they calculated velocity in the original, may have to change this
+    carVelocity = getCurrentPos / stopwatch.elapsedMilliseconds / 3;
     String calculatedVelocity = carVelocity.toString();
     data.addAll([stopwatch.elapsedMilliseconds.toString(), joyStickPos.toString(),getCurrentPos.toString(), calculatedVelocity,'8']);
     return data;
+  }
+
+  Future<String> getFilePath() async {
+    Directory appDocumentsDirectory = await getApplicationDocumentsDirectory(); // 1
+    String appDocumentsPath = appDocumentsDirectory.path; // 2
+    String filePath = '$appDocumentsPath/demoTextFile.txt'; // 3
+
+    return filePath;
+  }
+
+  void saveFile() async {
+    File file = File(await getFilePath()); // 1
+    file.writeAsString(dataList.toString()); // 2
+  }
+
+  void readFile() async {
+    File file = File(await getFilePath()); // 1
+    String fileContent = await file.readAsString(); // 2
+
+    print('File Content: $fileContent');
   }
 
 

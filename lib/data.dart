@@ -4,25 +4,25 @@ import 'dart:convert';
 
 class Data {
 
-  final String studyCode;
+  final String studycode;
   final String guid;
-  final String output;
+  final String data;
 
 
-  Data({this.studyCode, this.guid, this.output});
+  Data({this.studycode, this.guid, this.data});
 
   factory Data.fromJson(Map<String, dynamic> json) {
     return Data(
-      studyCode: json['studyCode'],
+      studycode: json['studyCode'],
       guid: json['guid'],
-      output: json['output'],
+      data: json['output'],
     );
   }
 }
 
 Future<Data> createData(String studyCode, String guid, String data) async {
   final http.Response response = await http.post(
-    'http://127.0.0.1:5000//posts',
+    'http://160.94.0.29:5000/posts',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
