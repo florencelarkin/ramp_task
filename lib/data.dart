@@ -8,36 +8,38 @@ class Data {
   final String guid;
   final String data;
 
-
   Data({this.studycode, this.guid, this.data});
 
   factory Data.fromJson(Map<String, dynamic> json) {
     return Data(
-      studycode: json['studyCode'],
+      studycode: json['studycode'],
       guid: json['guid'],
-      data: json['output'],
+      data: json['data'],
     );
   }
+
 }
 
-Future<Data> createData(String studyCode, String guid, String data) async {
+
+
+Future<Data> createData(String studycode, String guid, String data) async {
   final http.Response response = await http.post(
     'http://160.94.0.29:5000/posts',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
-    body: jsonEncode(<String, String>{
-      'studyCode': studyCode,
+    body: jsonEncode(<String, dynamic>{
+      'studycode': studycode,
       'guid': guid,
-      'data': data,
+      'data': data
     }),
   );
 
-  if (response.statusCode == 201) {
-    print('it worked');
+  if (response.statusCode == 200) {
+
     return Data.fromJson(jsonDecode(response.body));
   } else {
-    print(':(');
+
     throw Exception('Failed to create data.');
   }
 }

@@ -37,6 +37,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
   Color timerColor = Colors.blue;
   double carVelocity = 0.0;
   var uuid = Uuid();
+  Map<List, List> dataMap = {};
   List dataList = [];
   Future<Data> _futureData;
 
@@ -63,9 +64,10 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin{
 
     //Timer for the end of the trial
     Timer(Duration(seconds: 14), () {
-      _futureData = createData('12345',uuid.v1(), dataList.toString());
-      saveFile();
-      readFile();
+      dataMap = {['time', 'joystick_y', 'car_position', 'car_velocity', 'eventcode'] : dataList};
+      _futureData = createData('driving01',uuid.v1(), dataMap.toString());
+      //saveFile();
+      //readFile();
       Navigator.push(context, MaterialPageRoute(builder: (context) => ContinuationPage(),),);
       _timerController.stop();
       _carController.stop();
