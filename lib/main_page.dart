@@ -8,7 +8,6 @@ import 'data.dart';
 import 'package:uuid/uuid.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
-import 'package:intl/intl.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({@required this.maxVelocity});
@@ -78,9 +77,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     //Timer for the end of the trial
     Timer(Duration(seconds: 14), () {
       DateTime now = DateTime.now();
-      String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(now);
+      //String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(now);
       _futureData =
-          createData('driving01', uuid.v1(), testList, '01', formattedDate);
+          createData('driving01', uuid.v1(), dataList.toString(), '01');
       //saveFile();
       //readFile();
       Navigator.push(

@@ -8,47 +8,45 @@ Data _$DataFromJson(Map<String, dynamic> json) {
   return Data(
     studycode: json['studycode'] as String,
     guid: json['guid'] as String,
-    data_version: json['dataversion'] as String,
-    data: json['data'] as List,
-    created_on: json['studyDate'] as String,
+    data_version: json['data_version'] as String,
+    data: json['data'] as String,
   );
 }
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'studycode': instance.studycode,
       'guid': instance.guid,
-      'dataversion': instance.data_version,
+      'data_version': instance.data_version,
       'data': instance.data,
-      'created_on': instance.created_on,
     };
 
 class Data {
   final String studycode;
   final String guid;
-  final List data;
+  final String data;
   final String data_version;
-  final String created_on;
 
-  Data(
-      {this.studycode,
-      this.guid,
-      this.data_version,
-      this.data,
-      this.created_on});
+  Data({
+    this.studycode,
+    this.guid,
+    this.data_version,
+    this.data,
+  });
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
   Map<String, dynamic> toJson() => _$DataToJson(this);
 }
 
-Future<Data> createData(String studycode, String guid, List dataList,
-    String dataversion, String studyDate) async {
+Future<Data> createData(
+    String studycode, String guid, String dataList, String data_version) async {
   Data data = Data(
     studycode: studycode,
     guid: guid,
     data: dataList,
-    data_version: dataversion,
+    data_version: data_version,
   );
   String jsonUser = jsonEncode(data);
+  //String jsonUser = '{"studycode":"driving", "guid": "ab1235-x25", "data_version":"0.1", "data":"[[1,2,3], [4,5,6]]"}';
   print(jsonUser);
 
   final http.Response response = await http.post(
