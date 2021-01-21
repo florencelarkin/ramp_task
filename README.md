@@ -1,7 +1,7 @@
 # driving_task
 
 
-Data Format:
+Data Interpretation:
 
 [['time in milliseconds since task started', 'slider position (slider value scaled from -1 to 1)', 'car position', 'car velocity', 'event code'], [...],]
 

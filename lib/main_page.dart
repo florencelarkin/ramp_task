@@ -35,13 +35,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   Color timerColor = Colors.blue;
   double carVelocity = 0.0;
   var uuid = Uuid();
-  //Map<List, List> dataMap = {};
   List<dynamic> dataList = [];
   Future<Data> _futureData;
-  List testList = [
-    ['123', '456', '789'],
-    ['123', '234', '789']
-  ];
 
   @override
   void initState() {
@@ -63,11 +58,12 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         AnimationController(duration: Duration(seconds: 14), vsync: this);
     _timerController.forward();
 
-    //calls functions that check for joystick movement and car position
+    //calls functions that check for joystick movement and car position, then adds that to the output list
     carTimer = Timer.periodic(
         Duration(milliseconds: 17),
         (Timer t) =>
             getCurrentPos = carEngine.getPos(joyStickPos, getCurrentPos));
+    dataList.add(outputList());
     colorTimer = Timer.periodic(
         Duration(milliseconds: 17),
         (Timer t) => getCurrentPos < -80 && getCurrentPos > -182
@@ -76,12 +72,24 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
     //Timer for the end of the trial
     Timer(Duration(seconds: 14), () {
-      DateTime now = DateTime.now();
-      //String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(now);
+      Data data = new Data();
       _futureData =
           createData('driving01', uuid.v1(), dataList.toString(), '01');
-      //saveFile();
-      //readFile();
+      String confirmationMessage = data.confirmation;
+      AlertDialog(
+        title: Text('$confirmationMessage'),
+        content: SingleChildScrollView(
+          child: Text('Press ok to continue'),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -250,7 +258,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                             setState(() {
                               if (timerString == '0') {
                                 joyStickPos = newValue / 100;
-                                dataList.add(outputList());
                               } else {}
                             });
                           },

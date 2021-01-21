@@ -3,6 +3,8 @@ import 'package:json_annotation/json_annotation.dart';
 import 'dart:async';
 import 'dart:convert';
 
+//add subject id and start and end times in here
+
 @JsonSerializable(nullable: false)
 Data _$DataFromJson(Map<String, dynamic> json) {
   return Data(
@@ -25,13 +27,13 @@ class Data {
   final String guid;
   final String data;
   final String data_version;
-
-  Data({
-    this.studycode,
-    this.guid,
-    this.data_version,
-    this.data,
-  });
+  String confirmation;
+  Data(
+      {this.studycode,
+      this.guid,
+      this.data_version,
+      this.data,
+      this.confirmation});
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
   Map<String, dynamic> toJson() => _$DataToJson(this);
@@ -46,7 +48,6 @@ Future<Data> createData(
     data_version: data_version,
   );
   String jsonUser = jsonEncode(data);
-  //String jsonUser = '{"studycode":"driving", "guid": "ab1235-x25", "data_version":"0.1", "data":"[[1,2,3], [4,5,6]]"}';
   print(jsonUser);
 
   final http.Response response = await http.post(
@@ -58,8 +59,10 @@ Future<Data> createData(
   );
 
   if (response.statusCode == 200) {
+    data.confirmation = 'Data was successfully uploaded';
     return Data.fromJson(jsonDecode(response.body));
   } else {
+    data.confirmation = 'Error! Data was not successfully uploaded';
     throw Exception('Failed to create data.');
   }
 }
