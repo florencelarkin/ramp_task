@@ -85,6 +85,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       dataMap['\"Data\"'] = dataList;
       dataMap['\"Start Time\"'] = startTime.toString();
       dataMap['\"End Time\"'] = endTime.toString();
+      print('$subjectId,$maxVelocity');
       _futureData =
           createData('driving01', uuid.v1(), dataMap.toString(), '01');
       _timerController.stop();

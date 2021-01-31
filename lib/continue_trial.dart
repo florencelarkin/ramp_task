@@ -27,7 +27,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Padding(
@@ -42,9 +42,6 @@ class _ContinuationPageState extends State<ContinuationPage> {
                 textAlign: TextAlign.center,
               ),
             ),
-          ),
-          SizedBox(
-            height: 100.0,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -94,7 +91,6 @@ class _ContinuationPageState extends State<ContinuationPage> {
                   }),
             ],
           ),
-          SizedBox(height: 100.0),
           RaisedButton(
               color: Colors.red,
               child: Text('EXIT'),

@@ -50,7 +50,9 @@ class _SubjectIDPageState extends State<SubjectIDPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ContinuationPage(),
+                        builder: (context) => ContinuationPage(
+                          subjectId: subjectId,
+                        ),
                       ),
                     );
                   }),

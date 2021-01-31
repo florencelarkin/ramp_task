@@ -46,7 +46,7 @@ class _InstructionPage3State extends State<InstructionPage3> {
               child: Text(
                 'A timer bar will appear on the side of the screen to indicate the time left. It turns green when the car approaches the stop sign.',
                 style: TextStyle(
-                    fontSize: 14.0,
+                    fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
                 textAlign: TextAlign.center,

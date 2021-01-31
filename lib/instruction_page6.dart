@@ -46,7 +46,7 @@ class _InstructionPage6State extends State<InstructionPage6> {
               child: Text(
                 '2. The goal is still to drive as quickly as possible and stop it as close as possible to the sign.',
                 style: TextStyle(
-                    fontSize: 14.0,
+                    fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
                 textAlign: TextAlign.center,
