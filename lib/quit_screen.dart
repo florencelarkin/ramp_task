@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'continue_trial.dart';
 
 class QuitPage extends StatefulWidget {
   @override
@@ -23,6 +24,16 @@ class _QuitPageState extends State<QuitPage> {
                 textAlign: TextAlign.center,
               ),
             ),
+          ),
+          RaisedButton(
+            color: Colors.blue,
+            child: Text('BACK TO TRIALS'),
+            onPressed: () {Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ContinuationPage(),
+              ),
+            );},
           ),
           RaisedButton(
               color: Colors.green,

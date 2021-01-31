@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'subj_id.dart';
-import 'instruction_page2.dart';
+import 'instruction_page7.dart';
 
-class InstructionPage extends StatefulWidget {
+class InstructionPage6 extends StatefulWidget {
   @override
-  _InstructionPageState createState() => _InstructionPageState();
+  _InstructionPage6State createState() => _InstructionPage6State();
 }
 
-class _InstructionPageState extends State<InstructionPage> {
+class _InstructionPage6State extends State<InstructionPage6> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +18,7 @@ class _InstructionPageState extends State<InstructionPage> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'Driving Task',
+                'Other notes:',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -32,7 +31,7 @@ class _InstructionPageState extends State<InstructionPage> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'Please read the following instructions carefully before starting.',
+                '1. The timing bar will turn green when the car is getting close to the stop sign, but...',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -45,26 +44,37 @@ class _InstructionPageState extends State<InstructionPage> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'If you have any questions about the experiment, please ask the experimenter.',
+                '2. The goal is still to drive as quickly as possible and stop it as close as possible to the sign.',
                 style: TextStyle(
-                    fontSize: 20.0,
+                    fontSize: 14.0,
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
                 textAlign: TextAlign.center,
               ),
             ),
           ),
-          RaisedButton(
-              color: Colors.green,
-              child: Text('NEXT'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => InstructionPage2(),
-                  ),
-                );
-              }),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              RaisedButton(
+                  color: Colors.blue,
+                  child: Text('BACK'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
+              RaisedButton(
+                  color: Colors.green,
+                  child: Text('NEXT'),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => InstructionPage7(),
+                      ),
+                    );
+                  }),
+            ],
+          ),
         ],
       ),
     );

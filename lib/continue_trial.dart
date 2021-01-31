@@ -1,4 +1,3 @@
-import 'package:driving_task/car_engine.dart';
 import 'package:string_validator/string_validator.dart';
 import 'main_page.dart';
 import 'quit_screen.dart';
@@ -8,18 +7,21 @@ import 'data.dart';
 import 'package:uuid/uuid.dart';
 
 class ContinuationPage extends StatefulWidget {
+  ContinuationPage({this.subjectId});
+  final String subjectId;
   @override
-  _ContinuationPageState createState() => _ContinuationPageState();
+  _ContinuationPageState createState() =>
+      _ContinuationPageState(subjectId: subjectId);
 }
 
 class _ContinuationPageState extends State<ContinuationPage> {
+  _ContinuationPageState({this.subjectId});
+  String subjectId;
   double maxVelocity;
   var uuid = Uuid();
-  String subjectId = '';
+
   String velocityString;
   double velocity = 160.0;
-
-  Future<Data> _futureData;
 
   @override
   Widget build(BuildContext context) {
@@ -48,25 +50,8 @@ class _ContinuationPageState extends State<ContinuationPage> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'Please enter subject ID:', //PUT THIS ON OTHER PAGE!! dont want them to enter diff ones for each trial
-                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          TextField(
-            decoration: InputDecoration(
-                border: InputBorder.none, hintText: 'Enter Subject ID'),
-            onChanged: (value) {
-              subjectId = value;
-            },
-          ),
-          SizedBox(height: 50.0),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Text(
                 'Please enter preferred sensitivity:',
-                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -79,14 +64,20 @@ class _ContinuationPageState extends State<ContinuationPage> {
               if (isValid == true) {
                 velocity = double.parse(velocityString);
               } else {
-                print(
-                    'please type numbers'); //CHANGE THIS FROM PRINT TO POPUP OR SMTH
+                print('please type numbers');
               }
             },
           ),
+          SizedBox(height: 50.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              RaisedButton(
+                  color: Colors.blue,
+                  child: Text('BACK'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
               RaisedButton(
                   color: Colors.green,
                   child: Text('START'),
@@ -94,23 +85,27 @@ class _ContinuationPageState extends State<ContinuationPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MainPage(maxVelocity: velocity),
-                      ),
-                    );
-                  }),
-              RaisedButton(
-                  color: Colors.red,
-                  child: Text('EXIT'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => QuitPage(),
+                        builder: (context) => MainPage(
+                          maxVelocity: velocity,
+                          subjectId: subjectId,
+                        ),
                       ),
                     );
                   }),
             ],
           ),
+          SizedBox(height: 100.0),
+          RaisedButton(
+              color: Colors.red,
+              child: Text('EXIT'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => QuitPage(),
+                  ),
+                );
+              }),
         ],
       ),
     );

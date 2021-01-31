@@ -1,38 +1,31 @@
 import 'package:flutter/material.dart';
-import 'continue_trial.dart';
+import 'instruction_page5.dart';
 
-class SubjectIDPage extends StatefulWidget {
+class InstructionPage4 extends StatefulWidget {
   @override
-  _SubjectIDPageState createState() => _SubjectIDPageState();
+  _InstructionPage4State createState() => _InstructionPage4State();
 }
 
-class _SubjectIDPageState extends State<SubjectIDPage> {
-  String subjectId = '';
-
+class _InstructionPage4State extends State<InstructionPage4> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'Please enter subject ID:',
-                style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+                'Your task is to drive as quickly as possible and stop at the stop sign within ten seconds.',
+                style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+                textAlign: TextAlign.center,
               ),
             ),
-          ),
-          TextField(
-            decoration: InputDecoration(
-                border: InputBorder.none, hintText: 'Enter Subject ID'),
-            onChanged: (value) {
-              subjectId = value;
-            },
-          ),
-          SizedBox(
-            height: 100.0,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -50,7 +43,7 @@ class _SubjectIDPageState extends State<SubjectIDPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ContinuationPage(),
+                        builder: (context) => InstructionPage5(),
                       ),
                     );
                   }),

@@ -6,25 +6,27 @@ import 'dart:async';
 import 'car_engine.dart';
 import 'data.dart';
 import 'package:uuid/uuid.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 
 class MainPage extends StatefulWidget {
-  MainPage({@required this.maxVelocity});
+  MainPage({@required this.maxVelocity, this.subjectId});
   final double maxVelocity;
+  final String subjectId;
   @override
-  _MainPageState createState() => _MainPageState(maxVelocity: maxVelocity);
+  _MainPageState createState() =>
+      _MainPageState(maxVelocity: maxVelocity, subjectId: subjectId);
 }
 
 class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
-  _MainPageState({@required this.maxVelocity});
+  _MainPageState({@required this.maxVelocity, this.subjectId});
   double maxVelocity;
+  String subjectId;
 
   AnimationController _timerController;
   AnimationController _carController;
   AnimationController _countdownController;
   Timer carTimer;
   Timer colorTimer;
+  Timer dataTimer;
 
   Stopwatch stopwatch = new Stopwatch()..start();
   int time = 0;
@@ -37,10 +39,14 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   var uuid = Uuid();
   List<dynamic> dataList = [];
   Future<Data> _futureData;
+  String title = '';
+  String messageText = '';
+  Map dataMap = {};
 
   @override
   void initState() {
     super.initState();
+    var startTime = new DateTime.now();
     CarEngine carEngine = CarEngine(maxVelocity: maxVelocity);
 
     //animation controllers
@@ -69,38 +75,29 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         (Timer t) => getCurrentPos < -80 && getCurrentPos > -182
             ? timerColor = Colors.green
             : timerColor = Colors.blue);
+    dataTimer = Timer.periodic(
+        Duration(milliseconds: 17), (Timer t) => dataList.add(outputList()));
 
     //Timer for the end of the trial
     Timer(Duration(seconds: 14), () {
-      Data data = new Data();
+      var endTime = new DateTime.now();
+      dataMap['\"subject ID\"'] = subjectId;
+      dataMap['\"Data\"'] = dataList;
+      dataMap['\"Start Time\"'] = startTime.toString();
+      dataMap['\"End Time\"'] = endTime.toString();
       _futureData =
-          createData('driving01', uuid.v1(), dataList.toString(), '01');
-      String confirmationMessage = data.confirmation;
-      AlertDialog(
-        title: Text('$confirmationMessage'),
-        content: SingleChildScrollView(
-          child: Text('Press ok to continue'),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: Text('OK'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
+          createData('driving01', uuid.v1(), dataMap.toString(), '01');
+      _timerController.stop();
+      _carController.stop();
+      _countdownController.stop();
+      carTimer.cancel();
+      colorTimer.cancel();
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => ContinuationPage(),
         ),
       );
-      _timerController.stop();
-      _carController.stop();
-      _countdownController.stop();
-      carTimer.cancel();
-      colorTimer.cancel();
     });
   }
 
@@ -143,26 +140,33 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     return data;
   }
 
-  Future<String> getFilePath() async {
-    Directory appDocumentsDirectory =
-        await getApplicationDocumentsDirectory(); // 1
-    String appDocumentsPath = appDocumentsDirectory.path; // 2
-    String filePath = '$appDocumentsPath/demoTextFile.txt'; // 3
-
-    return filePath;
-  }
-
-  void saveFile() async {
-    File file = File(await getFilePath()); // 1
-    file.writeAsString(dataList.toString()); // 2
-  }
-
-  void readFile() async {
-    File file = File(await getFilePath()); // 1
-    String fileContent = await file.readAsString(); // 2
-
-    print('File Content: $fileContent');
-  }
+  /*showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text('OK'),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ContinuationPage(subjectId: subjectId),
+          ),
+        );
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text('$title'),
+      content: Text("$messageText"),
+      actions: [
+        okButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +178,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         decoration: BoxDecoration(
           color: Colors.black,
         ),
-        child: Row(
+        child: /*(_futureData == null)*/
+            Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             AnimatedBuilder(
