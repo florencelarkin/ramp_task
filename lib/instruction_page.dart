@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'subj_id.dart';
 import 'instruction_page2.dart';
 
 class InstructionPage extends StatefulWidget {
