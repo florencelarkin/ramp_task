@@ -183,8 +183,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       dataMap[addQuotesToString("TaskVersion")] = addQuotesToString(taskVersion);
       dataMap[addQuotesToString("Platform")] = addQuotesToString(Platform.operatingSystem);
       dataMap[addQuotesToString("Web")] = webFlag;
-      dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
-
+      //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
+      // has double quoted android_ia32
 
       dataMap['\"SubjectID\"'] = addQuotesToString(subjectId);
       dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
