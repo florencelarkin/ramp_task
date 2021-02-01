@@ -94,11 +94,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         title = 'Error';
         messageText = 'Data has not been uploaded to the server';
         showAlertDialog(context);
-      } else {
-        title = 'problem';
-        messageText = "you're going to have to fix something lol";
-        showAlertDialog(context);
-      }
+      } else {}
     }
 
     //animation controllers
