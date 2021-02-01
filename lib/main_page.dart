@@ -8,18 +8,26 @@ import 'data.dart';
 import 'package:uuid/uuid.dart';
 
 class MainPage extends StatefulWidget {
-  MainPage({@required this.maxVelocity, this.subjectId});
+  MainPage(
+      {@required this.maxVelocity,
+      @required this.subjectId,
+      @required this.uuid});
   final double maxVelocity;
   final String subjectId;
+  final String uuid;
   @override
-  _MainPageState createState() =>
-      _MainPageState(maxVelocity: maxVelocity, subjectId: subjectId);
+  _MainPageState createState() => _MainPageState(
+      maxVelocity: maxVelocity, subjectId: subjectId, uuid: uuid);
 }
 
 class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
-  _MainPageState({@required this.maxVelocity, this.subjectId});
+  _MainPageState(
+      {@required this.maxVelocity,
+      @required this.subjectId,
+      @required this.uuid});
   double maxVelocity;
   String subjectId;
+  String uuid;
 
   AnimationController _timerController;
   AnimationController _carController;
@@ -36,18 +44,62 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   double dy = 0.0;
   Color timerColor = Colors.blue;
   double carVelocity = 0.0;
-  var uuid = Uuid();
   List<dynamic> dataList = [];
   Future<Data> _futureData;
   String title = '';
   String messageText = '';
   Map dataMap = {};
+  Future<bool> dataSent;
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text('OK'),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ContinuationPage(),
+          ),
+        );
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("$title"),
+      content: Text("$messageText"),
+      actions: [
+        okButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   @override
   void initState() {
     super.initState();
     var startTime = new DateTime.now();
     CarEngine carEngine = CarEngine(maxVelocity: maxVelocity);
+
+    _serverUpload(studycode, guid, dataList, data_version) async {
+      bool dataSent = await createData(studycode, guid, dataList, data_version);
+      if (dataSent == true) {
+        title = 'Success!';
+        messageText = 'Data has been sent to the server';
+        showAlertDialog(context);
+      } else if (dataSent == false) {
+        title = 'Error';
+        messageText = 'Data has not been uploaded to the server';
+        showAlertDialog(context);
+      } else {
+        title = 'problem';
+        messageText = "you're going to have to fix something lol";
+        showAlertDialog(context);
+      }
+    }
 
     //animation controllers
     _countdownController =
@@ -85,20 +137,13 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       dataMap['\"Data\"'] = dataList;
       dataMap['\"Start Time\"'] = startTime.toString();
       dataMap['\"End Time\"'] = endTime.toString();
-      print('$subjectId,$maxVelocity');
-      _futureData =
-          createData('driving01', uuid.v1(), dataMap.toString(), '01');
+      dataMap['\"Sensitivity\"'] = maxVelocity;
       _timerController.stop();
       _carController.stop();
       _countdownController.stop();
       carTimer.cancel();
       colorTimer.cancel();
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ContinuationPage(),
-        ),
-      );
+      _serverUpload('driving01', uuid, dataMap.toString(), '01');
     });
   }
 
@@ -140,34 +185,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
     return data;
   }
-
-  /*showAlertDialog(BuildContext context) {
-    // set up the button
-    Widget okButton = FlatButton(
-      child: Text('OK'),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ContinuationPage(subjectId: subjectId),
-          ),
-        );
-      },
-    );
-    AlertDialog alert = AlertDialog(
-      title: Text('$title'),
-      content: Text("$messageText"),
-      actions: [
-        okButton,
-      ],
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }*/
 
   @override
   Widget build(BuildContext context) {

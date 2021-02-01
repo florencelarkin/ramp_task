@@ -7,18 +7,19 @@ import 'data.dart';
 import 'package:uuid/uuid.dart';
 
 class ContinuationPage extends StatefulWidget {
-  ContinuationPage({this.subjectId});
+  ContinuationPage({@required this.subjectId, @required this.uuid});
   final String subjectId;
+  final String uuid;
   @override
   _ContinuationPageState createState() =>
-      _ContinuationPageState(subjectId: subjectId);
+      _ContinuationPageState(subjectId: subjectId, uuid: uuid);
 }
 
 class _ContinuationPageState extends State<ContinuationPage> {
-  _ContinuationPageState({this.subjectId});
+  _ContinuationPageState({@required this.subjectId, @required this.uuid});
   String subjectId;
   double maxVelocity;
-  var uuid = Uuid();
+  String uuid;
 
   String velocityString;
   double velocity = 160.0;
@@ -85,6 +86,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
                         builder: (context) => MainPage(
                           maxVelocity: velocity,
                           subjectId: subjectId,
+                          uuid: uuid,
                         ),
                       ),
                     );

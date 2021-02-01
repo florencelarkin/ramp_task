@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'continue_trial.dart';
+import 'package:uuid/uuid.dart';
 
 class SubjectIDPage extends StatefulWidget {
   @override
@@ -7,7 +8,31 @@ class SubjectIDPage extends StatefulWidget {
 }
 
 class _SubjectIDPageState extends State<SubjectIDPage> {
-  String subjectId = '';
+  String subjectId;
+  var uuid = Uuid();
+
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text('OK'),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("No subject ID entered"),
+      content: Text("Please enter a subject ID before continuing."),
+      actions: [
+        okButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,14 +72,20 @@ class _SubjectIDPageState extends State<SubjectIDPage> {
                   color: Colors.green,
                   child: Text('NEXT'),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ContinuationPage(
-                          subjectId: subjectId,
+                    if (subjectId == null) {
+                      showAlertDialog(context);
+                    } else {
+                      String newId = uuid.v1();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ContinuationPage(
+                            subjectId: subjectId,
+                            uuid: newId,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   }),
             ],
           ),

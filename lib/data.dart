@@ -38,7 +38,7 @@ class Data {
   Map<String, dynamic> toJson() => _$DataToJson(this);
 }
 
-Future<Data> createData(
+Future<bool> createData(
     String studycode, String guid, String dataList, String data_version) async {
   Data data = Data(
     studycode: studycode,
@@ -57,8 +57,9 @@ Future<Data> createData(
   );
 
   if (response.statusCode == 200) {
-    return Data.fromJson(jsonDecode(response.body));
+    Data.fromJson(jsonDecode(response.body));
+    return Future.value(true);
   } else {
-    throw Exception('Failed to create data.');
+    return Future.value(false);
   }
 }
