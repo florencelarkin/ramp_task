@@ -144,11 +144,12 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     //Timer for the end of the trial
     Timer(Duration(seconds: 14), () {
       var endTime = new DateTime.now();
-      dataMap['\"subjectID\"'] = addQuotesToString(subjectId);
+      dataMap['\"SubjectID\"'] = addQuotesToString(subjectId);
       dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
       dataMap['\"EndTime\"'] = addQuotesToString(endTime.toIso8601String());
-      dataMap['\"Sensitivity\"'] = addQuotesToString(maxVelocity.toString());
-      dataMap['\"Data\"'] = dataList;
+      //dataMap['\"Sensitivity\"'] = addQuotesToString(maxVelocity.toString());
+      dataMap['\"Sensitivity\"'] = maxVelocity.toString();
+      dataMap['\"Moves\"'] = dataList;
       _timerController.stop();
       _carController.stop();
       _countdownController.stop();
