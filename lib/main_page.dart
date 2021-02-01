@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:driving_task/continue_trial.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'car_engine.dart';
 import 'data.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 
 class MainPage extends StatefulWidget {
   MainPage(
@@ -37,9 +40,38 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   Timer colorTimer;
   Timer dataTimer;
 
+  bool webFlag;  // true if running web
+  String platformType;  // the platform: android, ios, windows, linux
+  final String taskVersion = "driving_task:0.9";
+
   String addQuotesToString(String text) {
     var quoteText = '\"' + text + '\"';
     return quoteText;
+  }
+
+  void checkWebPlatform() {
+    // check the platform and whether web
+
+    if (kIsWeb) {
+      webFlag = true;
+    } else {
+      webFlag = false;
+    }
+
+    // now check platform
+    if(Platform.isAndroid) {
+      platformType = 'android';
+    } else if (Platform.isIOS) {
+      platformType = 'ios';
+    } else if (Platform.isLinux) {
+      platformType = 'linux';
+    } else if (Platform.isWindows) {
+      platformType = 'windows';
+    } else if (Platform.isMacOS) {
+      platformType = 'macos';
+    } else if (Platform.isFuchsia) {
+      platformType = 'fuchsia';
+    }
   }
 
   Stopwatch stopwatch = new Stopwatch()..start();
@@ -90,6 +122,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     var startTime = new DateTime.now();
     CarEngine carEngine = CarEngine(maxVelocity: maxVelocity);
 
+    // check platform
+    checkWebPlatform();
     // initialize the header of the dataList
     dataList.add([
       addQuotesToString("times"),
@@ -144,6 +178,14 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     //Timer for the end of the trial
     Timer(Duration(seconds: 14), () {
       var endTime = new DateTime.now();
+
+      // add data to dataMap for output
+      dataMap[addQuotesToString("TaskVersion")] = addQuotesToString(taskVersion);
+      dataMap[addQuotesToString("Platform")] = addQuotesToString(Platform.operatingSystem);
+      dataMap[addQuotesToString("Web")] = webFlag;
+      dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
+
+
       dataMap['\"SubjectID\"'] = addQuotesToString(subjectId);
       dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
       dataMap['\"EndTime\"'] = addQuotesToString(endTime.toIso8601String());
