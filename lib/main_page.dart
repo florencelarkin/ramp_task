@@ -36,6 +36,11 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   Timer colorTimer;
   Timer dataTimer;
 
+  String addQuotesToString(String text) {
+    var quoteText = '\"' + text + '\"';
+    return quoteText;
+  }
+
   Stopwatch stopwatch = new Stopwatch()..start();
   int time = 0;
   double carStartPos = -5.0;
@@ -84,6 +89,15 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     var startTime = new DateTime.now();
     CarEngine carEngine = CarEngine(maxVelocity: maxVelocity);
 
+    // initialize the header of the dataList
+    dataList.add([
+      addQuotesToString("times"),
+      addQuotesToString("slider"),
+      addQuotesToString("carPos"),
+      addQuotesToString("carVel"),
+      addQuotesToString("eventcode")
+    ]);
+
     _serverUpload(studycode, guid, dataList, data_version) async {
       bool dataSent = await createData(studycode, guid, dataList, data_version);
       if (dataSent == true) {
@@ -129,11 +143,10 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     //Timer for the end of the trial
     Timer(Duration(seconds: 14), () {
       var endTime = new DateTime.now();
-      dataMap['\"subject ID\"'] = subjectId;
+      dataMap['\"subjectID\"'] = addQuotesToString(subjectId);
+      dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
+      dataMap['\"EndTime\"'] = addQuotesToString(endTime.toIso8601String());
       dataMap['\"Data\"'] = dataList;
-      dataMap['\"Start Time\"'] = startTime.toString();
-      dataMap['\"End Time\"'] = endTime.toString();
-      dataMap['\"Sensitivity\"'] = maxVelocity;
       _timerController.stop();
       _carController.stop();
       _countdownController.stop();
