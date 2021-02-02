@@ -39,8 +39,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   Timer carTimer;
   Timer colorTimer;
   Timer dataTimer;
-  bool webFlag; // true if running web
-  String platformType; // the platform: android, ios, windows, linux
+
+  bool webFlag = false;  // true if running web
+  String platformType ="";  // the platform: android, ios, windows, linux
   final String taskVersion = "driving_task:0.9";
 
   String addQuotesToString(String text) {
@@ -55,21 +56,24 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       webFlag = true;
     } else {
       webFlag = false;
-    }
 
-    // now check platform
-    if (Platform.isAndroid) {
-      platformType = 'android';
-    } else if (Platform.isIOS) {
-      platformType = 'ios';
-    } else if (Platform.isLinux) {
-      platformType = 'linux';
-    } else if (Platform.isWindows) {
-      platformType = 'windows';
-    } else if (Platform.isMacOS) {
-      platformType = 'macos';
-    } else if (Platform.isFuchsia) {
-      platformType = 'fuchsia';
+      platformType = Platform.operatingSystem;
+      // now check platform
+      /*
+      if(Platform.isAndroid) {
+        platformType = 'android';
+      } else if (Platform.isIOS) {
+        platformType = 'ios';
+      } else if (Platform.isLinux) {
+        platformType = 'linux';
+      } else if (Platform.isWindows) {
+        platformType = 'windows';
+      } else if (Platform.isMacOS) {
+        platformType = 'macos';
+      } else if (Platform.isFuchsia) {
+        platformType = 'fuchsia';
+      }
+       */
     }
   }
 
@@ -95,8 +99,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                ContinuationPage(uuid: uuid, subjectId: subjectId),
+            builder: (context) => ContinuationPage(),
           ),
         );
       },
@@ -121,7 +124,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     super.initState();
     var startTime = new DateTime.now();
     CarEngine carEngine = CarEngine(maxVelocity: maxVelocity);
-    print('$subjectId,$uuid');
+
     // check platform
     checkWebPlatform();
     // initialize the header of the dataList
@@ -180,10 +183,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       var endTime = new DateTime.now();
 
       // add data to dataMap for output
-      dataMap[addQuotesToString("TaskVersion")] =
-          addQuotesToString(taskVersion);
-      dataMap[addQuotesToString("Platform")] =
-          addQuotesToString(Platform.operatingSystem);
+      dataMap[addQuotesToString("TaskVersion")] = addQuotesToString(taskVersion);
+      dataMap[addQuotesToString("Platform")] = addQuotesToString(platformType);
       dataMap[addQuotesToString("Web")] = webFlag;
       //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
       // has double quoted android_ia32
@@ -191,7 +192,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       dataMap['\"SubjectID\"'] = addQuotesToString(subjectId);
       dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
       dataMap['\"EndTime\"'] = addQuotesToString(endTime.toIso8601String());
-
+      //dataMap['\"Sensitivity\"'] = addQuotesToString(maxVelocity.toString());
       dataMap['\"Sensitivity\"'] = maxVelocity.toString();
       dataMap['\"Moves\"'] = dataList;
       _timerController.stop();
