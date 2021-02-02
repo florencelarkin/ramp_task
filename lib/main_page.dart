@@ -97,7 +97,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ContinuationPage(),
+            builder: (context) =>
+                ContinuationPage(subjectId: subjectId, uuid: uuid),
           ),
         );
       },
