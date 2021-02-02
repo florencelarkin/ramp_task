@@ -7,8 +7,6 @@ import 'dart:math';
 import 'dart:async';
 import 'car_engine.dart';
 import 'data.dart';
-import 'package:uuid/uuid.dart';
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 class MainPage extends StatefulWidget {
@@ -40,8 +38,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   Timer colorTimer;
   Timer dataTimer;
 
-  bool webFlag = false;  // true if running web
-  String platformType ="";  // the platform: android, ios, windows, linux
+  bool webFlag = false; // true if running web
+  String platformType = ""; // the platform: android, ios, windows, linux
   final String taskVersion = "driving_task:0.9";
 
   String addQuotesToString(String text) {
@@ -183,7 +181,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       var endTime = new DateTime.now();
 
       // add data to dataMap for output
-      dataMap[addQuotesToString("TaskVersion")] = addQuotesToString(taskVersion);
+      dataMap[addQuotesToString("TaskVersion")] =
+          addQuotesToString(taskVersion);
       dataMap[addQuotesToString("Platform")] = addQuotesToString(platformType);
       dataMap[addQuotesToString("Web")] = webFlag;
       //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
