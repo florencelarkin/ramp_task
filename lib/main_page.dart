@@ -39,9 +39,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   Timer carTimer;
   Timer colorTimer;
   Timer dataTimer;
-
-  bool webFlag;  // true if running web
-  String platformType;  // the platform: android, ios, windows, linux
+  bool webFlag; // true if running web
+  String platformType; // the platform: android, ios, windows, linux
   final String taskVersion = "driving_task:0.9";
 
   String addQuotesToString(String text) {
@@ -59,7 +58,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     }
 
     // now check platform
-    if(Platform.isAndroid) {
+    if (Platform.isAndroid) {
       platformType = 'android';
     } else if (Platform.isIOS) {
       platformType = 'ios';
@@ -96,7 +95,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ContinuationPage(),
+            builder: (context) =>
+                ContinuationPage(uuid: uuid, subjectId: subjectId),
           ),
         );
       },
@@ -121,7 +121,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     super.initState();
     var startTime = new DateTime.now();
     CarEngine carEngine = CarEngine(maxVelocity: maxVelocity);
-
+    print('$subjectId,$uuid');
     // check platform
     checkWebPlatform();
     // initialize the header of the dataList
@@ -180,8 +180,10 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       var endTime = new DateTime.now();
 
       // add data to dataMap for output
-      dataMap[addQuotesToString("TaskVersion")] = addQuotesToString(taskVersion);
-      dataMap[addQuotesToString("Platform")] = addQuotesToString(Platform.operatingSystem);
+      dataMap[addQuotesToString("TaskVersion")] =
+          addQuotesToString(taskVersion);
+      dataMap[addQuotesToString("Platform")] =
+          addQuotesToString(Platform.operatingSystem);
       dataMap[addQuotesToString("Web")] = webFlag;
       //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
       // has double quoted android_ia32
