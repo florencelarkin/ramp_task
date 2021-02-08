@@ -2,9 +2,6 @@ import 'package:string_validator/string_validator.dart';
 import 'main_page.dart';
 import 'quit_screen.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'data.dart';
-import 'package:uuid/uuid.dart';
 
 class ContinuationPage extends StatefulWidget {
   ContinuationPage(
@@ -37,8 +34,30 @@ class _ContinuationPageState extends State<ContinuationPage> {
   int trialNumber;
   int blockNumber;
 
-  String velocityString;
+  String velocityString = '160.0';
   double velocity = 160.0;
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text('OK'),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("Invalid entry"),
+      content: Text("Only enter numbers for this field."),
+      actions: [
+        okButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,12 +97,6 @@ class _ContinuationPageState extends State<ContinuationPage> {
                   hintText: '160'),
               onChanged: (value) {
                 velocityString = value;
-                bool isValid = isNumeric(velocityString);
-                if (isValid == true) {
-                  velocity = double.parse(velocityString);
-                } else {
-                  print('please type numbers');
-                }
               },
             ),
             width: MediaQuery.of(context).size.width * 0.75,
@@ -103,18 +116,38 @@ class _ContinuationPageState extends State<ContinuationPage> {
                   child: Text('START'),
                   onPressed: () {
                     trialNumber++;
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MainPage(
-                          maxVelocity: velocity,
-                          subjectId: subjectId,
-                          uuid: uuid,
-                          trialNumber: trialNumber,
-                          blockNumber: blockNumber,
+                    bool isValid = isNumeric(velocityString);
+                    if (isValid == true) {
+                      velocity = double.parse(velocityString);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MainPage(
+                            maxVelocity: velocity,
+                            subjectId: subjectId,
+                            uuid: uuid,
+                            trialNumber: trialNumber,
+                            blockNumber: blockNumber,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    } else if (velocityString == '160.0') {
+                      velocity = 160.0;
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MainPage(
+                            maxVelocity: velocity,
+                            subjectId: subjectId,
+                            uuid: uuid,
+                            trialNumber: trialNumber,
+                            blockNumber: blockNumber,
+                          ),
+                        ),
+                      );
+                    } else {
+                      showAlertDialog(context);
+                    }
                   }),
             ],
           ),

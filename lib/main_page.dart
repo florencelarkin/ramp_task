@@ -269,8 +269,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         decoration: BoxDecoration(
           color: Colors.black,
         ),
-        child: /*(_futureData == null)*/
-            Row(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             AnimatedBuilder(
