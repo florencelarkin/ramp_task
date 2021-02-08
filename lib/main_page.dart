@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:driving_task/continue_trial.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +12,14 @@ class MainPage extends StatefulWidget {
   MainPage(
       {@required this.maxVelocity,
       @required this.subjectId,
-      @required this.uuid});
+      @required this.uuid,
+      this.trialNumber,
+      this.blockNumber});
   final double maxVelocity;
   final String subjectId;
   final String uuid;
+  final int trialNumber;
+  final int blockNumber;
   @override
   _MainPageState createState() => _MainPageState(
       maxVelocity: maxVelocity, subjectId: subjectId, uuid: uuid);
@@ -26,10 +29,14 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   _MainPageState(
       {@required this.maxVelocity,
       @required this.subjectId,
-      @required this.uuid});
+      @required this.uuid,
+      this.trialNumber,
+      this.blockNumber});
   double maxVelocity;
   String subjectId;
   String uuid;
+  int trialNumber;
+  int blockNumber;
 
   AnimationController _timerController;
   AnimationController _carController;
@@ -97,8 +104,12 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                ContinuationPage(subjectId: subjectId, uuid: uuid),
+            builder: (context) => ContinuationPage(
+              subjectId: subjectId,
+              uuid: uuid,
+              trialNumber: trialNumber,
+              blockNumber: blockNumber,
+            ),
           ),
         );
       },
@@ -123,7 +134,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     super.initState();
     var startTime = new DateTime.now();
     CarEngine carEngine = CarEngine(maxVelocity: maxVelocity);
-
+    Timer serverTimeout;
     // check platform
     checkWebPlatform();
     // initialize the header of the dataList
@@ -145,7 +156,12 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         title = 'Error';
         messageText = 'Data has not been uploaded to the server';
         showAlertDialog(context);
-      } else {}
+      } else {
+        serverTimeout = Timer(Duration(seconds: 30), () {
+          title = 'Error';
+          messageText = 'Server not found';
+        });
+      }
     }
 
     //animation controllers

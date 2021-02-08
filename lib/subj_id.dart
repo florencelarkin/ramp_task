@@ -10,6 +10,8 @@ class SubjectIDPage extends StatefulWidget {
 class _SubjectIDPageState extends State<SubjectIDPage> {
   String subjectId;
   var uuid = Uuid();
+  int trialNumber = 0;
+  int blockNumber = 1;
 
   showAlertDialog(BuildContext context) {
     // set up the button
@@ -39,6 +41,7 @@ class _SubjectIDPageState extends State<SubjectIDPage> {
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -49,12 +52,15 @@ class _SubjectIDPageState extends State<SubjectIDPage> {
               ),
             ),
           ),
-          TextField(
-            decoration: InputDecoration(
-                border: InputBorder.none, hintText: 'Enter Subject ID'),
-            onChanged: (value) {
-              subjectId = value;
-            },
+          Container(
+            child: TextField(
+              decoration: InputDecoration(
+                  border: InputBorder.none, hintText: 'Enter Subject ID'),
+              onChanged: (value) {
+                subjectId = value;
+              },
+            ),
+            width: MediaQuery.of(context).size.width * 0.5,
           ),
           SizedBox(
             height: 100.0,
@@ -82,6 +88,8 @@ class _SubjectIDPageState extends State<SubjectIDPage> {
                           builder: (context) => ContinuationPage(
                             subjectId: subjectId,
                             uuid: newId,
+                            trialNumber: trialNumber,
+                            blockNumber: blockNumber,
                           ),
                         ),
                       );
