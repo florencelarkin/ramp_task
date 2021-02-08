@@ -55,12 +55,16 @@ class _SubjectIDPageState extends State<SubjectIDPage> {
           Container(
             child: TextField(
               decoration: InputDecoration(
-                  border: InputBorder.none, hintText: 'Enter Subject ID'),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  hintText: 'Enter Subject ID'),
               onChanged: (value) {
                 subjectId = value;
               },
             ),
-            width: MediaQuery.of(context).size.width * 0.5,
+            height: MediaQuery.of(context).size.width * 0.25,
+            width: MediaQuery.of(context).size.width * 0.75,
           ),
           SizedBox(
             height: 100.0,

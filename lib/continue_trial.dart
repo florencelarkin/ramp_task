@@ -18,8 +18,11 @@ class ContinuationPage extends StatefulWidget {
   final int blockNumber;
 
   @override
-  _ContinuationPageState createState() =>
-      _ContinuationPageState(subjectId: subjectId, uuid: uuid);
+  _ContinuationPageState createState() => _ContinuationPageState(
+      subjectId: subjectId,
+      uuid: uuid,
+      trialNumber: trialNumber,
+      blockNumber: blockNumber);
 }
 
 class _ContinuationPageState extends State<ContinuationPage> {
@@ -68,8 +71,11 @@ class _ContinuationPageState extends State<ContinuationPage> {
           ),
           Container(
             child: TextField(
-              decoration:
-                  InputDecoration(border: InputBorder.none, hintText: '160'),
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  hintText: '160'),
               onChanged: (value) {
                 velocityString = value;
                 bool isValid = isNumeric(velocityString);
@@ -80,7 +86,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
                 }
               },
             ),
-            width: MediaQuery.of(context).size.width * 0.5,
+            width: MediaQuery.of(context).size.width * 0.75,
           ),
           SizedBox(height: 50.0),
           Row(
