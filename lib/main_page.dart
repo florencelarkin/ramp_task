@@ -208,7 +208,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       dataMap['\"SubjectID\"'] = addQuotesToString(subjectId);
       dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
       dataMap['\"EndTime\"'] = addQuotesToString(endTime.toIso8601String());
-      //dataMap['\"Sensitivity\"'] = addQuotesToString(maxVelocity.toString());
       dataMap['\"Sensitivity\"'] = maxVelocity.toString();
       dataMap['\"Moves\"'] = dataList;
       _timerController.stop();
