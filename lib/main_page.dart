@@ -22,7 +22,11 @@ class MainPage extends StatefulWidget {
   final int blockNumber;
   @override
   _MainPageState createState() => _MainPageState(
-      maxVelocity: maxVelocity, subjectId: subjectId, uuid: uuid);
+      maxVelocity: maxVelocity,
+      subjectId: subjectId,
+      uuid: uuid,
+      trialNumber: trialNumber,
+      blockNumber: blockNumber);
 }
 
 class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
