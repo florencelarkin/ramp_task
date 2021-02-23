@@ -7,6 +7,7 @@ import 'dart:async';
 import 'car_engine.dart';
 import 'data.dart';
 import 'package:flutter/foundation.dart';
+import 'question_page.dart';
 
 class MainPage extends StatefulWidget {
   MainPage(
@@ -90,7 +91,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   int time = 0;
   double carStartPos = -5.0;
   double joyStickPos = 0.0;
-  double getCurrentPos = 10.0;
+  double getCurrentPos = 0.0;
   double dy = 0.0;
   Color timerColor = Colors.blue;
   double carVelocity = 0.0;
@@ -100,22 +101,35 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   String messageText = '';
   Map dataMap = {};
   Future<bool> dataSent;
+
   showAlertDialog(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(
       child: Text('OK'),
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ContinuationPage(
-              subjectId: subjectId,
-              uuid: uuid,
-              trialNumber: trialNumber,
-              blockNumber: blockNumber,
-            ),
-          ),
-        );
+        trialNumber != 20
+            ? Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ContinuationPage(
+                    subjectId: subjectId,
+                    uuid: uuid,
+                    trialNumber: trialNumber,
+                    blockNumber: blockNumber,
+                  ),
+                ),
+              )
+            : Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => QuestionPage(
+                    subjectId: subjectId,
+                    uuid: uuid,
+                    trialNumber: trialNumber,
+                    blockNumber: blockNumber,
+                  ),
+                ),
+              );
       },
     );
     AlertDialog alert = AlertDialog(
@@ -137,11 +151,18 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     var startTime = new DateTime.now();
-    CarEngine carEngine = CarEngine(maxVelocity: maxVelocity);
+    /*double getLpc() {
+      double lpc = MediaQuery.of(context).size.height * .20;
+      return lpc;
+    }*/
+
+    CarEngine carEngine = CarEngine(
+        maxVelocity: maxVelocity, lpc: MediaQuery.of(context).size.height);
     Timer serverTimeout;
     // check platform
     checkWebPlatform();
     // initialize the header of the dataList
+
     dataList.add([
       addQuotesToString("times"),
       addQuotesToString("slider"),
@@ -265,9 +286,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
         title: Text('Driving Task'),
-      ),
+      ),*/
       body: Container(
         decoration: BoxDecoration(
           color: Colors.black,
@@ -289,10 +310,11 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               },
             ),
             Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.20,
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  width: 250.0,
                   child: Image.asset("images/stopsign.png"),
                 ),
                 Container(
@@ -304,7 +326,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   animation: _countdownController,
                   builder: (BuildContext context, Widget child) {
                     return Container(
-                      height: MediaQuery.of(context).size.height * 0.20,
+                      height: MediaQuery.of(context).size.height * 0.40,
                       child: Text(
                         timerString,
                         style: TextStyle(
@@ -316,11 +338,16 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     );
                   },
                 ),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.005,
+                  width: 220.0,
+                  color: Colors.white,
+                ),
                 AnimatedBuilder(
                   animation: _carController,
                   child: Container(
                     width: 50.0,
-                    height: MediaQuery.of(context).size.height * 0.08,
+                    height: MediaQuery.of(context).size.height * 0.1,
                     child: Icon(Icons.directions_car, size: 50),
                   ),
                   builder: (BuildContext context, Widget child) {
@@ -331,7 +358,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   },
                 ),
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.2,
+                  height: MediaQuery.of(context).size.height * 0.24,
                   width: 300.0,
                   child: Transform.scale(
                     scale: 0.5,
