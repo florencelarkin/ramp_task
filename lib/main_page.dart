@@ -106,6 +106,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   String messageText = '';
   Map dataMap = {};
   Future<bool> dataSent;
+  double getAdjustedPos;
 
   showAlertDialog(BuildContext context) {
     // set up the button
@@ -183,7 +184,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         messageText = 'Data has not been uploaded to the server';
         showAlertDialog(context);
       } else {
-        serverTimeout = Timer(Duration(seconds: 30), () {
+        serverTimeout = Timer(Duration(seconds: 15), () {
           title = 'Error';
           messageText = 'Server not found';
         });
@@ -213,7 +214,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     dataList.add(outputList());
     colorTimer = Timer.periodic(
         Duration(milliseconds: 17),
-        (Timer t) => getCurrentPos < lpc * .45 && getCurrentPos > lpc * .75
+        (Timer t) => getCurrentPos < -lpc * .25 && getCurrentPos > -lpc * .45
             ? timerColor = Colors.green
             : timerColor = Colors.blue);
     dataTimer = Timer.periodic(
@@ -241,7 +242,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       _countdownController.stop();
       carTimer.cancel();
       colorTimer.cancel();
-      _serverUpload('driving01', uuid, dataMap.toString(), '01');
+      //_serverUpload('driving01', uuid, dataMap.toString(), '01');
     });
   }
 
@@ -271,12 +272,13 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   List outputList() {
     List<dynamic> data = [];
-    carVelocity = getCurrentPos / stopwatch.elapsedMilliseconds / 3;
+    getAdjustedPos = getCurrentPos + lpc * .45;
+    carVelocity = getAdjustedPos / stopwatch.elapsedMilliseconds / 3;
     double calculatedVelocity = carVelocity;
     data.addAll([
       stopwatch.elapsedMilliseconds.toString(),
       joyStickPos.toString(),
-      getCurrentPos.toString(),
+      getAdjustedPos.toString(),
       calculatedVelocity.toString(),
       '8'
     ]);
