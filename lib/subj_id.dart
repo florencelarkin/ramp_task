@@ -83,6 +83,7 @@ class _SubjectIDPageState extends State<SubjectIDPage> {
                   color: Colors.green,
                   child: Text('NEXT'),
                   onPressed: () {
+                    double lpc = MediaQuery.of(context).size.height;
                     if (subjectId == null) {
                       showAlertDialog(context);
                     } else {
@@ -95,6 +96,7 @@ class _SubjectIDPageState extends State<SubjectIDPage> {
                             uuid: newId,
                             trialNumber: trialNumber,
                             blockNumber: blockNumber,
+                            lpc: lpc,
                           ),
                         ),
                       );

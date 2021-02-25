@@ -15,19 +15,22 @@ class MainPage extends StatefulWidget {
       @required this.subjectId,
       @required this.uuid,
       this.trialNumber,
-      this.blockNumber});
+      this.blockNumber,
+      this.lpc});
   final double maxVelocity;
   final String subjectId;
   final String uuid;
   final int trialNumber;
   final int blockNumber;
+  final double lpc;
   @override
   _MainPageState createState() => _MainPageState(
       maxVelocity: maxVelocity,
       subjectId: subjectId,
       uuid: uuid,
       trialNumber: trialNumber,
-      blockNumber: blockNumber);
+      blockNumber: blockNumber,
+      lpc: lpc);
 }
 
 class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
@@ -36,12 +39,14 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       @required this.subjectId,
       @required this.uuid,
       this.trialNumber,
-      this.blockNumber});
+      this.blockNumber,
+      this.lpc});
   double maxVelocity;
   String subjectId;
   String uuid;
   int trialNumber;
   int blockNumber;
+  double lpc;
 
   AnimationController _timerController;
   AnimationController _carController;
@@ -116,6 +121,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     uuid: uuid,
                     trialNumber: trialNumber,
                     blockNumber: blockNumber,
+                    lpc: lpc,
                   ),
                 ),
               )
@@ -151,13 +157,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     var startTime = new DateTime.now();
-    /*double getLpc() {
-      double lpc = MediaQuery.of(context).size.height * .20;
-      return lpc;
-    }*/
 
-    CarEngine carEngine = CarEngine(
-        maxVelocity: maxVelocity, lpc: MediaQuery.of(context).size.height);
+    CarEngine carEngine = CarEngine(maxVelocity: maxVelocity, lpc: lpc);
     Timer serverTimeout;
     // check platform
     checkWebPlatform();
@@ -212,7 +213,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     dataList.add(outputList());
     colorTimer = Timer.periodic(
         Duration(milliseconds: 17),
-        (Timer t) => getCurrentPos < -80 && getCurrentPos > -182
+        (Timer t) => getCurrentPos < lpc * .45 && getCurrentPos > lpc * .75
             ? timerColor = Colors.green
             : timerColor = Colors.blue);
     dataTimer = Timer.periodic(
@@ -347,7 +348,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   animation: _carController,
                   child: Container(
                     width: 50.0,
-                    height: MediaQuery.of(context).size.height * 0.1,
+                    height: MediaQuery.of(context).size.height * 0.10,
                     child: Icon(Icons.directions_car, size: 50),
                   ),
                   builder: (BuildContext context, Widget child) {

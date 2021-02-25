@@ -8,18 +8,21 @@ class ContinuationPage extends StatefulWidget {
       {@required this.subjectId,
       @required this.uuid,
       this.trialNumber,
-      this.blockNumber});
+      this.blockNumber,
+      this.lpc});
   final String subjectId;
   final String uuid;
   final int trialNumber;
   final int blockNumber;
+  final double lpc;
 
   @override
   _ContinuationPageState createState() => _ContinuationPageState(
       subjectId: subjectId,
       uuid: uuid,
       trialNumber: trialNumber,
-      blockNumber: blockNumber);
+      blockNumber: blockNumber,
+      lpc: lpc);
 }
 
 class _ContinuationPageState extends State<ContinuationPage> {
@@ -27,12 +30,14 @@ class _ContinuationPageState extends State<ContinuationPage> {
       {@required this.subjectId,
       @required this.uuid,
       this.trialNumber,
-      this.blockNumber});
+      this.blockNumber,
+      this.lpc});
   String subjectId;
   double maxVelocity;
   String uuid;
   int trialNumber;
   int blockNumber;
+  double lpc;
 
   String velocityString = '160.0';
   double velocity = 160.0;
@@ -142,6 +147,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
                             uuid: uuid,
                             trialNumber: trialNumber,
                             blockNumber: blockNumber,
+                            lpc: lpc,
                           ),
                         ),
                       );
