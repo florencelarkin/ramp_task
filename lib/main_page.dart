@@ -14,9 +14,9 @@ class MainPage extends StatefulWidget {
       {@required this.maxVelocity,
       @required this.subjectId,
       @required this.uuid,
-      this.trialNumber,
-      this.blockNumber,
-      this.lpc});
+      @required this.trialNumber,
+      @required this.blockNumber,
+      @required this.lpc});
   final double maxVelocity;
   final String subjectId;
   final String uuid;
@@ -110,7 +110,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   showAlertDialog(BuildContext context) {
     // set up the button
-    Widget okButton = FlatButton(
+    Widget okButton = ElevatedButton(
       child: Text('OK'),
       onPressed: () {
         trialNumber != 20
@@ -130,11 +130,11 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 context,
                 MaterialPageRoute(
                   builder: (context) => QuestionPage(
-                    subjectId: subjectId,
-                    uuid: uuid,
-                    trialNumber: trialNumber,
-                    blockNumber: blockNumber,
-                  ),
+                      subjectId: subjectId,
+                      uuid: uuid,
+                      trialNumber: trialNumber,
+                      blockNumber: blockNumber,
+                      lpc: lpc),
                 ),
               );
       },

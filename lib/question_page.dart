@@ -7,18 +7,21 @@ class QuestionPage extends StatefulWidget {
       {@required this.subjectId,
       @required this.uuid,
       this.trialNumber,
-      this.blockNumber});
+      this.blockNumber,
+      this.lpc});
   final String subjectId;
   final String uuid;
   final int trialNumber;
   final int blockNumber;
+  final double lpc;
 
   @override
   _QuestionPageState createState() => _QuestionPageState(
       subjectId: subjectId,
       uuid: uuid,
       trialNumber: trialNumber,
-      blockNumber: blockNumber);
+      blockNumber: blockNumber,
+      lpc: lpc);
 }
 
 class _QuestionPageState extends State<QuestionPage> {
@@ -26,12 +29,14 @@ class _QuestionPageState extends State<QuestionPage> {
       {@required this.subjectId,
       @required this.uuid,
       this.trialNumber,
-      this.blockNumber});
+      this.blockNumber,
+      this.lpc});
   String subjectId;
   double maxVelocity;
   String uuid;
   int trialNumber;
   int blockNumber;
+  double lpc;
   Color buttonColor = Colors.white;
   String velocityString = '160.0';
   double velocity = 160.0;
@@ -39,7 +44,7 @@ class _QuestionPageState extends State<QuestionPage> {
   String a2;
   showAlertDialog(BuildContext context) {
     // set up the button
-    Widget okButton = FlatButton(
+    Widget okButton = ElevatedButton(
       child: Text('OK'),
       onPressed: () {
         Navigator.pop(context);
@@ -287,8 +292,7 @@ class _QuestionPageState extends State<QuestionPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              RaisedButton(
-                  color: Colors.green,
+              ElevatedButton(
                   child: Text('START'),
                   onPressed: () {
                     trialNumber++;
@@ -305,12 +309,12 @@ class _QuestionPageState extends State<QuestionPage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => MainPage(
-                                  maxVelocity: velocity,
-                                  subjectId: subjectId,
-                                  uuid: uuid,
-                                  trialNumber: trialNumber,
-                                  blockNumber: blockNumber,
-                                ),
+                                    maxVelocity: velocity,
+                                    subjectId: subjectId,
+                                    uuid: uuid,
+                                    trialNumber: trialNumber,
+                                    blockNumber: blockNumber,
+                                    lpc: lpc),
                               ),
                             );
                     } else {

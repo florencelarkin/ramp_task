@@ -43,7 +43,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
   double velocity = 160.0;
   showAlertDialog(BuildContext context) {
     // set up the button
-    Widget okButton = FlatButton(
+    Widget okButton = ElevatedButton(
       child: Text('OK'),
       onPressed: () {
         Navigator.pop(context);
@@ -110,16 +110,15 @@ class _ContinuationPageState extends State<ContinuationPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              RaisedButton(
-                  color: Colors.blue,
+              ElevatedButton(
                   child: Text('BACK'),
                   onPressed: () {
                     Navigator.pop(context);
                   }),
-              RaisedButton(
-                  color: Colors.green,
+              ElevatedButton(
                   child: Text('START'),
                   onPressed: () {
+                    print(lpc);
                     trialNumber++;
                     bool isValid = isNumeric(velocityString);
                     if (isValid == true) {
@@ -128,12 +127,12 @@ class _ContinuationPageState extends State<ContinuationPage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => MainPage(
-                            maxVelocity: velocity,
-                            subjectId: subjectId,
-                            uuid: uuid,
-                            trialNumber: trialNumber,
-                            blockNumber: blockNumber,
-                          ),
+                              maxVelocity: velocity,
+                              subjectId: subjectId,
+                              uuid: uuid,
+                              trialNumber: trialNumber,
+                              blockNumber: blockNumber,
+                              lpc: lpc),
                         ),
                       );
                     } else if (velocityString == '160.0') {
@@ -157,14 +156,19 @@ class _ContinuationPageState extends State<ContinuationPage> {
                   }),
             ],
           ),
-          RaisedButton(
-              color: Colors.red,
+          ElevatedButton(
               child: Text('EXIT'),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => QuitPage(),
+                    builder: (context) => QuitPage(
+                      uuid: uuid,
+                      subjectId: subjectId,
+                      lpc: lpc,
+                      blockNumber: blockNumber,
+                      trialNumber: trialNumber,
+                    ),
                   ),
                 );
               }),

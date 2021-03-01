@@ -56,14 +56,12 @@ class _InstructionPage6State extends State<InstructionPage6> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              RaisedButton(
-                  color: Colors.blue,
+              ElevatedButton(
                   child: Text('BACK'),
                   onPressed: () {
                     Navigator.pop(context);
                   }),
-              RaisedButton(
-                  color: Colors.green,
+              ElevatedButton(
                   child: Text('NEXT'),
                   onPressed: () {
                     Navigator.push(

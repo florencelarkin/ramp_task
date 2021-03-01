@@ -16,7 +16,7 @@ class _SubjectIDPageState extends State<SubjectIDPage> {
 
   showAlertDialog(BuildContext context) {
     // set up the button
-    Widget okButton = FlatButton(
+    Widget okButton = ElevatedButton(
       child: Text('OK'),
       onPressed: () {
         Navigator.pop(context);
@@ -73,17 +73,16 @@ class _SubjectIDPageState extends State<SubjectIDPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              RaisedButton(
-                  color: Colors.blue,
+              ElevatedButton(
                   child: Text('BACK'),
                   onPressed: () {
                     Navigator.pop(context);
                   }),
-              RaisedButton(
-                  color: Colors.green,
+              ElevatedButton(
                   child: Text('NEXT'),
                   onPressed: () {
                     double lpc = MediaQuery.of(context).size.height;
+                    print(lpc);
                     if (subjectId == null) {
                       showAlertDialog(context);
                     } else {

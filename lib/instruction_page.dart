@@ -53,8 +53,7 @@ class _InstructionPageState extends State<InstructionPage> {
               ),
             ),
           ),
-          RaisedButton(
-              color: Colors.green,
+          ElevatedButton(
               child: Text('NEXT'),
               onPressed: () {
                 Navigator.push(

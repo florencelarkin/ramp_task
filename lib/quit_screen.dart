@@ -3,12 +3,39 @@ import 'package:flutter/services.dart';
 import 'continue_trial.dart';
 
 class QuitPage extends StatefulWidget {
+  QuitPage(
+      {@required this.subjectId,
+      @required this.uuid,
+      this.trialNumber,
+      this.blockNumber,
+      this.lpc});
+  final String subjectId;
+  final String uuid;
+  final int trialNumber;
+  final int blockNumber;
+  final double lpc;
   @override
-  _QuitPageState createState() => _QuitPageState();
+  _QuitPageState createState() => _QuitPageState(
+      subjectId: subjectId,
+      uuid: uuid,
+      trialNumber: trialNumber,
+      blockNumber: blockNumber,
+      lpc: lpc);
 }
 
 class _QuitPageState extends State<QuitPage> {
-
+  _QuitPageState(
+      {@required this.subjectId,
+      @required this.uuid,
+      this.trialNumber,
+      this.blockNumber,
+      this.lpc});
+  String subjectId;
+  double maxVelocity;
+  String uuid;
+  int trialNumber;
+  int blockNumber;
+  double lpc;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,26 +46,36 @@ class _QuitPageState extends State<QuitPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
-              child: Text('Thanks for participating!',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.white),
+              child: Text(
+                'Thanks for participating!',
+                style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
                 textAlign: TextAlign.center,
               ),
             ),
           ),
-          RaisedButton(
-            color: Colors.blue,
+          ElevatedButton(
             child: Text('BACK TO TRIALS'),
-            onPressed: () {Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ContinuationPage(),
-              ),
-            );},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ContinuationPage(
+                    uuid: uuid,
+                    subjectId: subjectId,
+                    trialNumber: trialNumber,
+                    blockNumber: blockNumber,
+                    lpc: lpc,
+                  ),
+                ),
+              );
+            },
           ),
-          RaisedButton(
-              color: Colors.green,
-              child: Text('CLICK HERE TO EXIT THE APP'),
-              onPressed: ()=> SystemNavigator.pop(),
+          ElevatedButton(
+            child: Text('CLICK HERE TO EXIT THE APP'),
+            onPressed: () => SystemNavigator.pop(),
           ),
         ],
       ),
