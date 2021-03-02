@@ -1,4 +1,3 @@
-import 'package:string_validator/string_validator.dart';
 import 'main_page.dart';
 import 'quit_screen.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +38,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
   int blockNumber;
   double lpc;
 
-  String velocityString = '160.0';
+  String velocityString = '3.56';
   double velocity = 160.0;
   showAlertDialog(BuildContext context) {
     // set up the button
@@ -75,7 +74,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'Would you like to start a new trial?',
+                'Click start to begin the next trial',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -93,13 +92,26 @@ class _ContinuationPageState extends State<ContinuationPage> {
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Text(
+                '(~3.55556 means it takes .75 seconds to reach stop sign if on max speed)',
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
           Container(
             child: TextField(
               decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.white),
                   ),
-                  hintText: '160'),
+                  hintText: 'between 0 and 5 recommended'),
               onChanged: (value) {
                 velocityString = value;
               },
@@ -118,38 +130,41 @@ class _ContinuationPageState extends State<ContinuationPage> {
               ElevatedButton(
                   child: Text('START'),
                   onPressed: () {
-                    print(lpc);
                     trialNumber++;
-                    bool isValid = isNumeric(velocityString);
-                    if (isValid == true) {
-                      velocity = double.parse(velocityString);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MainPage(
+
+                    if (velocityString.contains(new RegExp(r'[0-9\.]'))) {
+                      if (velocityString == '.') {
+                        showAlertDialog(context);
+                      } else if (velocityString != '3.56') {
+                        velocity = double.parse(velocityString);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MainPage(
+                                maxVelocity: velocity,
+                                subjectId: subjectId,
+                                uuid: uuid,
+                                trialNumber: trialNumber,
+                                blockNumber: blockNumber,
+                                lpc: lpc),
+                          ),
+                        );
+                      } else if (velocityString == '3.56') {
+                        velocity = 3.5555555555555556;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MainPage(
                               maxVelocity: velocity,
                               subjectId: subjectId,
                               uuid: uuid,
                               trialNumber: trialNumber,
                               blockNumber: blockNumber,
-                              lpc: lpc),
-                        ),
-                      );
-                    } else if (velocityString == '160.0') {
-                      velocity = 160.0;
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MainPage(
-                            maxVelocity: velocity,
-                            subjectId: subjectId,
-                            uuid: uuid,
-                            trialNumber: trialNumber,
-                            blockNumber: blockNumber,
-                            lpc: lpc,
+                              lpc: lpc,
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      } else {}
                     } else {
                       showAlertDialog(context);
                     }

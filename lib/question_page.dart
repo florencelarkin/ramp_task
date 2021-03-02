@@ -100,75 +100,80 @@ class _QuestionPageState extends State<QuestionPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  RawMaterialButton(
-                    onPressed: () {
-                      buttonColor = Colors.green;
-                      a1 = '1';
-                    },
-                    elevation: 2.0,
-                    fillColor: buttonColor,
-                    child: Icon(
-                      Icons.circle,
-                      size: 10.0,
+                  Expanded(
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        buttonColor = Colors.green;
+                        a1 = '1';
+                      },
+                      elevation: 2.0,
+                      fillColor: buttonColor,
+                      child: Icon(
+                        Icons.circle,
+                        size: 5.0,
+                      ),
+                      shape: CircleBorder(),
                     ),
-                    padding: EdgeInsets.all(5.0),
-                    shape: CircleBorder(),
                   ),
-                  RawMaterialButton(
-                    onPressed: () {
-                      buttonColor = Colors.green;
-                      a1 = '2';
-                    },
-                    elevation: 2.0,
-                    fillColor: buttonColor,
-                    child: Icon(
-                      Icons.circle,
-                      size: 10.0,
+                  Expanded(
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        buttonColor = Colors.green;
+                        a1 = '2';
+                      },
+                      elevation: 2.0,
+                      fillColor: buttonColor,
+                      child: Icon(
+                        Icons.circle,
+                        size: 5.0,
+                      ),
+                      shape: CircleBorder(),
                     ),
-                    padding: EdgeInsets.all(5.0),
-                    shape: CircleBorder(),
                   ),
-                  RawMaterialButton(
-                    onPressed: () {
-                      buttonColor = Colors.green;
-                      a1 = '3';
-                    },
-                    elevation: 2.0,
-                    fillColor: buttonColor,
-                    child: Icon(
-                      Icons.circle,
-                      size: 10.0,
+                  Expanded(
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        buttonColor = Colors.green;
+                        a1 = '3';
+                      },
+                      elevation: 2.0,
+                      fillColor: buttonColor,
+                      child: Icon(
+                        Icons.circle,
+                        size: 5.0,
+                      ),
+                      shape: CircleBorder(),
                     ),
-                    padding: EdgeInsets.all(5.0),
-                    shape: CircleBorder(),
                   ),
-                  RawMaterialButton(
-                    onPressed: () {
-                      buttonColor = Colors.green;
-                      a1 = '4';
-                    },
-                    elevation: 2.0,
-                    fillColor: buttonColor,
-                    child: Icon(
-                      Icons.circle,
-                      size: 10.0,
+                  Expanded(
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        buttonColor = Colors.green;
+                        a1 = '4';
+                      },
+                      elevation: 2.0,
+                      fillColor: buttonColor,
+                      child: Icon(
+                        Icons.circle,
+                        size: 5.0,
+                      ),
+                      shape: CircleBorder(),
                     ),
-                    padding: EdgeInsets.all(5.0),
-                    shape: CircleBorder(),
                   ),
-                  RawMaterialButton(
-                    onPressed: () {
-                      buttonColor = Colors.green;
-                      a1 = '5';
-                    },
-                    elevation: 2.0,
-                    fillColor: buttonColor,
-                    child: Icon(
-                      Icons.circle,
-                      size: 10.0,
+                  Expanded(
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        buttonColor = Colors.green;
+                        a1 = '5';
+                      },
+                      elevation: 2.0,
+                      fillColor: buttonColor,
+                      child: Icon(
+                        Icons.circle,
+                        size: 5.0,
+                      ),
+                      shape: CircleBorder(),
                     ),
-                    padding: EdgeInsets.all(5.0),
-                    shape: CircleBorder(),
                   )
                 ],
               ),
@@ -202,75 +207,85 @@ class _QuestionPageState extends State<QuestionPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  RawMaterialButton(
-                    onPressed: () {
-                      buttonColor = Colors.green;
-                      a2 = '1';
-                    },
-                    elevation: 2.0,
-                    fillColor: buttonColor,
-                    child: Icon(
-                      Icons.circle,
-                      size: 10.0,
+                  Expanded(
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        buttonColor = Colors.green;
+                        a2 = '1';
+                      },
+                      elevation: 2.0,
+                      fillColor: buttonColor,
+                      child: Icon(
+                        Icons.circle,
+                        size: 5.0,
+                      ),
+                      padding: EdgeInsets.all(5.0),
+                      shape: CircleBorder(),
                     ),
-                    padding: EdgeInsets.all(5.0),
-                    shape: CircleBorder(),
                   ),
-                  RawMaterialButton(
-                    onPressed: () {
-                      buttonColor = Colors.green;
-                      a2 = '2';
-                    },
-                    elevation: 2.0,
-                    fillColor: buttonColor,
-                    child: Icon(
-                      Icons.circle,
-                      size: 10.0,
+                  Expanded(
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        buttonColor = Colors.green;
+                        a2 = '2';
+                      },
+                      elevation: 2.0,
+                      fillColor: buttonColor,
+                      child: Icon(
+                        Icons.circle,
+                        size: 5.0,
+                      ),
+                      padding: EdgeInsets.all(10.0),
+                      shape: CircleBorder(),
                     ),
-                    padding: EdgeInsets.all(15.0),
-                    shape: CircleBorder(),
                   ),
-                  RawMaterialButton(
-                    onPressed: () {
-                      buttonColor = Colors.green;
-                      a2 = '3';
-                    },
-                    elevation: 2.0,
-                    fillColor: buttonColor,
-                    child: Icon(
-                      Icons.circle,
-                      size: 10.0,
+                  Expanded(
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        buttonColor = Colors.green;
+                        a2 = '3';
+                      },
+                      elevation: 2.0,
+                      fillColor: buttonColor,
+                      child: Icon(
+                        Icons.circle,
+                        size: 5.0,
+                      ),
+                      padding: EdgeInsets.all(10.0),
+                      shape: CircleBorder(),
                     ),
-                    padding: EdgeInsets.all(15.0),
-                    shape: CircleBorder(),
                   ),
-                  RawMaterialButton(
-                    onPressed: () {
-                      buttonColor = Colors.green;
-                      a2 = '4';
-                    },
-                    elevation: 2.0,
-                    fillColor: buttonColor,
-                    child: Icon(
-                      Icons.circle,
-                      size: 10.0,
+                  Expanded(
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        buttonColor = Colors.green;
+                        a2 = '4';
+                      },
+                      elevation: 2.0,
+                      fillColor: buttonColor,
+                      child: Icon(
+                        Icons.circle,
+                        size: 5.0,
+                      ),
+                      padding: EdgeInsets.all(10.0),
+                      shape: CircleBorder(),
                     ),
-                    padding: EdgeInsets.all(15.0),
-                    shape: CircleBorder(),
                   ),
-                  RawMaterialButton(
-                    onPressed: () {
-                      buttonColor = Colors.green;
-                      a2 = '5';
-                    },
-                    elevation: 2.0,
-                    fillColor: buttonColor,
-                    child: Icon(
-                      Icons.circle,
-                      size: 10.0,
+                  Expanded(
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        buttonColor = Colors.green;
+                        a2 = '5';
+                      },
+                      elevation: 2.0,
+                      fillColor: buttonColor,
+                      child: Icon(
+                        Icons.circle,
+                        size: 5.0,
+                      ),
+                      padding: EdgeInsets.all(10.0),
+                      shape: CircleBorder(),
                     ),
-                    padding: EdgeInsets.all(15.0),
-                    shape: CircleBorder(),
                   )
                 ],
               ),

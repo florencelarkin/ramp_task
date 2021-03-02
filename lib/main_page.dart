@@ -8,6 +8,7 @@ import 'car_engine.dart';
 import 'data.dart';
 import 'package:flutter/foundation.dart';
 import 'question_page.dart';
+import 'block_page.dart';
 
 class MainPage extends StatefulWidget {
   MainPage(
@@ -113,30 +114,45 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     Widget okButton = ElevatedButton(
       child: Text('OK'),
       onPressed: () {
-        trialNumber != 20
-            ? Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ContinuationPage(
-                    subjectId: subjectId,
-                    uuid: uuid,
-                    trialNumber: trialNumber,
-                    blockNumber: blockNumber,
-                    lpc: lpc,
-                  ),
-                ),
-              )
-            : Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => QuestionPage(
-                      subjectId: subjectId,
-                      uuid: uuid,
-                      trialNumber: trialNumber,
-                      blockNumber: blockNumber,
-                      lpc: lpc),
-                ),
-              );
+        if (trialNumber == 10) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BlockPage(
+                subjectId: subjectId,
+                uuid: uuid,
+                trialNumber: trialNumber,
+                blockNumber: blockNumber,
+                lpc: lpc,
+              ),
+            ),
+          );
+        } else if (trialNumber != 20) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ContinuationPage(
+                subjectId: subjectId,
+                uuid: uuid,
+                trialNumber: trialNumber,
+                blockNumber: blockNumber,
+                lpc: lpc,
+              ),
+            ),
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => QuestionPage(
+                  subjectId: subjectId,
+                  uuid: uuid,
+                  trialNumber: trialNumber,
+                  blockNumber: blockNumber,
+                  lpc: lpc),
+            ),
+          );
+        }
       },
     );
     AlertDialog alert = AlertDialog(
@@ -159,7 +175,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     super.initState();
     var startTime = new DateTime.now();
 
-    CarEngine carEngine = CarEngine(maxVelocity: maxVelocity, lpc: lpc);
+    CarEngine carEngine =
+        CarEngine(maxVelocity: maxVelocity, lpc: lpc, trialNumber: trialNumber);
     Timer serverTimeout;
     // check platform
     checkWebPlatform();
