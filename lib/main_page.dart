@@ -12,13 +12,13 @@ import 'block_page.dart';
 
 class MainPage extends StatefulWidget {
   MainPage(
-      {@required this.maxVelocity,
+      {@required this.timeMax,
       @required this.subjectId,
       @required this.uuid,
       @required this.trialNumber,
       @required this.blockNumber,
       @required this.lpc});
-  final double maxVelocity;
+  final double timeMax;
   final String subjectId;
   final String uuid;
   final int trialNumber;
@@ -26,7 +26,7 @@ class MainPage extends StatefulWidget {
   final double lpc;
   @override
   _MainPageState createState() => _MainPageState(
-      maxVelocity: maxVelocity,
+      timeMax: timeMax,
       subjectId: subjectId,
       uuid: uuid,
       trialNumber: trialNumber,
@@ -36,13 +36,13 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   _MainPageState(
-      {@required this.maxVelocity,
+      {@required this.timeMax,
       @required this.subjectId,
       @required this.uuid,
       this.trialNumber,
       this.blockNumber,
       this.lpc});
-  double maxVelocity;
+  double timeMax;
   String subjectId;
   String uuid;
   int trialNumber;
@@ -176,7 +176,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     var startTime = new DateTime.now();
 
     CarEngine carEngine =
-        CarEngine(maxVelocity: maxVelocity, lpc: lpc, trialNumber: trialNumber);
+        CarEngine(timeMax: timeMax, lpc: lpc, trialNumber: trialNumber);
     Timer serverTimeout;
     // check platform
     checkWebPlatform();
@@ -252,7 +252,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       dataMap['\"SubjectID\"'] = addQuotesToString(subjectId);
       dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
       dataMap['\"EndTime\"'] = addQuotesToString(endTime.toIso8601String());
-      dataMap['\"Sensitivity\"'] = maxVelocity.toString();
+      dataMap['\"Sensitivity\"'] = timeMax.toString();
       dataMap['\"Moves\"'] = dataList;
       _timerController.stop();
       _carController.stop();
@@ -306,9 +306,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
-        title: Text('Driving Task'),
-      ),*/
       body: Container(
         decoration: BoxDecoration(
           color: Colors.black,

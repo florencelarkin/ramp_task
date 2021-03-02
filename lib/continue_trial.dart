@@ -1,6 +1,7 @@
 import 'main_page.dart';
 import 'quit_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ContinuationPage extends StatefulWidget {
   ContinuationPage(
@@ -38,8 +39,8 @@ class _ContinuationPageState extends State<ContinuationPage> {
   int blockNumber;
   double lpc;
 
-  String velocityString = '3.56';
-  double velocity = 160.0;
+  String timeString = '0.75';
+  double timeMax = 160.0;
   showAlertDialog(BuildContext context) {
     // set up the button
     Widget okButton = ElevatedButton(
@@ -67,41 +68,33 @@ class _ContinuationPageState extends State<ContinuationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Text(
-                'Click start to begin the next trial',
-                style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-                textAlign: TextAlign.center,
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Click start to begin the next trial',
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Text(
-                'Please enter preferred sensitivity:',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Text(
-                '(~3.55556 means it takes .75 seconds to reach stop sign if on max speed)',
-                style: TextStyle(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-                textAlign: TextAlign.center,
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Center(
+                child: Text(
+                  'Please enter time for car to reach stop sign:',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           ),
@@ -111,37 +104,38 @@ class _ContinuationPageState extends State<ContinuationPage> {
                   border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.white),
                   ),
-                  hintText: 'between 0 and 5 recommended'),
+                  hintText: '.75'),
               onChanged: (value) {
-                velocityString = value;
+                timeString = value;
               },
             ),
             width: MediaQuery.of(context).size.width * 0.75,
           ),
-          SizedBox(height: 50.0),
+          SizedBox(height: MediaQuery.of(context).size.height * .1),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
                   child: Text('BACK'),
                   onPressed: () {
+                    SystemChannels.textInput.invokeMethod('TextInput.hide');
                     Navigator.pop(context);
                   }),
               ElevatedButton(
                   child: Text('START'),
                   onPressed: () {
                     trialNumber++;
-
-                    if (velocityString.contains(new RegExp(r'[0-9\.]'))) {
-                      if (velocityString == '.') {
+                    SystemChannels.textInput.invokeMethod('TextInput.hide');
+                    if (timeString.contains(new RegExp(r'[0-9\.]'))) {
+                      if (timeString == '.') {
                         showAlertDialog(context);
-                      } else if (velocityString != '3.56') {
-                        velocity = double.parse(velocityString);
+                      } else if (timeString != '.75') {
+                        timeMax = double.parse(timeString);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => MainPage(
-                                maxVelocity: velocity,
+                                timeMax: timeMax,
                                 subjectId: subjectId,
                                 uuid: uuid,
                                 trialNumber: trialNumber,
@@ -149,13 +143,13 @@ class _ContinuationPageState extends State<ContinuationPage> {
                                 lpc: lpc),
                           ),
                         );
-                      } else if (velocityString == '3.56') {
-                        velocity = 3.5555555555555556;
+                      } else {
+                        timeMax = 0.75;
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => MainPage(
-                              maxVelocity: velocity,
+                              timeMax: timeMax,
                               subjectId: subjectId,
                               uuid: uuid,
                               trialNumber: trialNumber,
@@ -164,7 +158,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
                             ),
                           ),
                         );
-                      } else {}
+                      }
                     } else {
                       showAlertDialog(context);
                     }

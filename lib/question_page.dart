@@ -6,11 +6,13 @@ class QuestionPage extends StatefulWidget {
   QuestionPage(
       {@required this.subjectId,
       @required this.uuid,
+      this.timeMax,
       this.trialNumber,
       this.blockNumber,
       this.lpc});
   final String subjectId;
   final String uuid;
+  final double timeMax;
   final int trialNumber;
   final int blockNumber;
   final double lpc;
@@ -19,6 +21,7 @@ class QuestionPage extends StatefulWidget {
   _QuestionPageState createState() => _QuestionPageState(
       subjectId: subjectId,
       uuid: uuid,
+      timeMax: timeMax,
       trialNumber: trialNumber,
       blockNumber: blockNumber,
       lpc: lpc);
@@ -28,11 +31,12 @@ class _QuestionPageState extends State<QuestionPage> {
   _QuestionPageState(
       {@required this.subjectId,
       @required this.uuid,
+      this.timeMax,
       this.trialNumber,
       this.blockNumber,
       this.lpc});
   String subjectId;
-  double maxVelocity;
+  double timeMax;
   String uuid;
   int trialNumber;
   int blockNumber;
@@ -324,7 +328,7 @@ class _QuestionPageState extends State<QuestionPage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => MainPage(
-                                    maxVelocity: velocity,
+                                    timeMax: velocity,
                                     subjectId: subjectId,
                                     uuid: uuid,
                                     trialNumber: trialNumber,
