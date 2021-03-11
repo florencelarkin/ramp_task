@@ -82,7 +82,6 @@ class _SubjectIDPageState extends State<SubjectIDPage> {
                   child: Text('NEXT'),
                   onPressed: () {
                     double lpc = MediaQuery.of(context).size.height;
-                    print(lpc);
                     if (subjectId == null) {
                       showAlertDialog(context);
                     } else {

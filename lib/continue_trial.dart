@@ -9,12 +9,14 @@ class ContinuationPage extends StatefulWidget {
       @required this.uuid,
       this.trialNumber,
       this.blockNumber,
-      this.lpc});
+      this.lpc,
+      this.timeMax});
   final String subjectId;
   final String uuid;
   final int trialNumber;
   final int blockNumber;
   final double lpc;
+  final double timeMax;
 
   @override
   _ContinuationPageState createState() => _ContinuationPageState(
@@ -22,7 +24,8 @@ class ContinuationPage extends StatefulWidget {
       uuid: uuid,
       trialNumber: trialNumber,
       blockNumber: blockNumber,
-      lpc: lpc);
+      lpc: lpc,
+      timeMax: timeMax);
 }
 
 class _ContinuationPageState extends State<ContinuationPage> {
@@ -31,16 +34,16 @@ class _ContinuationPageState extends State<ContinuationPage> {
       @required this.uuid,
       this.trialNumber,
       this.blockNumber,
-      this.lpc});
+      this.lpc,
+      this.timeMax});
   String subjectId;
   double maxVelocity;
   String uuid;
   int trialNumber;
   int blockNumber;
   double lpc;
-
+  double timeMax;
   String timeString = '0.75';
-  double timeMax = 160.0;
   showAlertDialog(BuildContext context) {
     // set up the button
     Widget okButton = ElevatedButton(
@@ -104,7 +107,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
                   border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.white),
                   ),
-                  hintText: '.75'),
+                  hintText: timeString),
               onChanged: (value) {
                 timeString = value;
               },
@@ -130,7 +133,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
                       if (timeString == '.') {
                         showAlertDialog(context);
                       } else if (timeString != '.75') {
-                        timeMax = double.parse(timeString);
+                        timeMax = double.tryParse(timeString);
                         Navigator.push(
                           context,
                           MaterialPageRoute(

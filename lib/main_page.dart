@@ -7,8 +7,9 @@ import 'dart:async';
 import 'car_engine.dart';
 import 'data.dart';
 import 'package:flutter/foundation.dart';
-import 'question_page.dart';
 import 'block_page.dart';
+import 'completed_screen.dart';
+import 'url_args.dart';
 
 class MainPage extends StatefulWidget {
   MainPage(
@@ -108,6 +109,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   Map dataMap = {};
   Future<bool> dataSent;
   double getAdjustedPos;
+  Map<String, String> urlArgs = {};
 
   showAlertDialog(BuildContext context) {
     // set up the button
@@ -142,16 +144,10 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           );
         } else {
           Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => QuestionPage(
-                  subjectId: subjectId,
-                  uuid: uuid,
-                  trialNumber: trialNumber,
-                  blockNumber: blockNumber,
-                  lpc: lpc),
-            ),
-          );
+              context,
+              MaterialPageRoute(
+                builder: (context) => CompletedPage(),
+              ));
         }
       },
     );
@@ -174,7 +170,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     var startTime = new DateTime.now();
-
     CarEngine carEngine =
         CarEngine(timeMax: timeMax, lpc: lpc, trialNumber: trialNumber);
     Timer serverTimeout;
@@ -226,8 +221,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     //calls functions that check for joystick movement and car position, then adds that to the output list
     carTimer = Timer.periodic(
         Duration(milliseconds: 17),
-        (Timer t) =>
-            getCurrentPos = carEngine.getPos(joyStickPos, getCurrentPos));
+        (Timer t) => getCurrentPos =
+            carEngine.getPos(joyStickPos, getCurrentPos, timeMax));
     dataList.add(outputList());
     colorTimer = Timer.periodic(
         Duration(milliseconds: 17),
@@ -236,7 +231,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             : timerColor = Colors.blue);
     dataTimer = Timer.periodic(
         Duration(milliseconds: 17), (Timer t) => dataList.add(outputList()));
-
     //Timer for the end of the trial
     Timer(Duration(seconds: 14), () {
       var endTime = new DateTime.now();
@@ -250,6 +244,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       // has double quoted android_ia32
 
       dataMap['\"SubjectID\"'] = addQuotesToString(subjectId);
+      dataMap['\"TrialNumber\"'] = addQuotesToString(trialNumber.toString());
       dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
       dataMap['\"EndTime\"'] = addQuotesToString(endTime.toIso8601String());
       dataMap['\"Sensitivity\"'] = timeMax.toString();
@@ -289,13 +284,13 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   List outputList() {
     List<dynamic> data = [];
-    getAdjustedPos = getCurrentPos + lpc * .45;
-    carVelocity = getAdjustedPos / stopwatch.elapsedMilliseconds / 3;
+    //getAdjustedPos = getCurrentPos + lpc * .45;
+    carVelocity = getCurrentPos / stopwatch.elapsedMilliseconds / 3;
     double calculatedVelocity = carVelocity;
     data.addAll([
       stopwatch.elapsedMilliseconds.toString(),
       joyStickPos.toString(),
-      getAdjustedPos.toString(),
+      getCurrentPos.toString(),
       calculatedVelocity.toString(),
       '8'
     ]);
@@ -343,7 +338,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   animation: _countdownController,
                   builder: (BuildContext context, Widget child) {
                     return Container(
-                      height: MediaQuery.of(context).size.height * 0.40,
+                      height: MediaQuery.of(context).size.height * 0.41,
                       child: Text(
                         timerString,
                         style: TextStyle(
@@ -364,7 +359,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   animation: _carController,
                   child: Container(
                     width: 50.0,
-                    height: MediaQuery.of(context).size.height * 0.10,
+                    height: MediaQuery.of(context).size.height * 0.03,
                     child: Icon(Icons.directions_car, size: 50),
                   ),
                   builder: (BuildContext context, Widget child) {
@@ -374,6 +369,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     );
                   },
                 ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                 Container(
                   height: MediaQuery.of(context).size.height * 0.24,
                   width: 300.0,
