@@ -2,11 +2,29 @@ import 'package:flutter/material.dart';
 import 'instruction_page7.dart';
 
 class InstructionPage6 extends StatefulWidget {
+  InstructionPage6({
+    @required this.timeMax,
+    @required this.subjectId,
+    @required this.totalTrials,
+  });
+  final double timeMax;
+  final String subjectId;
+  final int totalTrials;
+
   @override
-  _InstructionPage6State createState() => _InstructionPage6State();
+  _InstructionPage6State createState() => _InstructionPage6State(
+      timeMax: timeMax, subjectId: subjectId, totalTrials: totalTrials);
 }
 
 class _InstructionPage6State extends State<InstructionPage6> {
+  _InstructionPage6State({
+    @required this.timeMax,
+    @required this.subjectId,
+    @required this.totalTrials,
+  });
+  double timeMax;
+  String subjectId;
+  int totalTrials;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +85,11 @@ class _InstructionPage6State extends State<InstructionPage6> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => InstructionPage7(),
+                        builder: (context) => InstructionPage7(
+                          timeMax: timeMax,
+                          totalTrials: totalTrials,
+                          subjectId: subjectId,
+                        ),
                       ),
                     );
                   }),

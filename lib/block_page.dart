@@ -7,19 +7,26 @@ class BlockPage extends StatefulWidget {
       @required this.uuid,
       this.trialNumber,
       this.blockNumber,
-      this.lpc});
+      this.lpc,
+      this.totalTrials,
+      this.timeMax});
   final String subjectId;
   final String uuid;
   final int trialNumber;
   final int blockNumber;
   final double lpc;
+  final int totalTrials;
+  final double timeMax;
   @override
   _BlockPageState createState() => _BlockPageState(
-      subjectId: subjectId,
-      uuid: uuid,
-      trialNumber: trialNumber,
-      blockNumber: blockNumber,
-      lpc: lpc);
+        subjectId: subjectId,
+        uuid: uuid,
+        trialNumber: trialNumber,
+        blockNumber: blockNumber,
+        lpc: lpc,
+        totalTrials: totalTrials,
+        timeMax: timeMax,
+      );
 }
 
 class _BlockPageState extends State<BlockPage> {
@@ -28,13 +35,18 @@ class _BlockPageState extends State<BlockPage> {
       @required this.uuid,
       this.trialNumber,
       this.blockNumber,
-      this.lpc});
+      this.lpc,
+      this.totalTrials,
+      this.timeMax});
   String subjectId;
   double maxVelocity;
   String uuid;
   int trialNumber;
   int blockNumber;
   double lpc;
+  int totalTrials;
+  double timeMax;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,6 +89,8 @@ class _BlockPageState extends State<BlockPage> {
                     trialNumber: trialNumber,
                     blockNumber: blockNumber,
                     lpc: lpc,
+                    timeMax: timeMax,
+                    totalTrials: totalTrials,
                   ),
                 ),
               );

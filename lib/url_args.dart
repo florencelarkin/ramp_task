@@ -33,8 +33,8 @@ Map<String, String> getURLArgs(String str) {
       // insert into map
       result[pair[0]] = pair[1];
     }
-    result["id"] = 'abcd';
-    result["time"] = '3.0';
+    /*result["id"] = 'abcd';
+    result["time"] = '3.0';*/
   }
   return result;
 }

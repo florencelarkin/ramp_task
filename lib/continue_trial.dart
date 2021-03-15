@@ -4,28 +4,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ContinuationPage extends StatefulWidget {
-  ContinuationPage(
-      {@required this.subjectId,
-      @required this.uuid,
-      this.trialNumber,
-      this.blockNumber,
-      this.lpc,
-      this.timeMax});
+  ContinuationPage({
+    @required this.subjectId,
+    @required this.uuid,
+    this.trialNumber,
+    this.blockNumber,
+    this.lpc,
+    this.timeMax,
+    this.totalTrials,
+  });
   final String subjectId;
   final String uuid;
   final int trialNumber;
   final int blockNumber;
   final double lpc;
   final double timeMax;
+  final int totalTrials;
 
   @override
   _ContinuationPageState createState() => _ContinuationPageState(
-      subjectId: subjectId,
-      uuid: uuid,
-      trialNumber: trialNumber,
-      blockNumber: blockNumber,
-      lpc: lpc,
-      timeMax: timeMax);
+        subjectId: subjectId,
+        uuid: uuid,
+        trialNumber: trialNumber,
+        blockNumber: blockNumber,
+        lpc: lpc,
+        timeMax: timeMax,
+        totalTrials: totalTrials,
+      );
 }
 
 class _ContinuationPageState extends State<ContinuationPage> {
@@ -35,7 +40,8 @@ class _ContinuationPageState extends State<ContinuationPage> {
       this.trialNumber,
       this.blockNumber,
       this.lpc,
-      this.timeMax});
+      this.timeMax,
+      this.totalTrials});
   String subjectId;
   double maxVelocity;
   String uuid;
@@ -43,6 +49,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
   int blockNumber;
   double lpc;
   double timeMax;
+  int totalTrials;
   String timeString = '0.75';
   showAlertDialog(BuildContext context) {
     // set up the button
@@ -89,7 +96,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
               ),
             ),
           ),
-          Expanded(
+          /*Expanded(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Center(
@@ -113,7 +120,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
               },
             ),
             width: MediaQuery.of(context).size.width * 0.75,
-          ),
+          ),*/
           SizedBox(height: MediaQuery.of(context).size.height * .1),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -128,7 +135,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
                   child: Text('START'),
                   onPressed: () {
                     trialNumber++;
-                    SystemChannels.textInput.invokeMethod('TextInput.hide');
+                    /*SystemChannels.textInput.invokeMethod('TextInput.hide');
                     if (timeString.contains(new RegExp(r'[0-9\.]'))) {
                       if (timeString == '.') {
                         showAlertDialog(context);
@@ -164,7 +171,21 @@ class _ContinuationPageState extends State<ContinuationPage> {
                       }
                     } else {
                       showAlertDialog(context);
-                    }
+                    }*/
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MainPage(
+                          timeMax: timeMax,
+                          subjectId: subjectId,
+                          uuid: uuid,
+                          trialNumber: trialNumber,
+                          blockNumber: blockNumber,
+                          lpc: lpc,
+                          totalTrials: totalTrials,
+                        ),
+                      ),
+                    );
                   }),
             ],
           ),

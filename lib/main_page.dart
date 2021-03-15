@@ -12,43 +12,51 @@ import 'completed_screen.dart';
 import 'url_args.dart';
 
 class MainPage extends StatefulWidget {
-  MainPage(
-      {@required this.timeMax,
-      @required this.subjectId,
-      @required this.uuid,
-      @required this.trialNumber,
-      @required this.blockNumber,
-      @required this.lpc});
+  MainPage({
+    @required this.timeMax,
+    @required this.subjectId,
+    @required this.uuid,
+    @required this.trialNumber,
+    @required this.blockNumber,
+    @required this.lpc,
+    this.totalTrials,
+  });
   final double timeMax;
   final String subjectId;
   final String uuid;
   final int trialNumber;
   final int blockNumber;
   final double lpc;
+  final int totalTrials;
   @override
   _MainPageState createState() => _MainPageState(
-      timeMax: timeMax,
-      subjectId: subjectId,
-      uuid: uuid,
-      trialNumber: trialNumber,
-      blockNumber: blockNumber,
-      lpc: lpc);
+        timeMax: timeMax,
+        subjectId: subjectId,
+        uuid: uuid,
+        trialNumber: trialNumber,
+        blockNumber: blockNumber,
+        lpc: lpc,
+        totalTrials: totalTrials,
+      );
 }
 
 class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
-  _MainPageState(
-      {@required this.timeMax,
-      @required this.subjectId,
-      @required this.uuid,
-      this.trialNumber,
-      this.blockNumber,
-      this.lpc});
+  _MainPageState({
+    @required this.timeMax,
+    @required this.subjectId,
+    @required this.uuid,
+    this.trialNumber,
+    this.blockNumber,
+    this.lpc,
+    this.totalTrials,
+  });
   double timeMax;
   String subjectId;
   String uuid;
   int trialNumber;
   int blockNumber;
   double lpc;
+  int totalTrials;
 
   AnimationController _timerController;
   AnimationController _carController;
@@ -116,7 +124,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     Widget okButton = ElevatedButton(
       child: Text('OK'),
       onPressed: () {
-        if (trialNumber == 10) {
+        if (trialNumber == totalTrials / 2) {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -129,7 +137,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               ),
             ),
           );
-        } else if (trialNumber != 20) {
+        } else if (trialNumber != totalTrials) {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -139,6 +147,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 trialNumber: trialNumber,
                 blockNumber: blockNumber,
                 lpc: lpc,
+                totalTrials: totalTrials,
+                timeMax: timeMax,
               ),
             ),
           );
