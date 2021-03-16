@@ -38,10 +38,6 @@ String defaultTitle = 'test page';
 }
 }*/
 class DrivingTask extends StatelessWidget {
-  // This widget is the root of your application.
-  List<String> pathComponents;
-
-  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
@@ -49,7 +45,11 @@ class DrivingTask extends StatelessWidget {
         primaryColor: Color(0xFF0A0E21),
         scaffoldBackgroundColor: Color(0xFF0A0E21),
       ),
-      home: HomePage(title: defaultTitle),
+      home: InstructionPage(
+        subjectId: subjectID,
+        totalTrials: totalTrials,
+        timeMax: maxTime,
+      ),
       onGenerateRoute: (settings) {
         print("settings.name " + settings.name);
 
@@ -70,13 +70,19 @@ class DrivingTask extends StatelessWidget {
         switch (settings.name[1]) {
           case '?':
             return MaterialPageRoute(
-              builder: (context) => HomePage(title: defaultTitle),
+              builder: (context) => InstructionPage(
+                subjectId: subjectID,
+                timeMax: maxTime,
+                totalTrials: totalTrials,
+              ),
             );
             break;
           default:
             return MaterialPageRoute(
-              builder: (context) => HomePage(
-                title: "default",
+              builder: (context) => InstructionPage(
+                subjectId: "default",
+                totalTrials: 1,
+                timeMax: 1.0,
               ),
             );
         }
@@ -84,7 +90,7 @@ class DrivingTask extends StatelessWidget {
     );
   }
 }
-
+/*
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
 
@@ -105,10 +111,6 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              '$subjectID, $totalTrials, $maxTime',
-              style: Theme.of(context).textTheme.headline4,
-            ),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -123,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                 );
               },
               child: Text(
-                'confirm',
+                'CONFIRM',
                 style: Theme.of(context).textTheme.headline4,
               ),
             )
@@ -132,4 +134,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
+}*/
