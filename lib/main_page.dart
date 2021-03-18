@@ -230,7 +230,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
     //calls functions that check for joystick movement and car position, then adds that to the output list
     carTimer = Timer.periodic(
-        Duration(milliseconds: 17),
+        Duration(microseconds: 16667),
         (Timer t) => getCurrentPos =
             carEngine.getPos(joyStickPos, getCurrentPos, timeMax));
     dataList.add(outputList());
