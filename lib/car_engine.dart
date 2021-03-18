@@ -10,7 +10,7 @@ class CarEngine {
 
   double getPos(joyStickPos, getCurrentPos, timeMax) {
     aW = (1 / timeMax) * lpc;
-    dy = ((-.2 * getCurrentPos) + (joyStickPos * aW)) * 0.016;
+    dy = ((-.2 * getCurrentPos) + (joyStickPos * aW)) * 1.0/60.0;
     getCurrentPos = (dy + getCurrentPos);
     return getCurrentPos;
   }
