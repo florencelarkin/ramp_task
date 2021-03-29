@@ -265,7 +265,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       _countdownController.stop();
       carTimer.cancel();
       colorTimer.cancel();
-      //         _serverUpload('driving01', uuid, dataMap.toString(), '01');
+      _serverUpload('driving01', uuid, dataMap.toString(), '01');
     });
   }
 
