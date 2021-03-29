@@ -76,11 +76,19 @@ class _InstructionPage6State extends State<InstructionPage6> {
             children: <Widget>[
               ElevatedButton(
                   child: Text('BACK'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blue, // background
+                    onPrimary: Colors.white, // foreground
+                  ),
                   onPressed: () {
                     Navigator.pop(context);
                   }),
               ElevatedButton(
                   child: Text('NEXT'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.green, // background
+                    onPrimary: Colors.white, // foreground
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,

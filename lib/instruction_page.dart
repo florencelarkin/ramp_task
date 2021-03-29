@@ -74,6 +74,10 @@ class _InstructionPageState extends State<InstructionPage> {
           ),
           ElevatedButton(
               child: Text('NEXT'),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green, // background
+                onPrimary: Colors.white, // foreground
+              ),
               onPressed: () {
                 Navigator.push(
                   context,

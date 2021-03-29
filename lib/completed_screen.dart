@@ -41,6 +41,10 @@ class _CompletedPageState extends State<CompletedPage> {
             ),
           ),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Colors.red, // background
+              onPrimary: Colors.white, // foreground
+            ),
             child: Text('CLICK HERE TO EXIT THE APP'),
             onPressed: () => SystemNavigator.pop(),
           ),

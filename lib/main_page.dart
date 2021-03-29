@@ -84,8 +84,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
       platformType = Platform.operatingSystem;
       // now check platform
-      /*
-      if(Platform.isAndroid) {
+      if (Platform.isAndroid) {
         platformType = 'android';
       } else if (Platform.isIOS) {
         platformType = 'ios';
@@ -98,7 +97,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       } else if (Platform.isFuchsia) {
         platformType = 'fuchsia';
       }
-       */
     }
   }
 
@@ -134,6 +132,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 trialNumber: trialNumber,
                 blockNumber: blockNumber,
                 lpc: lpc,
+                timeMax: timeMax,
+                totalTrials: totalTrials,
               ),
             ),
           );
@@ -371,7 +371,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   child: Container(
                     width: 50.0,
                     height: MediaQuery.of(context).size.height * 0.03,
-                    child: Icon(Icons.directions_car, size: 50),
+                    child: Icon(Icons.directions_car,
+                        size: MediaQuery.of(context).size.height * 0.075),
                   ),
                   builder: (BuildContext context, Widget child) {
                     return Transform.translate(

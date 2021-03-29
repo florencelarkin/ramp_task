@@ -127,12 +127,23 @@ class _ContinuationPageState extends State<ContinuationPage> {
             children: [
               ElevatedButton(
                   child: Text('BACK'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blue, // background
+                    onPrimary: Colors.white, // foreground
+                  ),
                   onPressed: () {
                     SystemChannels.textInput.invokeMethod('TextInput.hide');
                     Navigator.pop(context);
                   }),
+              SizedBox(
+                width: 50.0,
+              ),
               ElevatedButton(
                   child: Text('START'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.green, // background
+                    onPrimary: Colors.white, // foreground
+                  ),
                   onPressed: () {
                     trialNumber++;
                     /*SystemChannels.textInput.invokeMethod('TextInput.hide');
@@ -189,22 +200,36 @@ class _ContinuationPageState extends State<ContinuationPage> {
                   }),
             ],
           ),
-          ElevatedButton(
-              child: Text('EXIT'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => QuitPage(
-                      uuid: uuid,
-                      subjectId: subjectId,
-                      lpc: lpc,
-                      blockNumber: blockNumber,
-                      trialNumber: trialNumber,
-                    ),
+          Column(
+            children: <Widget>[
+              SizedBox(
+                height: 100.0,
+              ),
+              ElevatedButton(
+                  child: Text('EXIT'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.red, // background
+                    onPrimary: Colors.white, // foreground
                   ),
-                );
-              }),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => QuitPage(
+                          uuid: uuid,
+                          subjectId: subjectId,
+                          lpc: lpc,
+                          blockNumber: blockNumber,
+                          trialNumber: trialNumber,
+                        ),
+                      ),
+                    );
+                  }),
+            ],
+          ),
+          SizedBox(
+            height: 100.0,
+          )
         ],
       ),
     );

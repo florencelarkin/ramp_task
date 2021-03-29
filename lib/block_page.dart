@@ -78,6 +78,10 @@ class _BlockPageState extends State<BlockPage> {
           ),
           ElevatedButton(
             child: Text('START'),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.green, // background
+              onPrimary: Colors.white, // foreground
+            ),
             onPressed: () {
               blockNumber++;
               Navigator.push(
