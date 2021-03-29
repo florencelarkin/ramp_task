@@ -21,6 +21,8 @@ class CarEngine {
     //testing take out eq point terms
     //dy = -eqPoint*getCurrentPos + (joyStickPos * aW) * dt
     dy = (joyStickPos * aW) * dt;
+    dy = dy /
+        timeMax; //added in later for testing, this currently works almost perfectly with 0.75 seconds
     //dy = ((-eqPoint * getCurrentPos) + (joyStickPos * aW)) * dt;
     getCurrentPos = (dy + getCurrentPos);
     return getCurrentPos;

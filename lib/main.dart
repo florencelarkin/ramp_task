@@ -7,7 +7,7 @@ void main() => runApp(DrivingTask());
 Map<String, String> urlArgs = {};
 String subjectID = 'abc123';
 int totalTrials = 20;
-double maxTime = 3.0;
+double maxTime = 2.0;
 String defaultTitle = 'test page';
 
 /*class DrivingTask extends StatelessWidget {
