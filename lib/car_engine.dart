@@ -16,15 +16,16 @@ class CarEngine {
   //so -(lpc * .45) * ~.03  should be eq point
 
   double getPos(joyStickPos, getCurrentPos, timeMax) {
-    /*if ( (getCurrentPos - eqPoint) < eqFactor*eqPoint ) {
+    /*if ((getCurrentPos - eqPoint) < eqFactor * eqPoint) {
       // move car position backwards to force the user to move joystick forward
       // by adding a negative velocity
-      dipFactor = - 0.10;
+      dipFactor = -0.10;
     } else {
       dipFactor = 0.0;
     }
 
-    dy = (dipFactor +  joyStickPos * aW) * dt; */ //code for the dip factor, to test 3/30
+    dy = (dipFactor + joyStickPos * aW) *
+        dt;*/ //code for the dip factor, to test 3/30
 
     aW = (1.0 / timeMax) * lpc;
     //eqPoint = (lpc * 0.45) * 0.03;

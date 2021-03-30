@@ -31,7 +31,7 @@ class _CompletedPageState extends State<CompletedPage> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'You may now delete this app from your phone.',
+                'You may now exit the tab.',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -40,14 +40,14 @@ class _CompletedPageState extends State<CompletedPage> {
               ),
             ),
           ),
-          ElevatedButton(
+          /*ElevatedButton(
             style: ElevatedButton.styleFrom(
               primary: Colors.red, // background
               onPrimary: Colors.white, // foreground
             ),
             child: Text('CLICK HERE TO EXIT THE APP'),
             onPressed: () => SystemNavigator.pop(),
-          ),
+          ),*/
         ],
       ),
     );
