@@ -156,7 +156,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => CompletedPage(),
+                builder: (context) => CompletedPage(
+                  webFlag: webFlag,
+                ),
               ));
         }
       },
@@ -244,6 +246,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     //Timer for the end of the trial
     Timer(Duration(seconds: 14), () {
       var endTime = new DateTime.now();
+      double width = MediaQuery.of(context).size.width;
+      double height = MediaQuery.of(context).size.height;
 
       // add data to dataMap for output
       dataMap[addQuotesToString("TaskVersion")] =
@@ -259,6 +263,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       dataMap['\"EndTime\"'] = addQuotesToString(endTime.toIso8601String());
       dataMap['\"Sensitivity\"'] = timeMax.toString();
       dataMap['\"TotalTrials\"'] = addQuotesToString(totalTrials.toString());
+      dataMap['\"ScreenSize\"'] = addQuotesToString('$width x $height');
       dataMap['\"Moves\"'] = dataList;
       _timerController.stop();
       _carController.stop();
