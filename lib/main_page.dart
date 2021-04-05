@@ -340,21 +340,24 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Container(  // StopSign at top
-                  height: MediaQuery.of(context).size.height * 0.25,
+                Container(
+                  // StopSign at top
+                  height: lpc * 0.25,
                   width: 250.0,
                   child: Image.asset("images/stopsign.png"),
                 ),
-                Container( // white end line at stop sign
-                  height: MediaQuery.of(context).size.height * 0.005,
+                Container(
+                  // white end line at stop sign
+                  height: lpc * 0.005,
                   width: 220.0,
                   color: Colors.white,
                 ),
-                AnimatedBuilder(  // 321 counter
+                AnimatedBuilder(
+                  // 321 counter
                   animation: _countdownController,
                   builder: (BuildContext context, Widget child) {
                     return Container(
-                      height: MediaQuery.of(context).size.height * 0.41,
+                      height: lpc * 0.41,
                       child: Text(
                         timerString,
                         style: TextStyle(
@@ -366,18 +369,19 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     );
                   },
                 ),
-                Container(  // white starting line
-                  height: MediaQuery.of(context).size.height * 0.005,
+                Container(
+                  // white starting line
+                  height: lpc * 0.005,
                   width: 220.0,
                   color: Colors.white,
                 ),
-                AnimatedBuilder(  // car
+                AnimatedBuilder(
+                  // car
                   animation: _carController,
                   child: Container(
                     width: 50.0,
-                    height: MediaQuery.of(context).size.height * 0.03,
-                    child: Icon(Icons.directions_car,
-                        size: MediaQuery.of(context).size.height * 0.075),
+                    height: lpc * 0.03,
+                    child: Icon(Icons.directions_car, size: lpc * 0.075),
                   ),
                   builder: (BuildContext context, Widget child) {
                     return Transform.translate(
@@ -386,11 +390,11 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     );
                   },
                 ),
-               
-                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+
+                SizedBox(height: lpc * 0.05),
                 // Slider
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.24,
+                  height: lpc * 0.24,
                   width: 300.0,
                   child: Transform.scale(
                     scale: 0.5,
