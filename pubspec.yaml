@@ -38,6 +38,7 @@ dependencies:
   json_serializable: ^3.5.1
   string_validator: ^0.1.4
   shared_preferences: ^0.5.12+4
+  web_browser_detect: ^2.0.1
 
 dev_dependencies:
   flutter_test:
