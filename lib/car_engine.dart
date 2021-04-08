@@ -16,12 +16,18 @@ class CarEngine {
   //so -(lpc * .45) * ~.03  should be eq point
 
   double getPos(joyStickPos, getCurrentPos, timeMax) {
+
+    if (getCurrentPos between iceStart and iceEnd) {
+      iceGain = urlGain;
+    } else {
+      iceGain = 1.0;
+    }
     aW = (1.0 / timeMax) * lpc;
     //eqPoint = (lpc * 0.45) * 0.03;
     //adjustedPos = getCurrentPos * lpc;
     //testing take out eq point terms
     //dy = -eqPoint*getCurrentPos + (joyStickPos * aW) * dt
-    dy = (joyStickPos * aW) * dt;
+    dy = (iceGain * joyStickPos * aW) * dt;
     dy = dy / 2.325;
     //dy = ((-eqPoint * getCurrentPos) + (joyStickPos * aW)) * dt;
     getCurrentPos = (dy + getCurrentPos);
