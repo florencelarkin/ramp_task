@@ -17,11 +17,15 @@ class CarEngine {
 
   double getPos(joyStickPos, getCurrentPos, timeMax) {
 
+    double iceGain = 1.0;
+    /*
     if (getCurrentPos between iceStart and iceEnd) {
       iceGain = urlGain;
     } else {
       iceGain = 1.0;
     }
+    */
+
     aW = (1.0 / timeMax) * lpc;
     //eqPoint = (lpc * 0.45) * 0.03;
     //adjustedPos = getCurrentPos * lpc;
