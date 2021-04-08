@@ -9,7 +9,9 @@ import 'data.dart';
 import 'package:flutter/foundation.dart';
 import 'block_page.dart';
 import 'completed_screen.dart';
-import 'url_args.dart';
+//import 'url_args.dart';
+//import 'package:universal_html/html.dart';
+import 'package:web_browser_detect/web_browser_detect.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({
@@ -57,6 +59,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   int blockNumber;
   double lpc;
   int totalTrials;
+  final browser = Browser.detectOrNull();
 
   AnimationController _timerController;
   AnimationController _carController;
@@ -68,6 +71,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   bool webFlag = false; // true if running web
   String platformType = ""; // the platform: android, ios, windows, linux
   final String taskVersion = "driving_task:0.9";
+  String browserType = "";
 
   String addQuotesToString(String text) {
     var quoteText = '\"' + text + '\"';
@@ -79,6 +83,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
     if (kIsWeb) {
       webFlag = true;
+      browserType = browser.toString();
     } else {
       webFlag = false;
 
@@ -93,7 +98,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       } else if (Platform.isWindows) {
         platformType = 'windows';
       } else if (Platform.isMacOS) {
-        platformType = 'macos';
+        platformType = 'macOS';
       } else if (Platform.isFuchsia) {
         platformType = 'fuchsia';
       }
@@ -238,7 +243,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     dataList.add(outputList());
     colorTimer = Timer.periodic(
         Duration(milliseconds: 17),
-        (Timer t) => getCurrentPos < -lpc * .25 && getCurrentPos > -lpc * .45
+        (Timer t) => getCurrentPos < -lpc * .25 && getCurrentPos > -lpc * .43
             ? timerColor = Colors.green
             : timerColor = Colors.blue);
     dataTimer = Timer.periodic(
@@ -254,6 +259,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           addQuotesToString(taskVersion);
       dataMap[addQuotesToString("Platform")] = addQuotesToString(platformType);
       dataMap[addQuotesToString("Web")] = webFlag;
+      dataMap[addQuotesToString("Browser")] = addQuotesToString(browserType);
       //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
       // has double quoted android_ia32
 

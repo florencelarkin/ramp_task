@@ -7,36 +7,9 @@ void main() => runApp(DrivingTask());
 Map<String, String> urlArgs = {};
 String subjectID = 'abc123';
 int totalTrials = 20;
-double maxTime = 2.0;
+double maxTime = 10.0;
 String defaultTitle = 'test page';
 
-/*class DrivingTask extends StatelessWidget {
-  List<String> pathComponents;
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData.dark().copyWith(
-        primaryColor: Color(0xFF0A0E21),
-        scaffoldBackgroundColor: Color(0xFF0A0E21),
-      ),
-      home: InstructionPage(title: defaultTitle),
-      onGenerateRoute: (settings) {
-    print("settings.name " + settings.name);
-
-    urlArgs = getURLArgs(settings.name);
-    urlArgs.forEach((key, value) => print('${key}: ${value}'));
-
-    if  (urlArgs.containsKey('count')) {
-    _counter = int.parse(urlArgs['count']);
-    }
-    if  (urlArgs.containsKey('title')) {
-    defaultTitle = urlArgs['title'];
-    },
-    );
-  }
-}
-}*/
 class DrivingTask extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
