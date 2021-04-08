@@ -3,7 +3,10 @@ import 'package:json_annotation/json_annotation.dart';
 import 'dart:async';
 import 'dart:convert';
 
-String serverURL = 'https://x0-29.psych.umn.edu/dend/posts';
+//String serverURL = 'https://x0-29.psych.umn.edu/dend/posts';
+String serverURL = 'https://tasks.laureateinstitute.org/api/driving/v1/posts';
+
+
 
 @JsonSerializable(nullable: false)
 Data _$DataFromJson(Map<String, dynamic> json) {
