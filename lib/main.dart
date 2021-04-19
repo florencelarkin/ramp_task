@@ -9,6 +9,7 @@ String subjectID = 'abc123';
 int totalTrials = 20;
 double maxTime = 10.0;
 String defaultTitle = 'test page';
+double iceGain = 1.0;
 
 class DrivingTask extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -22,6 +23,7 @@ class DrivingTask extends StatelessWidget {
         subjectId: subjectID,
         totalTrials: totalTrials,
         timeMax: maxTime,
+        iceGain: iceGain,
       ),
       onGenerateRoute: (settings) {
         print("settings.name " + settings.name);
@@ -38,6 +40,9 @@ class DrivingTask extends StatelessWidget {
         if (urlArgs.containsKey('time')) {
           maxTime = double.parse(urlArgs['time']);
         }
+        if (urlArgs.containsKey('ice')) {
+          totalTrials = int.parse(urlArgs['ice']);
+        }
 
         // check for /?id=1234&time=2.0
         switch (settings.name[1]) {
@@ -47,6 +52,7 @@ class DrivingTask extends StatelessWidget {
                 subjectId: subjectID,
                 timeMax: maxTime,
                 totalTrials: totalTrials,
+                iceGain: iceGain,
               ),
             );
             break;
@@ -56,6 +62,7 @@ class DrivingTask extends StatelessWidget {
                 subjectId: "default",
                 totalTrials: 1,
                 timeMax: 1.0,
+                iceGain: 1.0,
               ),
             );
         }

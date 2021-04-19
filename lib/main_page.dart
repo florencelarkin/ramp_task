@@ -22,6 +22,7 @@ class MainPage extends StatefulWidget {
     @required this.blockNumber,
     @required this.lpc,
     this.totalTrials,
+    this.iceGain,
   });
   final double timeMax;
   final String subjectId;
@@ -30,6 +31,8 @@ class MainPage extends StatefulWidget {
   final int blockNumber;
   final double lpc;
   final int totalTrials;
+  final double iceGain;
+
   @override
   _MainPageState createState() => _MainPageState(
         timeMax: timeMax,
@@ -39,6 +42,7 @@ class MainPage extends StatefulWidget {
         blockNumber: blockNumber,
         lpc: lpc,
         totalTrials: totalTrials,
+        iceGain: iceGain,
       );
 }
 
@@ -51,6 +55,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     this.blockNumber,
     this.lpc,
     this.totalTrials,
+    this.iceGain,
   });
   double timeMax;
   String subjectId;
@@ -59,6 +64,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   int blockNumber;
   double lpc;
   int totalTrials;
+  double iceGain;
   final browser = Browser.detectOrNull();
 
   AnimationController _timerController;
@@ -139,6 +145,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 lpc: lpc,
                 timeMax: timeMax,
                 totalTrials: totalTrials,
+                iceGain: iceGain,
               ),
             ),
           );
@@ -154,6 +161,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 lpc: lpc,
                 totalTrials: totalTrials,
                 timeMax: timeMax,
+                iceGain: iceGain,
               ),
             ),
           );
@@ -187,8 +195,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     var startTime = new DateTime.now();
-    CarEngine carEngine =
-        CarEngine(timeMax: timeMax, lpc: lpc, trialNumber: trialNumber);
+    CarEngine carEngine = CarEngine(
+        timeMax: timeMax, lpc: lpc, trialNumber: trialNumber, urlGain: iceGain);
     Timer serverTimeout;
     // check platform
     checkWebPlatform();

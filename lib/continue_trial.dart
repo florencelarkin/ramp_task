@@ -12,6 +12,7 @@ class ContinuationPage extends StatefulWidget {
     this.lpc,
     this.timeMax,
     this.totalTrials,
+    this.iceGain,
   });
   final String subjectId;
   final String uuid;
@@ -20,6 +21,7 @@ class ContinuationPage extends StatefulWidget {
   final double lpc;
   final double timeMax;
   final int totalTrials;
+  final double iceGain;
 
   @override
   _ContinuationPageState createState() => _ContinuationPageState(
@@ -30,6 +32,7 @@ class ContinuationPage extends StatefulWidget {
         lpc: lpc,
         timeMax: timeMax,
         totalTrials: totalTrials,
+        iceGain: iceGain,
       );
 }
 
@@ -41,7 +44,8 @@ class _ContinuationPageState extends State<ContinuationPage> {
       this.blockNumber,
       this.lpc,
       this.timeMax,
-      this.totalTrials});
+      this.totalTrials,
+      this.iceGain});
   String subjectId;
   double maxVelocity;
   String uuid;
@@ -50,7 +54,9 @@ class _ContinuationPageState extends State<ContinuationPage> {
   double lpc;
   double timeMax;
   int totalTrials;
+  double iceGain;
   String timeString = '0.75';
+
   showAlertDialog(BuildContext context) {
     // set up the button
     Widget okButton = ElevatedButton(
@@ -194,6 +200,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
                           blockNumber: blockNumber,
                           lpc: lpc,
                           totalTrials: totalTrials,
+                          iceGain: iceGain,
                         ),
                       ),
                     );
@@ -216,12 +223,13 @@ class _ContinuationPageState extends State<ContinuationPage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => QuitPage(
-                          uuid: uuid,
-                          subjectId: subjectId,
-                          lpc: lpc,
-                          blockNumber: blockNumber,
-                          trialNumber: trialNumber,
-                        ),
+                            uuid: uuid,
+                            subjectId: subjectId,
+                            lpc: lpc,
+                            blockNumber: blockNumber,
+                            trialNumber: trialNumber,
+                            iceGain: iceGain,
+                            timeMax: timeMax),
                       ),
                     );
                   }),

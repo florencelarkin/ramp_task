@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'continue_trial.dart';
 
 class BlockPage extends StatefulWidget {
-  BlockPage(
-      {@required this.subjectId,
-      @required this.uuid,
-      this.trialNumber,
-      this.blockNumber,
-      this.lpc,
-      this.totalTrials,
-      this.timeMax});
+  BlockPage({
+    @required this.subjectId,
+    @required this.uuid,
+    this.trialNumber,
+    this.blockNumber,
+    this.lpc,
+    this.totalTrials,
+    this.timeMax,
+    this.iceGain,
+  });
   final String subjectId;
   final String uuid;
   final int trialNumber;
@@ -17,6 +19,8 @@ class BlockPage extends StatefulWidget {
   final double lpc;
   final int totalTrials;
   final double timeMax;
+  final double iceGain;
+
   @override
   _BlockPageState createState() => _BlockPageState(
         subjectId: subjectId,
@@ -26,18 +30,21 @@ class BlockPage extends StatefulWidget {
         lpc: lpc,
         totalTrials: totalTrials,
         timeMax: timeMax,
+        iceGain: iceGain,
       );
 }
 
 class _BlockPageState extends State<BlockPage> {
-  _BlockPageState(
-      {@required this.subjectId,
-      @required this.uuid,
-      this.trialNumber,
-      this.blockNumber,
-      this.lpc,
-      this.totalTrials,
-      this.timeMax});
+  _BlockPageState({
+    @required this.subjectId,
+    @required this.uuid,
+    this.trialNumber,
+    this.blockNumber,
+    this.lpc,
+    this.totalTrials,
+    this.timeMax,
+    this.iceGain,
+  });
   String subjectId;
   double maxVelocity;
   String uuid;
@@ -46,6 +53,7 @@ class _BlockPageState extends State<BlockPage> {
   double lpc;
   int totalTrials;
   double timeMax;
+  double iceGain;
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +103,7 @@ class _BlockPageState extends State<BlockPage> {
                     lpc: lpc,
                     timeMax: timeMax,
                     totalTrials: totalTrials,
+                    iceGain: iceGain,
                   ),
                 ),
               );

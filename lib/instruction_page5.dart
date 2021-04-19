@@ -6,14 +6,19 @@ class InstructionPage5 extends StatefulWidget {
     @required this.timeMax,
     @required this.subjectId,
     @required this.totalTrials,
+    this.iceGain,
   });
   final double timeMax;
   final String subjectId;
   final int totalTrials;
+  final double iceGain;
 
   @override
   _InstructionPage5State createState() => _InstructionPage5State(
-      timeMax: timeMax, subjectId: subjectId, totalTrials: totalTrials);
+      timeMax: timeMax,
+      subjectId: subjectId,
+      totalTrials: totalTrials,
+      iceGain: iceGain);
 }
 
 class _InstructionPage5State extends State<InstructionPage5> {
@@ -21,10 +26,13 @@ class _InstructionPage5State extends State<InstructionPage5> {
     @required this.timeMax,
     @required this.subjectId,
     @required this.totalTrials,
+    this.iceGain,
   });
   double timeMax;
   String subjectId;
   int totalTrials;
+  double iceGain;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,6 +105,7 @@ class _InstructionPage5State extends State<InstructionPage5> {
                           timeMax: timeMax,
                           totalTrials: totalTrials,
                           subjectId: subjectId,
+                          iceGain: iceGain,
                         ),
                       ),
                     );

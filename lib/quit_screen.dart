@@ -3,24 +3,32 @@ import 'package:flutter/services.dart';
 import 'continue_trial.dart';
 
 class QuitPage extends StatefulWidget {
-  QuitPage(
-      {@required this.subjectId,
-      @required this.uuid,
-      this.trialNumber,
-      this.blockNumber,
-      this.lpc});
+  QuitPage({
+    @required this.subjectId,
+    @required this.uuid,
+    this.trialNumber,
+    this.blockNumber,
+    this.lpc,
+    this.iceGain,
+    this.timeMax,
+  });
   final String subjectId;
   final String uuid;
   final int trialNumber;
   final int blockNumber;
   final double lpc;
+  final double iceGain;
+  final double timeMax;
   @override
   _QuitPageState createState() => _QuitPageState(
-      subjectId: subjectId,
-      uuid: uuid,
-      trialNumber: trialNumber,
-      blockNumber: blockNumber,
-      lpc: lpc);
+        subjectId: subjectId,
+        uuid: uuid,
+        trialNumber: trialNumber,
+        blockNumber: blockNumber,
+        lpc: lpc,
+        iceGain: iceGain,
+        timeMax: timeMax,
+      );
 }
 
 class _QuitPageState extends State<QuitPage> {
@@ -29,13 +37,17 @@ class _QuitPageState extends State<QuitPage> {
       @required this.uuid,
       this.trialNumber,
       this.blockNumber,
-      this.lpc});
+      this.lpc,
+      this.iceGain,
+      this.timeMax});
   String subjectId;
   double maxVelocity;
   String uuid;
   int trialNumber;
   int blockNumber;
   double lpc;
+  double iceGain;
+  double timeMax;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,6 +80,8 @@ class _QuitPageState extends State<QuitPage> {
                     trialNumber: trialNumber,
                     blockNumber: blockNumber,
                     lpc: lpc,
+                    timeMax: timeMax,
+                    iceGain: iceGain,
                   ),
                 ),
               );

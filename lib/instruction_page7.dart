@@ -8,14 +8,19 @@ class InstructionPage7 extends StatefulWidget {
     @required this.timeMax,
     @required this.subjectId,
     @required this.totalTrials,
+    this.iceGain,
   });
   final double timeMax;
   final String subjectId;
   final int totalTrials;
+  final double iceGain;
 
   @override
   _InstructionPage7State createState() => _InstructionPage7State(
-      timeMax: timeMax, subjectId: subjectId, totalTrials: totalTrials);
+      timeMax: timeMax,
+      subjectId: subjectId,
+      totalTrials: totalTrials,
+      iceGain: iceGain);
 }
 
 class _InstructionPage7State extends State<InstructionPage7> {
@@ -23,10 +28,12 @@ class _InstructionPage7State extends State<InstructionPage7> {
     @required this.timeMax,
     @required this.subjectId,
     @required this.totalTrials,
+    this.iceGain,
   });
   double timeMax;
   String subjectId;
   int totalTrials;
+  double iceGain;
 
   var uuid = Uuid();
   int trialNumber = 0;
@@ -102,6 +109,7 @@ class _InstructionPage7State extends State<InstructionPage7> {
                           lpc: lpc,
                           totalTrials: totalTrials,
                           timeMax: timeMax,
+                          iceGain: iceGain,
                         ),
                       ),
                     );
