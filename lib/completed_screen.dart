@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+const _url = 'https://flutter.dev';
+
+void _launchURL() async =>
+    await canLaunch(_url) ? await launch(_url) : throw 'Could not launch $_url';
 
 class CompletedPage extends StatefulWidget {
   CompletedPage({
@@ -15,6 +21,7 @@ class _CompletedPageState extends State<CompletedPage> {
     this.webFlag,
   });
   bool webFlag; //true if on web
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,13 +46,24 @@ class _CompletedPageState extends State<CompletedPage> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: (webFlag == true)
-                  ? Text(
-                      'You may now exit the tab.',
-                      style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                      textAlign: TextAlign.center,
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'You may now exit the tab.',
+                          style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * .1),
+                        ElevatedButton(
+                          onPressed: _launchURL,
+                          child: Text('Launch URL'),
+                        ),
+                      ],
                     )
                   : Text(
                       'You may now delete the app',

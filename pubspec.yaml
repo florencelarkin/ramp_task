@@ -40,6 +40,7 @@ dependencies:
   string_validator: ^0.1.4
   shared_preferences: ^0.5.12+4
   web_browser_detect: ^2.0.1
+  url_launcher: ^6.0.3
 
 dev_dependencies:
   flutter_test:
