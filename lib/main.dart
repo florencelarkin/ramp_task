@@ -6,7 +6,7 @@ void main() => runApp(DrivingTask());
 
 Map<String, String> urlArgs = {};
 String subjectID = 'abc123';
-int totalTrials = 2;
+int totalTrials = 1;
 double maxTime = 10.0;
 String defaultTitle = 'test page';
 double iceGain = 1.0;

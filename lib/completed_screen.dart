@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-const _url = 'https://flutter.dev';
+//const _url = 'https://flutter.dev';
+const _url = 'http://tasks.laureateinstitute.org';
 
 void _launchURL() async =>
     await canLaunch(_url) ? await launch(_url) : throw 'Could not launch $_url';
