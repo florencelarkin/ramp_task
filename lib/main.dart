@@ -41,7 +41,7 @@ class DrivingTask extends StatelessWidget {
           maxTime = double.parse(urlArgs['time']);
         }
         if (urlArgs.containsKey('ice')) {
-          totalTrials = int.parse(urlArgs['ice']);
+          iceGain = double.parse(urlArgs['ice']);
         }
 
         // check for /?id=1234&time=2.0
