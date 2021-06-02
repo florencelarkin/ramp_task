@@ -66,7 +66,7 @@ class _InstructionPageState extends State<InstructionPage> {
               ),
             ),
           ),
-          Padding(
+          /*Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
@@ -78,7 +78,7 @@ class _InstructionPageState extends State<InstructionPage> {
                 textAlign: TextAlign.center,
               ),
             ),
-          ),
+          ),*/
           ElevatedButton(
               child: Text('NEXT'),
               style: ElevatedButton.styleFrom(

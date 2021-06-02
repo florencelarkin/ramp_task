@@ -44,7 +44,7 @@ class _InstructionPage4State extends State<InstructionPage4> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'Your task is to drive as quickly as possible and stop at the stop sign within ten seconds.',
+                'Your task is to drive as quickly as possible and stop at the stop sign within ten seconds and keep it at the line for the remainder of the trial.',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -52,6 +52,48 @@ class _InstructionPage4State extends State<InstructionPage4> {
                 textAlign: TextAlign.center,
               ),
             ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.1,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Text(
+                'The image on the right end of the row shows where the optimal position is.',
+                style: TextStyle(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  child: Image.asset("images/beforeline.png"),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  child: Image.asset("images/afterline.png"),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  child: Image.asset("images/line.png"),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.1,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

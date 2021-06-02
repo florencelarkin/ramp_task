@@ -9,8 +9,6 @@ import 'data.dart';
 import 'package:flutter/foundation.dart';
 import 'block_page.dart';
 import 'completed_screen.dart';
-//import 'url_args.dart';
-//import 'package:universal_html/html.dart';
 import 'package:web_browser_detect/web_browser_detect.dart';
 
 class MainPage extends StatefulWidget {
@@ -73,6 +71,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   Timer carTimer;
   Timer colorTimer;
   Timer dataTimer;
+  Timer serverTimeout;
 
   bool webFlag = false; // true if running web
   String platformType = ""; // the platform: android, ios, windows, linux
@@ -125,8 +124,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   String messageText = '';
   Map dataMap = {};
   Future<bool> dataSent;
-  double getAdjustedPos;
+  double getAdjustedPos = 0.0;
   Map<String, String> urlArgs = {};
+  List posList = [0.0, 0.0];
 
   showAlertDialog(BuildContext context) {
     // set up the button
@@ -197,7 +197,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     var startTime = new DateTime.now();
     CarEngine carEngine = CarEngine(
         timeMax: timeMax, lpc: lpc, trialNumber: trialNumber, urlGain: iceGain);
-    Timer serverTimeout;
     // check platform
     checkWebPlatform();
     // initialize the header of the dataList
@@ -224,6 +223,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         serverTimeout = Timer(Duration(seconds: 15), () {
           title = 'Error';
           messageText = 'Server not found';
+          showAlertDialog(context);
         });
       }
     }
@@ -246,12 +246,16 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     //calls functions that check for joystick movement and car position, then adds that to the output list
     carTimer = Timer.periodic(
         Duration(microseconds: 16667),
-        (Timer t) => getCurrentPos =
-            carEngine.getPos(joyStickPos, getCurrentPos, timeMax));
+        (Timer t) => posList = carEngine.getPos(
+              joyStickPos,
+              posList[1],
+              timeMax,
+              posList[0],
+            ));
     dataList.add(outputList());
     colorTimer = Timer.periodic(
         Duration(milliseconds: 17),
-        (Timer t) => getCurrentPos < -lpc * .25 && getCurrentPos > -lpc * .43
+        (Timer t) => posList[1] < -lpc * .25 && posList[1] > -lpc * .435
             ? timerColor = Colors.green
             : timerColor = Colors.blue);
     dataTimer = Timer.periodic(
@@ -284,6 +288,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       _countdownController.stop();
       carTimer.cancel();
       colorTimer.cancel();
+      dataTimer.cancel();
       _serverUpload('driving01', uuid, dataMap.toString(), '01');
     });
   }
@@ -314,13 +319,14 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   List outputList() {
     List<dynamic> data = [];
-    //getAdjustedPos = getCurrentPos + lpc * .45;
-    carVelocity = getCurrentPos / stopwatch.elapsedMilliseconds / 3;
+    print(posList[0]);
+    getAdjustedPos = -posList[0];
+    carVelocity = getAdjustedPos / stopwatch.elapsedMilliseconds / 3;
     double calculatedVelocity = carVelocity;
     data.addAll([
       stopwatch.elapsedMilliseconds.toString(),
       joyStickPos.toString(),
-      getCurrentPos.toString(),
+      getAdjustedPos.toString(),
       calculatedVelocity.toString(),
       '8'
     ]);
@@ -399,7 +405,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   ),
                   builder: (BuildContext context, Widget child) {
                     return Transform.translate(
-                      offset: Offset(0.0, getCurrentPos),
+                      offset: Offset(0.0, posList[1]),
                       child: child,
                     );
                   },

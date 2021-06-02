@@ -49,7 +49,7 @@ class _InstructionPage7State extends State<InstructionPage7> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'Please let the experimenter know if unclear of the task or have any additional questions.',
+                'If you have additional questions, please leave them in the feedback survey after the trials.',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
