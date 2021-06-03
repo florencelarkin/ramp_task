@@ -61,8 +61,10 @@ Future<bool> createData(
 
   if (response.statusCode == 200) {
     Data.fromJson(jsonDecode(response.body));
+    print(response.statusCode);
     return Future.value(true);
   } else {
+    print(response.statusCode);
     return Future.value(false);
   }
 }

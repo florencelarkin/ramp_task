@@ -60,7 +60,7 @@ class _InstructionPage4State extends State<InstructionPage4> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'The image on the right end of the row shows where the optimal position is.',
+                'The image on the right end of the row shows where the optimal end point is.',
                 style: TextStyle(
                     fontSize: 14.0,
                     fontWeight: FontWeight.bold,
