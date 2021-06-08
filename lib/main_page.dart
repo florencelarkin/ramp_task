@@ -126,7 +126,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   Future<bool> dataSent;
   double getAdjustedPos = 0.0;
   Map<String, String> urlArgs = {};
-  List posList = [0.0, 0.0];
+  List posList = [0.0, 0.0, 0.0];
+  double prevPos = 0.0;
+  double prevTime = 0.0;
 
   showAlertDialog(BuildContext context) {
     // set up the button
@@ -244,22 +246,19 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     _timerController.forward();
 
     //calls functions that check for joystick movement and car position, then adds that to the output list
-    carTimer = Timer.periodic(
-        Duration(microseconds: 16667),
-        (Timer t) => posList = carEngine.getPos(
-              joyStickPos,
-              posList[1],
-              timeMax,
-              posList[0],
-            ));
-    dataList.add(outputList());
+    carTimer = Timer.periodic(Duration(microseconds: 16667), (Timer t) {
+      posList = carEngine.getPos(joyStickPos, posList[1], timeMax, posList[0],
+          stopwatch.elapsedMilliseconds.toDouble());
+      dataList.add(outputList());
+    });
+    //dataList.add(outputList(prevPos, prevTime));
     colorTimer = Timer.periodic(
         Duration(milliseconds: 17),
         (Timer t) => posList[1] < -lpc * .25 && posList[1] > -lpc * .435
             ? timerColor = Colors.green
             : timerColor = Colors.blue);
-    dataTimer = Timer.periodic(
-        Duration(milliseconds: 17), (Timer t) => dataList.add(outputList()));
+    /*dataTimer = Timer.periodic(Duration(milliseconds: 17),
+        (Timer t) => dataList.add(outputList(prevPos, prevTime)));*/
     //Timer for the end of the trial
     Timer(Duration(seconds: 14), () {
       var endTime = new DateTime.now();
@@ -319,15 +318,13 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   List outputList() {
     List<dynamic> data = [];
-    print(posList[0]);
-    getAdjustedPos = -posList[0];
-    carVelocity = getAdjustedPos / stopwatch.elapsedMilliseconds / 3;
-    double calculatedVelocity = carVelocity;
+    getAdjustedPos = posList[0];
+    carVelocity = posList[2];
     data.addAll([
       stopwatch.elapsedMilliseconds.toString(),
       joyStickPos.toString(),
       getAdjustedPos.toString(),
-      calculatedVelocity.toString(),
+      carVelocity.toString(),
       '8'
     ]);
 

@@ -13,11 +13,12 @@ class CarEngine {
   double eqFactor = 1.0;
   double dipFactor = 0.0;
   double iceGain = 1.0;
+  double velocity = 0.0;
 // https://api.flutter.dev/flutter/widgets/MediaQuery-class.html
   //eq point is about 0.96788990825 percent of distance (in original formula)
   //so -(lpc * .45) * ~.03  should be eq point
 
-  List getPos(sliderPos, getCurrentPos, timeMax, adjustedPos) {
+  List getPos(sliderPos, getCurrentPos, timeMax, adjustedPos, currentTime) {
     double iceStart = lpc * .3;
     double iceEnd = lpc * .4;
 
@@ -31,14 +32,17 @@ class CarEngine {
     */
 
     vW = (1.0 / timeMax);
-
+    double prevTime = currentTime - 17;
     //dy = -eqPoint*getCurrentPos + (joyStickPos * aW) * dt
     dy = (iceGain * sliderPos * vW) * dt;
-    adjustedPos = (dy + adjustedPos);
+    double getAdjustedPos = (dy + adjustedPos);
     dy = dy * 0.435 * lpc; //scaled by distance from start to finish
     //dy = ((-eqPoint * getCurrentPos) + (joyStickPos * aW)) * dt;
     getCurrentPos = (dy + getCurrentPos);
-    List posList = [adjustedPos, getCurrentPos];
+    velocity = (getAdjustedPos - adjustedPos) /
+        ((currentTime - prevTime) / 3); //normalized units per second
+    print('$currentTime c, $prevTime p');
+    List posList = [getAdjustedPos, getCurrentPos, velocity];
     return posList;
   }
 }
