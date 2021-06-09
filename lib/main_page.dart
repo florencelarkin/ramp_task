@@ -287,7 +287,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       _countdownController.stop();
       carTimer.cancel();
       colorTimer.cancel();
-      dataTimer.cancel();
+      //dataTimer.cancel();
       _serverUpload('driving01', uuid, dataMap.toString(), '01');
     });
   }
@@ -318,7 +318,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   List outputList() {
     List<dynamic> data = [];
-    getAdjustedPos = posList[0];
+    getAdjustedPos = -posList[0];
     carVelocity = posList[2];
     data.addAll([
       stopwatch.elapsedMilliseconds.toString(),

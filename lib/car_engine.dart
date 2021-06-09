@@ -41,7 +41,7 @@ class CarEngine {
     getCurrentPos = (dy + getCurrentPos);
     velocity = (getAdjustedPos - adjustedPos) /
         ((currentTime - prevTime) / 3); //normalized units per second
-    print('$currentTime c, $prevTime p');
+
     List posList = [getAdjustedPos, getCurrentPos, velocity];
     return posList;
   }
