@@ -319,7 +319,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   List outputList() {
     List<dynamic> data = [];
     getAdjustedPos = -posList[0];
-    carVelocity = posList[2];
+    carVelocity = -posList[2];
     data.addAll([
       stopwatch.elapsedMilliseconds.toString(),
       joyStickPos.toString(),
