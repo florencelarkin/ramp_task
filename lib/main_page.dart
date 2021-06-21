@@ -214,9 +214,50 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     _serverUpload(studycode, guid, dataList, data_version) async {
       bool dataSent = await createData(studycode, guid, dataList, data_version);
       if (dataSent == true) {
-        title = 'Success!';
-        messageText = 'Data has been sent to the server';
-        showAlertDialog(context);
+        //title = 'Success!';
+        //messageText = 'Data has been sent to the server';
+        //showAlertDialog(context);
+        if (trialNumber == totalTrials / 2) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BlockPage(
+                subjectId: subjectId,
+                uuid: uuid,
+                trialNumber: trialNumber,
+                blockNumber: blockNumber,
+                lpc: lpc,
+                timeMax: timeMax,
+                totalTrials: totalTrials,
+                iceGain: iceGain,
+              ),
+            ),
+          );
+        } else if (trialNumber != totalTrials) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ContinuationPage(
+                subjectId: subjectId,
+                uuid: uuid,
+                trialNumber: trialNumber,
+                blockNumber: blockNumber,
+                lpc: lpc,
+                totalTrials: totalTrials,
+                timeMax: timeMax,
+                iceGain: iceGain,
+              ),
+            ),
+          );
+        } else {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CompletedPage(
+                  webFlag: webFlag,
+                ),
+              ));
+        }
       } else if (dataSent == false) {
         title = 'Error';
         messageText = 'Data has not been uploaded to the server';
@@ -319,7 +360,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   List outputList() {
     List<dynamic> data = [];
     getAdjustedPos = -posList[0];
-    print(getAdjustedPos);
     carVelocity = -posList[2];
     print(carVelocity);
     data.addAll([
