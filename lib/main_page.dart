@@ -119,7 +119,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   Color timerColor = Colors.blue;
   double carVelocity = 0.0;
   List<dynamic> dataList = [];
-  Future<Data> _futureData;
+  //Future<Data> _futureData;
   String title = '';
   String messageText = '';
   Map dataMap = {};
@@ -129,6 +129,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   List posList = [0.0, 0.0, 0.0];
   double prevPos = 0.0;
   double prevTime = 0.0;
+  double currentTime = 0.0;
 
   showAlertDialog(BuildContext context) {
     // set up the button
@@ -288,8 +289,13 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
     //calls functions that check for joystick movement and car position, then adds that to the output list
     carTimer = Timer.periodic(Duration(microseconds: 16667), (Timer t) {
-      posList = carEngine.getPos(joyStickPos, posList[1], timeMax, posList[0],
-          stopwatch.elapsedMilliseconds.toDouble());
+      setState(() {
+        prevTime = currentTime;
+        currentTime = stopwatch.elapsedMilliseconds.toDouble();
+      });
+      print('$prevTime , $currentTime');
+      posList = carEngine.getPos(
+          joyStickPos, posList[1], timeMax, posList[0], currentTime, prevTime);
       dataList.add(outputList());
     });
     //dataList.add(outputList(prevPos, prevTime));

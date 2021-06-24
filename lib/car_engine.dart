@@ -18,7 +18,8 @@ class CarEngine {
   //eq point is about 0.96788990825 percent of distance (in original formula)
   //so -(lpc * .45) * ~.03  should be eq point
 
-  List getPos(sliderPos, getCurrentPos, timeMax, adjustedPos, currentTime) {
+  List getPos(
+      sliderPos, getCurrentPos, timeMax, adjustedPos, currentTime, prevTime) {
     double iceStart = lpc * .3;
     double iceEnd = lpc * .4;
 
@@ -32,15 +33,14 @@ class CarEngine {
     */
 
     vW = (1.0 / timeMax);
-    double prevTime = currentTime - 17;
-    //dy = -eqPoint*getCurrentPos + (joyStickPos * aW) * dt
+    double deltaTime = currentTime - prevTime;
     dy = (iceGain * sliderPos * vW) * dt;
     double getAdjustedPos = (dy + adjustedPos);
     dy = dy * 0.435 * lpc; //scaled by distance from start to finish
     //dy = ((-eqPoint * getCurrentPos) + (joyStickPos * aW)) * dt;
     getCurrentPos = (dy + getCurrentPos);
-    velocity = (getAdjustedPos - adjustedPos) /
-        ((currentTime - prevTime) / 3); //normalized units per second
+    velocity = ((getAdjustedPos - adjustedPos) / deltaTime) /
+        1000; //normalized units per second
 
     List posList = [getAdjustedPos, getCurrentPos, velocity];
     return posList;
