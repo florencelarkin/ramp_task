@@ -293,7 +293,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         prevTime = currentTime;
         currentTime = stopwatch.elapsedMilliseconds.toDouble();
       });
-      print('$prevTime , $currentTime');
       posList = carEngine.getPos(
           joyStickPos, posList[1], timeMax, posList[0], currentTime, prevTime);
       dataList.add(outputList());
@@ -367,7 +366,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     List<dynamic> data = [];
     getAdjustedPos = -posList[0];
     carVelocity = -posList[2];
-    print(carVelocity);
+    print(joyStickPos);
     data.addAll([
       stopwatch.elapsedMilliseconds.toString(),
       joyStickPos.toString(),
@@ -456,23 +455,23 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   },
                 ),
 
-                SizedBox(height: lpc * 0.05),
+                //SizedBox(height: lpc * 0.05),
                 // Slider
                 Container(
-                  height: lpc * 0.24,
+                  height: lpc * 0.30,
                   width: 300.0,
                   child: Transform.scale(
-                    scale: 0.5,
+                    scale: 0.75,
                     child: Transform.rotate(
                       angle: pi / 2,
                       child: SliderTheme(
                         data: SliderTheme.of(context).copyWith(
-                          trackHeight: 30.0,
+                          trackHeight: 0.0,
                           thumbColor: Colors.white,
-                          thumbShape:
-                              RoundSliderThumbShape(enabledThumbRadius: 70.0),
-                          activeTrackColor: Colors.white,
-                          inactiveTrackColor: Colors.white,
+                          thumbShape: RoundSliderThumbShape(
+                              enabledThumbRadius: lpc * 0.05),
+                          activeTrackColor: Colors.transparent,
+                          inactiveTrackColor: Colors.transparent,
                         ),
                         child: Slider(
                           inactiveColor: Colors.white,
