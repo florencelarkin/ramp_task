@@ -12,3 +12,8 @@ A list is created every time there is a change in the slider position, and is ad
 ```
 flutter build web --profile --dart-define=Dart2jsOptimization=O0
 ```
+
+## Copy to target directory
+```
+scp  -i ~/.ssh/restserver_key.pem  -r web $lnpirestuser:/var/www/html/driving
+```
