@@ -5,9 +5,9 @@ import 'url_args.dart';
 void main() => runApp(DrivingTask());
 
 Map<String, String> urlArgs = {};
-String subjectID = 'test50native';
+String subjectID = 'test75native';
 int totalTrials = 10;
-double maxTime = 0.5;
+double maxTime = 0.75;
 String defaultTitle = 'test page';
 double iceGain = 1.0;
 
