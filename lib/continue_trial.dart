@@ -212,27 +212,6 @@ class _ContinuationPageState extends State<ContinuationPage> {
               SizedBox(
                 height: 100.0,
               ),
-              ElevatedButton(
-                  child: Text('EXIT'),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.red, // background
-                    onPrimary: Colors.white, // foreground
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => QuitPage(
-                            uuid: uuid,
-                            subjectId: subjectId,
-                            lpc: lpc,
-                            blockNumber: blockNumber,
-                            trialNumber: trialNumber,
-                            iceGain: iceGain,
-                            timeMax: timeMax),
-                      ),
-                    );
-                  }),
             ],
           ),
           SizedBox(
