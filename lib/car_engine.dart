@@ -19,8 +19,8 @@ class CarEngine {
 
   List getPos(
       sliderPos, getCurrentPos, timeMax, prevPos, currentTime, prevTime) {
-    double iceStart = lpc * .3;
-    double iceEnd = lpc * .4;
+    //double iceStart = lpc * .3;
+    //double iceEnd = lpc * .4;
 
     double iceGain = 1.0;
     /*
@@ -33,7 +33,7 @@ class CarEngine {
 
     vW = (1.0 / timeMax);
     double deltaTime = currentTime - prevTime;
-    dy = (iceGain * sliderPos * vW) * deltaTime;
+    dy = (iceGain * sliderPos * vW) * (deltaTime / 1000);
     double getAdjustedPos = (dy + prevPos);
     dy = dy * 0.435 * lpc; //scaled by distance from start to finish
     //dy = ((-eqPoint * getCurrentPos) + (joyStickPos * aW)) * dt;
