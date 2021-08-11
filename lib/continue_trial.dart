@@ -1,5 +1,4 @@
 import 'main_page.dart';
-import 'quit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -13,6 +12,8 @@ class ContinuationPage extends StatefulWidget {
     this.timeMax,
     this.totalTrials,
     this.iceGain,
+    this.cutoffFreq,
+    this.order,
   });
   final String subjectId;
   final String uuid;
@@ -22,6 +23,8 @@ class ContinuationPage extends StatefulWidget {
   final double timeMax;
   final int totalTrials;
   final double iceGain;
+  final double cutoffFreq;
+  final int order;
 
   @override
   _ContinuationPageState createState() => _ContinuationPageState(
@@ -33,19 +36,24 @@ class ContinuationPage extends StatefulWidget {
         timeMax: timeMax,
         totalTrials: totalTrials,
         iceGain: iceGain,
+        cutoffFreq: cutoffFreq,
+        order: order,
       );
 }
 
 class _ContinuationPageState extends State<ContinuationPage> {
-  _ContinuationPageState(
-      {@required this.subjectId,
-      @required this.uuid,
-      this.trialNumber,
-      this.blockNumber,
-      this.lpc,
-      this.timeMax,
-      this.totalTrials,
-      this.iceGain});
+  _ContinuationPageState({
+    @required this.subjectId,
+    @required this.uuid,
+    this.trialNumber,
+    this.blockNumber,
+    this.lpc,
+    this.timeMax,
+    this.totalTrials,
+    this.iceGain,
+    this.cutoffFreq,
+    this.order,
+  });
   String subjectId;
   double maxVelocity;
   String uuid;
@@ -56,6 +64,8 @@ class _ContinuationPageState extends State<ContinuationPage> {
   int totalTrials;
   double iceGain;
   String timeString = '0.75';
+  double cutoffFreq;
+  int order;
 
   showAlertDialog(BuildContext context) {
     // set up the button
@@ -102,31 +112,6 @@ class _ContinuationPageState extends State<ContinuationPage> {
               ),
             ),
           ),
-          /*Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Center(
-                child: Text(
-                  'Please enter time for car to reach stop sign:',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-          ),
-          Container(
-            child: TextField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                  hintText: timeString),
-              onChanged: (value) {
-                timeString = value;
-              },
-            ),
-            width: MediaQuery.of(context).size.width * 0.75,
-          ),*/
           SizedBox(height: MediaQuery.of(context).size.height * .1),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -138,7 +123,6 @@ class _ContinuationPageState extends State<ContinuationPage> {
                     onPrimary: Colors.white, // foreground
                   ),
                   onPressed: () {
-                    SystemChannels.textInput.invokeMethod('TextInput.hide');
                     Navigator.pop(context);
                   }),
               SizedBox(
@@ -152,43 +136,6 @@ class _ContinuationPageState extends State<ContinuationPage> {
                   ),
                   onPressed: () {
                     trialNumber++;
-                    /*SystemChannels.textInput.invokeMethod('TextInput.hide');
-                    if (timeString.contains(new RegExp(r'[0-9\.]'))) {
-                      if (timeString == '.') {
-                        showAlertDialog(context);
-                      } else if (timeString != '.75') {
-                        timeMax = double.tryParse(timeString);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MainPage(
-                                timeMax: timeMax,
-                                subjectId: subjectId,
-                                uuid: uuid,
-                                trialNumber: trialNumber,
-                                blockNumber: blockNumber,
-                                lpc: lpc),
-                          ),
-                        );
-                      } else {
-                        timeMax = 0.75;
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MainPage(
-                              timeMax: timeMax,
-                              subjectId: subjectId,
-                              uuid: uuid,
-                              trialNumber: trialNumber,
-                              blockNumber: blockNumber,
-                              lpc: lpc,
-                            ),
-                          ),
-                        );
-                      }
-                    } else {
-                      showAlertDialog(context);
-                    }*/
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -201,6 +148,8 @@ class _ContinuationPageState extends State<ContinuationPage> {
                           lpc: lpc,
                           totalTrials: totalTrials,
                           iceGain: iceGain,
+                          cutoffFreq: cutoffFreq,
+                          order: order,
                         ),
                       ),
                     );

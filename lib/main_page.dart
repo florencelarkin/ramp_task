@@ -21,6 +21,8 @@ class MainPage extends StatefulWidget {
     @required this.lpc,
     this.totalTrials,
     this.iceGain,
+    this.cutoffFreq,
+    this.order,
   });
   final double timeMax;
   final String subjectId;
@@ -30,6 +32,8 @@ class MainPage extends StatefulWidget {
   final double lpc;
   final int totalTrials;
   final double iceGain;
+  final double cutoffFreq;
+  final int order;
 
   @override
   _MainPageState createState() => _MainPageState(
@@ -41,6 +45,8 @@ class MainPage extends StatefulWidget {
         lpc: lpc,
         totalTrials: totalTrials,
         iceGain: iceGain,
+        cutoffFreq: cutoffFreq,
+        order: order,
       );
 }
 
@@ -54,6 +60,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     this.lpc,
     this.totalTrials,
     this.iceGain,
+    this.cutoffFreq,
+    this.order,
   });
   double timeMax;
   String subjectId;
@@ -63,6 +71,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   double lpc;
   int totalTrials;
   double iceGain;
+  double cutoffFreq;
+  int order;
   final browser = Browser.detectOrNull();
 
   AnimationController _timerController;
@@ -149,6 +159,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 timeMax: timeMax,
                 totalTrials: totalTrials,
                 iceGain: iceGain,
+                cutoffFreq: cutoffFreq,
+                order: order,
               ),
             ),
           );
@@ -165,6 +177,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 totalTrials: totalTrials,
                 timeMax: timeMax,
                 iceGain: iceGain,
+                cutoffFreq: cutoffFreq,
+                order: order,
               ),
             ),
           );
@@ -199,7 +213,13 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     super.initState();
     var startTime = new DateTime.now();
     CarEngine carEngine = CarEngine(
-        timeMax: timeMax, lpc: lpc, trialNumber: trialNumber, urlGain: iceGain);
+      timeMax: timeMax,
+      lpc: lpc,
+      trialNumber: trialNumber,
+      urlGain: iceGain,
+      cutoffFreq: cutoffFreq,
+      order: order,
+    );
     // check platform
     checkWebPlatform();
     // initialize the header of the dataList
@@ -231,6 +251,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 timeMax: timeMax,
                 totalTrials: totalTrials,
                 iceGain: iceGain,
+                cutoffFreq: cutoffFreq,
+                order: order,
               ),
             ),
           );
@@ -247,6 +269,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 totalTrials: totalTrials,
                 timeMax: timeMax,
                 iceGain: iceGain,
+                cutoffFreq: cutoffFreq,
+                order: order,
               ),
             ),
           );
@@ -325,6 +349,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
       dataMap['\"EndTime\"'] = addQuotesToString(endTime.toIso8601String());
       dataMap['\"Sensitivity\"'] = timeMax.toString();
+      dataMap['\"CutoffFrequency\"'] = cutoffFreq.toString();
       dataMap['\"TotalTrials\"'] = addQuotesToString(totalTrials.toString());
       dataMap['\"ScreenSize\"'] = addQuotesToString('$width x $height');
       dataMap['\"Moves\"'] = dataList;

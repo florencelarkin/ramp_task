@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'subj_id.dart';
 import 'continue_trial.dart';
 import 'package:uuid/uuid.dart';
 
@@ -9,18 +8,25 @@ class InstructionPage7 extends StatefulWidget {
     @required this.subjectId,
     @required this.totalTrials,
     this.iceGain,
+    this.cutoffFreq,
+    this.order,
   });
   final double timeMax;
   final String subjectId;
   final int totalTrials;
   final double iceGain;
+  final double cutoffFreq;
+  final int order;
 
   @override
   _InstructionPage7State createState() => _InstructionPage7State(
-      timeMax: timeMax,
-      subjectId: subjectId,
-      totalTrials: totalTrials,
-      iceGain: iceGain);
+        timeMax: timeMax,
+        subjectId: subjectId,
+        totalTrials: totalTrials,
+        iceGain: iceGain,
+        cutoffFreq: cutoffFreq,
+        order: order,
+      );
 }
 
 class _InstructionPage7State extends State<InstructionPage7> {
@@ -29,11 +35,15 @@ class _InstructionPage7State extends State<InstructionPage7> {
     @required this.subjectId,
     @required this.totalTrials,
     this.iceGain,
+    this.cutoffFreq,
+    this.order,
   });
   double timeMax;
   String subjectId;
   int totalTrials;
   double iceGain;
+  double cutoffFreq;
+  int order;
 
   var uuid = Uuid();
   int trialNumber = 0;
@@ -90,12 +100,6 @@ class _InstructionPage7State extends State<InstructionPage7> {
                     onPrimary: Colors.white, // foreground
                   ),
                   onPressed: () {
-                    /* Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SubjectIDPage(),
-                      ),
-                    );*/
                     double lpc = MediaQuery.of(context).size.height;
                     String newId = uuid.v1();
                     Navigator.push(
@@ -110,6 +114,8 @@ class _InstructionPage7State extends State<InstructionPage7> {
                           totalTrials: totalTrials,
                           timeMax: timeMax,
                           iceGain: iceGain,
+                          cutoffFreq: cutoffFreq,
+                          order: order,
                         ),
                       ),
                     );

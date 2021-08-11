@@ -7,18 +7,25 @@ class InstructionPage6 extends StatefulWidget {
     @required this.subjectId,
     @required this.totalTrials,
     this.iceGain,
+    this.cutoffFreq,
+    this.order,
   });
   final double timeMax;
   final String subjectId;
   final int totalTrials;
   final double iceGain;
+  final double cutoffFreq;
+  final int order;
 
   @override
   _InstructionPage6State createState() => _InstructionPage6State(
-      timeMax: timeMax,
-      subjectId: subjectId,
-      totalTrials: totalTrials,
-      iceGain: iceGain);
+        timeMax: timeMax,
+        subjectId: subjectId,
+        totalTrials: totalTrials,
+        iceGain: iceGain,
+        cutoffFreq: cutoffFreq,
+        order: order,
+      );
 }
 
 class _InstructionPage6State extends State<InstructionPage6> {
@@ -27,11 +34,15 @@ class _InstructionPage6State extends State<InstructionPage6> {
     @required this.subjectId,
     @required this.totalTrials,
     this.iceGain,
+    this.cutoffFreq,
+    this.order,
   });
   double timeMax;
   String subjectId;
   int totalTrials;
   double iceGain;
+  double cutoffFreq;
+  int order;
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +109,7 @@ class _InstructionPage6State extends State<InstructionPage6> {
                     onPrimary: Colors.white, // foreground
                   ),
                   onPressed: () {
+                    print(order);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -106,6 +118,8 @@ class _InstructionPage6State extends State<InstructionPage6> {
                           totalTrials: totalTrials,
                           subjectId: subjectId,
                           iceGain: iceGain,
+                          cutoffFreq: cutoffFreq,
+                          order: order,
                         ),
                       ),
                     );

@@ -3,11 +3,11 @@ import 'package:json_annotation/json_annotation.dart';
 import 'dart:async';
 import 'dart:convert';
 
-//String serverURL = 'https://x0-29.psych.umn.edu/dend/posts';
-String serverURL = 'https://tasks.laureateinstitute.org/api/driving/v1/posts';
-//String serverURL = 'https://lnpitest.northcentralus.cloudapp.azure.com/dend/posts';
-//String serverURL = 'https://lnpitask.med.umn.edu/dend/posts';
-//String serverURL = 'https://lnpitask.umn.edu/dend/posts';
+//String _serverURL = 'https://x0-29.psych.umn.edu/dend/posts';
+String _serverURL = 'https://tasks.laureateinstitute.org/api/driving/v1/posts';
+//String _serverURL = 'https://lnpitest.northcentralus.cloudapp.azure.com/dend/posts';
+//String _serverURL = 'https://lnpitask.med.umn.edu/dend/posts';
+//String _serverURL = 'https://lnpitask.umn.edu/dend/posts';
 
 @JsonSerializable(nullable: false)
 Data _$DataFromJson(Map<String, dynamic> json) {
@@ -53,7 +53,7 @@ Future<bool> createData(
   String jsonUser = jsonEncode(data);
 
   final http.Response response = await http.post(
-    serverURL,
+    _serverURL,
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

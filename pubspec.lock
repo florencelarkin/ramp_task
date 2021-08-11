@@ -92,6 +92,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0"
+  complex:
+    dependency: transitive
+    description:
+      name: complex
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.0"
   control_pad:
     dependency: "direct main"
     description:
@@ -212,6 +219,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.4"
+  iirjdart:
+    dependency: "direct main"
+    description:
+      name: iirjdart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1"
   intl:
     dependency: transitive
     description:

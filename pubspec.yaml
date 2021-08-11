@@ -41,6 +41,7 @@ dependencies:
   shared_preferences: ^0.5.12+4
   web_browser_detect: ^2.0.1
   url_launcher: ^6.0.3
+  iirjdart: ^0.0.1
 
 dev_dependencies:
   flutter_test:

@@ -5,11 +5,13 @@ import 'url_args.dart';
 void main() => runApp(DrivingTask());
 
 Map<String, String> urlArgs = {};
-String subjectID = 'test75native';
-int totalTrials = 10;
+String subjectID = 'cutoffFreqTest';
+int totalTrials = 2;
 double maxTime = 0.75;
 String defaultTitle = 'test page';
 double iceGain = 1.0;
+double cutoffFreq = 50.0;
+int order = 2;
 
 class DrivingTask extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -24,6 +26,8 @@ class DrivingTask extends StatelessWidget {
         totalTrials: totalTrials,
         timeMax: maxTime,
         iceGain: iceGain,
+        cutoffFreq: cutoffFreq,
+        order: order,
       ),
       onGenerateRoute: (settings) {
         print("settings.name " + settings.name);
@@ -43,6 +47,12 @@ class DrivingTask extends StatelessWidget {
         if (urlArgs.containsKey('ice')) {
           iceGain = double.parse(urlArgs['ice']);
         }
+        if (urlArgs.containsKey('cutoff')) {
+          cutoffFreq = double.parse(urlArgs['cutoff']);
+        }
+        if (urlArgs.containsKey('order')) {
+          order = int.parse(urlArgs['order']);
+        }
 
         // check for /?id=1234&time=2.0
         switch (settings.name[1]) {
@@ -53,6 +63,8 @@ class DrivingTask extends StatelessWidget {
                 timeMax: maxTime,
                 totalTrials: totalTrials,
                 iceGain: iceGain,
+                cutoffFreq: cutoffFreq,
+                order: order,
               ),
             );
             break;
@@ -63,6 +75,8 @@ class DrivingTask extends StatelessWidget {
                 totalTrials: 1,
                 timeMax: 1.0,
                 iceGain: 1.0,
+                cutoffFreq: 50.0,
+                order: 2,
               ),
             );
         }
