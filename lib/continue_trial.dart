@@ -1,6 +1,6 @@
 import 'main_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+//import 'package:flutter/services.dart';
 
 class ContinuationPage extends StatefulWidget {
   ContinuationPage({
@@ -114,9 +114,9 @@ class _ContinuationPageState extends State<ContinuationPage> {
           ),
           SizedBox(height: MediaQuery.of(context).size.height * .1),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
+              /*ElevatedButton(
                   child: Text('BACK'),
                   style: ElevatedButton.styleFrom(
                     primary: Colors.blue, // background
@@ -124,10 +124,10 @@ class _ContinuationPageState extends State<ContinuationPage> {
                   ),
                   onPressed: () {
                     Navigator.pop(context);
-                  }),
-              SizedBox(
+                  }),*/
+              /*SizedBox(
                 width: 50.0,
-              ),
+              ),*/
               ElevatedButton(
                   child: Text('START'),
                   style: ElevatedButton.styleFrom(

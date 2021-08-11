@@ -6,7 +6,7 @@ void main() => runApp(DrivingTask());
 
 Map<String, String> urlArgs = {};
 String subjectID = 'cutoffFreqTest';
-int totalTrials = 2;
+int totalTrials = 20;
 double maxTime = 0.75;
 String defaultTitle = 'test page';
 double iceGain = 1.0;
