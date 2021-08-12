@@ -25,6 +25,7 @@ class CarEngine {
   int order; //order for the low pass filter, recommend second order for starting default
 // https://api.flutter.dev/flutter/widgets/MediaQuery-class.html
   Butterworth butterworth = new Butterworth();
+  double sliderFilter;
 
   List getPos(
       sliderPos, getCurrentPos, timeMax, prevPos, currentTime, prevTime) {
@@ -48,10 +49,10 @@ class CarEngine {
     double deltaTime =
         currentTime - prevTime; //change in time to measure frame rate
 
-    dy = butterworth.filter(
+    sliderFilter = butterworth.filter(
         sliderPos); //takes in slider position and puts it through a low pass filter
 
-    dy = (iceGain * sliderPos * vW) * (deltaTime / 1000);
+    dy = (iceGain * sliderFilter * vW) * (deltaTime / 1000);
 
     double getAdjustedPos = (dy +
         prevPos); //virtualized position, this is what goes in data and is used to calculate velocity
