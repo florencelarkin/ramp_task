@@ -9,6 +9,7 @@ class InstructionPage extends StatefulWidget {
     this.iceGain,
     this.cutoffFreq,
     this.order,
+    this.samplingFreq,
   });
   final double timeMax;
   final String subjectId;
@@ -16,6 +17,7 @@ class InstructionPage extends StatefulWidget {
   final double iceGain;
   final double cutoffFreq;
   final int order;
+  final double samplingFreq;
 
   @override
   _InstructionPageState createState() => _InstructionPageState(
@@ -25,6 +27,7 @@ class InstructionPage extends StatefulWidget {
         iceGain: iceGain,
         cutoffFreq: cutoffFreq,
         order: order,
+        samplingFreq: samplingFreq,
       );
 }
 
@@ -36,6 +39,7 @@ class _InstructionPageState extends State<InstructionPage> {
     this.iceGain,
     this.cutoffFreq,
     this.order,
+    this.samplingFreq,
   });
   double timeMax;
   String subjectId;
@@ -43,6 +47,7 @@ class _InstructionPageState extends State<InstructionPage> {
   double iceGain;
   double cutoffFreq;
   int order;
+  double samplingFreq;
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +99,7 @@ class _InstructionPageState extends State<InstructionPage> {
                       iceGain: iceGain,
                       cutoffFreq: cutoffFreq,
                       order: order,
+                      samplingFreq: samplingFreq,
                     ),
                   ),
                 );

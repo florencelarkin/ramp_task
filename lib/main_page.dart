@@ -23,6 +23,7 @@ class MainPage extends StatefulWidget {
     this.iceGain,
     this.cutoffFreq,
     this.order,
+    this.samplingFreq,
   });
   final double timeMax;
   final String subjectId;
@@ -34,6 +35,7 @@ class MainPage extends StatefulWidget {
   final double iceGain;
   final double cutoffFreq;
   final int order;
+  final double samplingFreq;
 
   @override
   _MainPageState createState() => _MainPageState(
@@ -47,6 +49,7 @@ class MainPage extends StatefulWidget {
         iceGain: iceGain,
         cutoffFreq: cutoffFreq,
         order: order,
+        samplingFreq: samplingFreq,
       );
 }
 
@@ -62,6 +65,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     this.iceGain,
     this.cutoffFreq,
     this.order,
+    this.samplingFreq,
   });
   double timeMax;
   String subjectId;
@@ -73,6 +77,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   double iceGain;
   double cutoffFreq;
   int order;
+  double samplingFreq;
+
   final browser = Browser.detectOrNull();
 
   AnimationController _timerController;
@@ -161,6 +167,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 iceGain: iceGain,
                 cutoffFreq: cutoffFreq,
                 order: order,
+                samplingFreq: samplingFreq,
               ),
             ),
           );
@@ -179,6 +186,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 iceGain: iceGain,
                 cutoffFreq: cutoffFreq,
                 order: order,
+                samplingFreq: samplingFreq,
               ),
             ),
           );
@@ -219,6 +227,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       urlGain: iceGain,
       cutoffFreq: cutoffFreq,
       order: order,
+      samplingFreq: samplingFreq,
     );
     // check platform
     checkWebPlatform();
@@ -253,6 +262,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 iceGain: iceGain,
                 cutoffFreq: cutoffFreq,
                 order: order,
+                samplingFreq: samplingFreq,
               ),
             ),
           );
@@ -271,6 +281,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 iceGain: iceGain,
                 cutoffFreq: cutoffFreq,
                 order: order,
+                samplingFreq: samplingFreq,
               ),
             ),
           );
@@ -348,8 +359,12 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       dataMap['\"TrialNumber\"'] = addQuotesToString(trialNumber.toString());
       dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
       dataMap['\"EndTime\"'] = addQuotesToString(endTime.toIso8601String());
-      dataMap['\"Sensitivity\"'] = timeMax.toString();
-      dataMap['\"CutoffFrequency\"'] = cutoffFreq.toString();
+      dataMap['\"Sensitivity\"'] = addQuotesToString(timeMax.toString());
+      dataMap['\"FilterCutoffFrequency\"'] =
+          addQuotesToString(cutoffFreq.toString());
+      dataMap['\"FilterOrder\"'] = addQuotesToString(order.toString());
+      dataMap['\"FilterSamplingFeq\"'] =
+          addQuotesToString(samplingFreq.toString());
       dataMap['\"TotalTrials\"'] = addQuotesToString(totalTrials.toString());
       dataMap['\"ScreenSize\"'] = addQuotesToString('$width x $height');
       dataMap['\"Moves\"'] = dataList;

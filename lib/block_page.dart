@@ -13,6 +13,7 @@ class BlockPage extends StatefulWidget {
     this.iceGain,
     this.cutoffFreq,
     this.order,
+    this.samplingFreq,
   });
   final String subjectId;
   final String uuid;
@@ -24,6 +25,7 @@ class BlockPage extends StatefulWidget {
   final double iceGain;
   final double cutoffFreq;
   final int order;
+  final double samplingFreq;
 
   @override
   _BlockPageState createState() => _BlockPageState(
@@ -37,6 +39,7 @@ class BlockPage extends StatefulWidget {
         iceGain: iceGain,
         cutoffFreq: cutoffFreq,
         order: order,
+        samplingFreq: samplingFreq,
       );
 }
 
@@ -52,6 +55,7 @@ class _BlockPageState extends State<BlockPage> {
     this.iceGain,
     this.cutoffFreq,
     this.order,
+    this.samplingFreq,
   });
   String subjectId;
   double maxVelocity;
@@ -64,6 +68,7 @@ class _BlockPageState extends State<BlockPage> {
   double iceGain;
   double cutoffFreq;
   int order;
+  double samplingFreq;
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +121,7 @@ class _BlockPageState extends State<BlockPage> {
                     iceGain: iceGain,
                     cutoffFreq: cutoffFreq,
                     order: order,
+                    samplingFreq: samplingFreq,
                   ),
                 ),
               );

@@ -14,6 +14,7 @@ class ContinuationPage extends StatefulWidget {
     this.iceGain,
     this.cutoffFreq,
     this.order,
+    this.samplingFreq,
   });
   final String subjectId;
   final String uuid;
@@ -25,6 +26,7 @@ class ContinuationPage extends StatefulWidget {
   final double iceGain;
   final double cutoffFreq;
   final int order;
+  final double samplingFreq;
 
   @override
   _ContinuationPageState createState() => _ContinuationPageState(
@@ -38,6 +40,7 @@ class ContinuationPage extends StatefulWidget {
         iceGain: iceGain,
         cutoffFreq: cutoffFreq,
         order: order,
+        samplingFreq: samplingFreq,
       );
 }
 
@@ -53,6 +56,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
     this.iceGain,
     this.cutoffFreq,
     this.order,
+    this.samplingFreq,
   });
   String subjectId;
   double maxVelocity;
@@ -66,6 +70,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
   String timeString = '0.75';
   double cutoffFreq;
   int order;
+  double samplingFreq;
 
   showAlertDialog(BuildContext context) {
     // set up the button
@@ -150,6 +155,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
                           iceGain: iceGain,
                           cutoffFreq: cutoffFreq,
                           order: order,
+                          samplingFreq: samplingFreq,
                         ),
                       ),
                     );

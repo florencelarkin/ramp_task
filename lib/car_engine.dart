@@ -8,6 +8,7 @@ class CarEngine {
     this.urlGain,
     this.cutoffFreq,
     this.order,
+    this.samplingFreq,
   });
   double urlGain; //not currently used
   int trialNumber;
@@ -23,6 +24,8 @@ class CarEngine {
   double iceGain = 1.0; //not currently used
   double velocity = 0.0;
   int order; //order for the low pass filter, recommend second order for starting default
+  double
+      samplingFreq; //sampling frequency for Butterworth filter, should be set to 60.0 as default
 // https://api.flutter.dev/flutter/widgets/MediaQuery-class.html
   Butterworth butterworth = new Butterworth();
   double sliderFilter;
@@ -40,7 +43,7 @@ class CarEngine {
       iceGain = 1.0;
     }
     */
-    butterworth.lowPass(order, 60,
+    butterworth.lowPass(order, samplingFreq,
         cutoffFreq); //(order, sampling freq, cutoff freq put in url) filters slider input
 
     vW = (1.0 /

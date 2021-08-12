@@ -10,8 +10,9 @@ int totalTrials = 20;
 double maxTime = 0.75;
 String defaultTitle = 'test page';
 double iceGain = 1.0;
-double cutoffFreq = 50.0;
+double cutoffFreq = 10.0;
 int order = 2;
+double samplingFreq = 60.0;
 
 class DrivingTask extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -53,6 +54,9 @@ class DrivingTask extends StatelessWidget {
         if (urlArgs.containsKey('order')) {
           order = int.parse(urlArgs['order']);
         }
+        if (urlArgs.containsKey('sample')) {
+          samplingFreq = double.parse(urlArgs['sample']);
+        }
 
         // check for /?id=1234&time=2.0
         switch (settings.name[1]) {
@@ -65,6 +69,7 @@ class DrivingTask extends StatelessWidget {
                 iceGain: iceGain,
                 cutoffFreq: cutoffFreq,
                 order: order,
+                samplingFreq: samplingFreq,
               ),
             );
             break;
@@ -77,6 +82,7 @@ class DrivingTask extends StatelessWidget {
                 iceGain: 1.0,
                 cutoffFreq: 50.0,
                 order: 2,
+                samplingFreq: 60.0,
               ),
             );
         }
