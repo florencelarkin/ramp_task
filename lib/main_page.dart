@@ -107,6 +107,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       browserType = browser.toString();
     } else {
       webFlag = false;
+      browserType = '';
 
       platformType = Platform.operatingSystem;
       // now check platform
