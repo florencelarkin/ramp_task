@@ -29,6 +29,7 @@ class DrivingTask extends StatelessWidget {
         iceGain: iceGain,
         cutoffFreq: cutoffFreq,
         order: order,
+        samplingFreq: samplingFreq,
       ),
       onGenerateRoute: (settings) {
         print("settings.name " + settings.name);
