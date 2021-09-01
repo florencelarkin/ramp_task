@@ -361,7 +361,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     });
   }
 
-  void _mistrialEvent(PointerEvent details) {
+  void _mistrialSlider(PointerEvent details) {
     setState(() {
       trialTimer.cancel();
       Navigator.push(
@@ -494,6 +494,29 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       setState(() {
         prevTime = currentTime;
         currentTime = stopwatch.elapsedMilliseconds.toDouble();
+        if (posList[0] < -2.0 || posList[0] > 1.0) {
+          //if you go off the screen in either direction
+          carTimer.cancel();
+          trialTimer.cancel();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MistrialPage(
+                subjectId: subjectId,
+                uuid: uuid,
+                trialNumber: trialNumber,
+                blockNumber: blockNumber,
+                lpc: lpc,
+                timeMax: timeMax,
+                totalTrials: totalTrials,
+                iceGain: iceGain,
+                cutoffFreq: cutoffFreq,
+                order: order,
+                samplingFreq: samplingFreq,
+              ),
+            ),
+          );
+        }
       });
       posList = carEngine.getPos(
           joyStickPos, posList[1], timeMax, posList[0], currentTime, prevTime);
@@ -686,7 +709,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                           onPointerUp: pointerCheck == true ||
                                   pointerCheck == false &&
                                       stopwatch.elapsedMilliseconds > 5000
-                              ? _mistrialEvent
+                              ? _mistrialSlider
                               : null,
                           child: Slider(
                             inactiveColor: Colors.white,
@@ -696,6 +719,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                             max: 100.0,
                             onChanged: (double newValue) {
                               setState(() {
+                                print(posList[0]);
                                 if (timerString == '0') {
                                   joyStickPos = newValue / 100;
                                 } else {}
