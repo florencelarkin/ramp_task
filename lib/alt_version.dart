@@ -1,3 +1,6 @@
+//old version where car moved by tilting phone, sensors package is deprecated, most likely will delete this file
+
+/*
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sensors/sensors.dart';
@@ -139,3 +142,4 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
 
 
 }
+*/

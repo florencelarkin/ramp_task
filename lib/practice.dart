@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:driving_task/continue_trial.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'dart:math';
 import 'dart:async';
 import 'car_engine.dart';
@@ -12,8 +11,6 @@ import 'block_page.dart';
 import 'completed_screen.dart';
 import 'package:web_browser_detect/web_browser_detect.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'mistrial.dart';
-import 'package:flutter/widgets.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({
@@ -85,21 +82,17 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   final browser = Browser.detectOrNull();
 
-  AnimationController _timerController;
   AnimationController _carController;
   AnimationController _countdownController;
   Timer carTimer;
   Timer colorTimer;
   Timer dataTimer;
   Timer serverTimeout;
-  Timer trialTimer;
 
   bool webFlag = false; // true if running web
   String platformType = ""; // the platform: android, ios, windows, linux
   final String taskVersion = "driving_task:0.9";
   String browserType = "";
-  static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  Map<String, dynamic> _deviceData = <String, dynamic>{};
 
   String addQuotesToString(String text) {
     var quoteText = '\"' + text + '\"';
@@ -108,160 +101,30 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   void checkWebPlatform() {
     // check the platform and whether web
-    kIsWeb
-        ? platformType = 'Web Browser'
-        : Platform.isAndroid
-            ? platformType = 'Android'
-            : Platform.isIOS
-                ? platformType = 'iOS'
-                : Platform.isLinux
-                    ? platformType = 'Linux'
-                    : Platform.isMacOS
-                        ? platformType = 'MacOS'
-                        : Platform.isWindows
-                            ? platformType = 'Windows'
-                            : platformType = '';
-  }
 
-  Future<void> initPlatformState() async {
-    var deviceData = <String, dynamic>{};
+    if (kIsWeb) {
+      webFlag = true;
+      browserType = browser.toString();
+    } else {
+      webFlag = false;
+      browserType = '';
 
-    try {
-      if (kIsWeb) {
-        deviceData = _readWebBrowserInfo(await deviceInfoPlugin.webBrowserInfo);
-      } else {
-        if (Platform.isAndroid) {
-          deviceData =
-              _readAndroidBuildData(await deviceInfoPlugin.androidInfo);
-        } else if (Platform.isIOS) {
-          deviceData = _readIosDeviceInfo(await deviceInfoPlugin.iosInfo);
-        } else if (Platform.isLinux) {
-          deviceData = _readLinuxDeviceInfo(await deviceInfoPlugin.linuxInfo);
-        } else if (Platform.isMacOS) {
-          deviceData = _readMacOsDeviceInfo(await deviceInfoPlugin.macOsInfo);
-        } else if (Platform.isWindows) {
-          deviceData =
-              _readWindowsDeviceInfo(await deviceInfoPlugin.windowsInfo);
-        }
+      platformType = Platform.operatingSystem;
+      // now check platform
+      if (Platform.isAndroid) {
+        platformType = 'android';
+      } else if (Platform.isIOS) {
+        platformType = 'ios';
+      } else if (Platform.isLinux) {
+        platformType = 'linux';
+      } else if (Platform.isWindows) {
+        platformType = 'windows';
+      } else if (Platform.isMacOS) {
+        platformType = 'macOS';
+      } else if (Platform.isFuchsia) {
+        platformType = 'fuchsia';
       }
-    } on PlatformException {
-      deviceData = <String, dynamic>{
-        'Error:': 'Failed to get platform version.'
-      };
     }
-
-    if (!mounted) return;
-
-    setState(() {
-      _deviceData = deviceData;
-    });
-  }
-
-  Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {
-    return <String, dynamic>{
-      'version.securityPatch': build.version.securityPatch,
-      'version.sdkInt': build.version.sdkInt,
-      'version.release': build.version.release,
-      'version.previewSdkInt': build.version.previewSdkInt,
-      'version.incremental': build.version.incremental,
-      'version.codename': build.version.codename,
-      'version.baseOS': build.version.baseOS,
-      'board': build.board,
-      'bootloader': build.bootloader,
-      'brand': build.brand,
-      'device': build.device,
-      'display': build.display,
-      'fingerprint': build.fingerprint,
-      'hardware': build.hardware,
-      'host': build.host,
-      'id': build.id,
-      'manufacturer': build.manufacturer,
-      'model': build.model,
-      'product': build.product,
-      'supported32BitAbis': build.supported32BitAbis,
-      'supported64BitAbis': build.supported64BitAbis,
-      'supportedAbis': build.supportedAbis,
-      'tags': build.tags,
-      'type': build.type,
-      'isPhysicalDevice': build.isPhysicalDevice,
-      'androidId': build.androidId,
-      'systemFeatures': build.systemFeatures,
-    };
-  }
-
-  Map<String, dynamic> _readIosDeviceInfo(IosDeviceInfo data) {
-    return <String, dynamic>{
-      'name': data.name,
-      'systemName': data.systemName,
-      'systemVersion': data.systemVersion,
-      'model': data.model,
-      'localizedModel': data.localizedModel,
-      'identifierForVendor': data.identifierForVendor,
-      'isPhysicalDevice': data.isPhysicalDevice,
-      'utsname.sysname:': data.utsname.sysname,
-      'utsname.nodename:': data.utsname.nodename,
-      'utsname.release:': data.utsname.release,
-      'utsname.version:': data.utsname.version,
-      'utsname.machine:': data.utsname.machine,
-    };
-  }
-
-  Map<String, dynamic> _readLinuxDeviceInfo(LinuxDeviceInfo data) {
-    return <String, dynamic>{
-      'name': data.name,
-      'version': data.version,
-      'id': data.id,
-      'idLike': data.idLike,
-      'versionCodename': data.versionCodename,
-      'versionId': data.versionId,
-      'prettyName': data.prettyName,
-      'buildId': data.buildId,
-      'variant': data.variant,
-      'variantId': data.variantId,
-      'machineId': data.machineId,
-    };
-  }
-
-  Map<String, dynamic> _readWebBrowserInfo(WebBrowserInfo data) {
-    return <String, dynamic>{
-      'browserName': describeEnum(data.browserName),
-      'appCodeName': data.appCodeName,
-      'appName': data.appName,
-      'appVersion': data.appVersion,
-      'deviceMemory': data.deviceMemory,
-      'language': data.language,
-      'languages': data.languages,
-      'platform': data.platform,
-      'product': data.product,
-      'productSub': data.productSub,
-      'userAgent': data.userAgent,
-      'vendor': data.vendor,
-      'vendorSub': data.vendorSub,
-      'hardwareConcurrency': data.hardwareConcurrency,
-      'maxTouchPoints': data.maxTouchPoints,
-    };
-  }
-
-  Map<String, dynamic> _readMacOsDeviceInfo(MacOsDeviceInfo data) {
-    return <String, dynamic>{
-      'computerName': data.computerName,
-      'hostName': data.hostName,
-      'arch': data.arch,
-      'model': data.model,
-      'kernelVersion': data.kernelVersion,
-      'osRelease': data.osRelease,
-      'activeCPUs': data.activeCPUs,
-      'memorySize': data.memorySize,
-      'cpuFrequency': data.cpuFrequency,
-    };
-  }
-
-  Map<String, dynamic> _readWindowsDeviceInfo(WindowsDeviceInfo data) {
-    return <String, dynamic>{
-      'numberOfCores': data.numberOfCores,
-      'computerName': data.computerName,
-      'systemMemoryInMegabytes': data.systemMemoryInMegabytes,
-    };
   }
 
   Stopwatch stopwatch = new Stopwatch()..start();
@@ -270,7 +133,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   double joyStickPos = 0.0;
   double getCurrentPos = 0.0;
   double dy = 0.0;
-  Color timerColor = Colors.blue;
   double carVelocity = 0.0;
   List<dynamic> dataList = [];
   //Future<Data> _futureData;
@@ -284,7 +146,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   double prevPos = 0.0;
   double prevTime = 0.0;
   double currentTime = 0.0;
-  bool pointerCheck = false;
 
   showAlertDialog(BuildContext context) {
     // set up the button
@@ -355,40 +216,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     );
   }
 
-  void _pointerCheck(PointerEvent details) {
-    setState(() {
-      pointerCheck = true;
-    });
-  }
-
-  void _mistrialEvent(PointerEvent details) {
-    setState(() {
-      trialTimer.cancel();
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MistrialPage(
-            subjectId: subjectId,
-            uuid: uuid,
-            trialNumber: trialNumber,
-            blockNumber: blockNumber,
-            lpc: lpc,
-            timeMax: timeMax,
-            totalTrials: totalTrials,
-            iceGain: iceGain,
-            cutoffFreq: cutoffFreq,
-            order: order,
-            samplingFreq: samplingFreq,
-          ),
-        ),
-      );
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    initPlatformState();
     var startTime = new DateTime.now();
     CarEngine carEngine = CarEngine(
       timeMax: timeMax,
@@ -401,8 +231,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     );
     // check platform
     checkWebPlatform();
-
     // initialize the header of the dataList
+
     dataList.add([
       addQuotesToString("times"),
       addQuotesToString("slider"),
@@ -485,9 +315,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     _carController =
         AnimationController(duration: const Duration(seconds: 10), vsync: this)
           ..repeat();
-    _timerController =
-        AnimationController(duration: Duration(seconds: 14), vsync: this);
-    _timerController.forward();
 
     //calls functions that check for joystick movement and car position, then adds that to the output list
     carTimer = Timer.periodic(Duration(microseconds: 16667), (Timer t) {
@@ -500,15 +327,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       dataList.add(outputList());
     });
     //dataList.add(outputList(prevPos, prevTime));
-    colorTimer = Timer.periodic(
-        Duration(milliseconds: 17),
-        (Timer t) => posList[1] < -lpc * .25 && posList[1] > -lpc * .435
-            ? timerColor = Colors.green
-            : timerColor = Colors.blue);
-    /*dataTimer = Timer.periodic(Duration(milliseconds: 17),
-        (Timer t) => dataList.add(outputList(prevPos, prevTime)));*/
-    //Timer for the end of the trial
-    trialTimer = Timer(Duration(seconds: 14), () {
+    Timer(Duration(seconds: 14), () {
       var endTime = new DateTime.now();
       double width = MediaQuery.of(context).size.width;
       double height = MediaQuery.of(context).size.height;
@@ -517,13 +336,12 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       dataMap[addQuotesToString("TaskVersion")] =
           addQuotesToString(taskVersion);
       dataMap[addQuotesToString("Platform")] = addQuotesToString(platformType);
-      /*dataMap[addQuotesToString("Web")] = webFlag;
-      dataMap[addQuotesToString("Browser")] = addQuotesToString(browserType);*/
+      dataMap[addQuotesToString("Web")] = webFlag;
+      dataMap[addQuotesToString("Browser")] = addQuotesToString(browserType);
       //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
       // has double quoted android_ia32
-      dataMap[addQuotesToString("DeviceData")] = _deviceData;
 
-      dataMap[addQuotesToString("SubjectID")] = addQuotesToString(subjectId);
+      dataMap['\"SubjectID\"'] = addQuotesToString(subjectId);
       dataMap['\"TrialNumber\"'] = addQuotesToString(trialNumber.toString());
       dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
       dataMap['\"EndTime\"'] = addQuotesToString(endTime.toIso8601String());
@@ -536,13 +354,10 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       dataMap['\"TotalTrials\"'] = addQuotesToString(totalTrials.toString());
       dataMap['\"ScreenSize\"'] = addQuotesToString('$width x $height');
       dataMap['\"Moves\"'] = dataList;
-      _timerController.stop();
       _carController.stop();
       _countdownController.stop();
       carTimer.cancel();
       colorTimer.cancel();
-      trialTimer.cancel();
-      //dataTimer.cancel();
       _serverUpload('driving01', uuid, dataMap.toString(), '01');
     });
   }
@@ -550,7 +365,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   @override
   void dispose() {
     _countdownController.dispose();
-    _timerController.dispose();
     _carController.dispose();
     super.dispose();
   }
@@ -596,19 +410,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            AnimatedBuilder(
-              animation: _timerController,
-              builder: (BuildContext context, Widget child) {
-                return Container(
-                  color: timerColor,
-                  height: timerString == '0'
-                      ? _timerController.value *
-                          MediaQuery.of(context).size.height
-                      : 0.0,
-                  width: 50.0,
-                );
-              },
-            ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -681,27 +482,19 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                           activeTrackColor: Colors.transparent,
                           inactiveTrackColor: Colors.transparent,
                         ),
-                        child: Listener(
-                          onPointerDown: _pointerCheck,
-                          onPointerUp: pointerCheck == true ||
-                                  pointerCheck == false &&
-                                      stopwatch.elapsedMilliseconds > 5000
-                              ? _mistrialEvent
-                              : null,
-                          child: Slider(
-                            inactiveColor: Colors.white,
-                            activeColor: Colors.white,
-                            value: joyStickPos,
-                            min: -100.0,
-                            max: 100.0,
-                            onChanged: (double newValue) {
-                              setState(() {
-                                if (timerString == '0') {
-                                  joyStickPos = newValue / 100;
-                                } else {}
-                              });
-                            },
-                          ),
+                        child: Slider(
+                          inactiveColor: Colors.white,
+                          activeColor: Colors.white,
+                          value: joyStickPos,
+                          min: -100.0,
+                          max: 100.0,
+                          onChanged: (double newValue) {
+                            setState(() {
+                              if (timerString == '0') {
+                                joyStickPos = newValue / 100;
+                              } else {}
+                            });
+                          },
                         ),
                       ),
                     ),

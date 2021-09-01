@@ -1,20 +1,19 @@
 import 'main_page.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter/services.dart';
 
-class ContinuationPage extends StatefulWidget {
-  ContinuationPage({
+class MistrialPage extends StatefulWidget {
+  MistrialPage({
     @required this.subjectId,
     @required this.uuid,
-    this.trialNumber,
-    this.blockNumber,
-    this.lpc,
-    this.timeMax,
-    this.totalTrials,
-    this.iceGain,
-    this.cutoffFreq,
-    this.order,
-    this.samplingFreq,
+    @required this.trialNumber,
+    @required this.blockNumber,
+    @required this.lpc,
+    @required this.timeMax,
+    @required this.totalTrials,
+    @required this.iceGain,
+    @required this.cutoffFreq,
+    @required this.order,
+    @required this.samplingFreq,
   });
   final String subjectId;
   final String uuid;
@@ -29,7 +28,7 @@ class ContinuationPage extends StatefulWidget {
   final double samplingFreq;
 
   @override
-  _ContinuationPageState createState() => _ContinuationPageState(
+  _MistrialPageState createState() => _MistrialPageState(
         subjectId: subjectId,
         uuid: uuid,
         trialNumber: trialNumber,
@@ -44,8 +43,8 @@ class ContinuationPage extends StatefulWidget {
       );
 }
 
-class _ContinuationPageState extends State<ContinuationPage> {
-  _ContinuationPageState({
+class _MistrialPageState extends State<MistrialPage> {
+  _MistrialPageState({
     @required this.subjectId,
     @required this.uuid,
     this.trialNumber,
@@ -84,7 +83,37 @@ class _ContinuationPageState extends State<ContinuationPage> {
               padding: const EdgeInsets.all(8.0),
               child: Center(
                 child: Text(
-                  'Click start to begin the next trial',
+                  'Click \'start\' to retry the trial',
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Tip 1: Remember to keep your finger on the slider through the whole trial',
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Tip 2: Try to keep your car within the white lines',
                   style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
@@ -105,7 +134,6 @@ class _ContinuationPageState extends State<ContinuationPage> {
                     onPrimary: Colors.white, // foreground
                   ),
                   onPressed: () {
-                    trialNumber++;
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -129,9 +157,14 @@ class _ContinuationPageState extends State<ContinuationPage> {
           ),
           Column(
             children: <Widget>[
-              SizedBox(height: MediaQuery.of(context).size.height * .3),
+              SizedBox(
+                height: 100.0,
+              ),
             ],
           ),
+          SizedBox(
+            height: 100.0,
+          )
         ],
       ),
     );
