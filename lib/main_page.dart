@@ -285,6 +285,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   double prevTime = 0.0;
   double currentTime = 0.0;
   bool pointerCheck = false;
+  var startTime = new DateTime.now();
+  Color textColor = Colors.black;
+  String feedbackText = '';
 
   showAlertDialog(BuildContext context) {
     // set up the button
@@ -361,8 +364,102 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     });
   }
 
+  _serverUpload(studycode, guid, dataList, data_version) async {
+    bool dataSent = await createData(studycode, guid, dataList, data_version);
+    if (dataSent == true) {
+      if (trialNumber == totalTrials / 2) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BlockPage(
+              subjectId: subjectId,
+              uuid: uuid,
+              trialNumber: trialNumber,
+              blockNumber: blockNumber,
+              lpc: lpc,
+              timeMax: timeMax,
+              totalTrials: totalTrials,
+              iceGain: iceGain,
+              cutoffFreq: cutoffFreq,
+              order: order,
+              samplingFreq: samplingFreq,
+            ),
+          ),
+        );
+      } else if (trialNumber != totalTrials) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ContinuationPage(
+              subjectId: subjectId,
+              uuid: uuid,
+              trialNumber: trialNumber,
+              blockNumber: blockNumber,
+              lpc: lpc,
+              totalTrials: totalTrials,
+              timeMax: timeMax,
+              iceGain: iceGain,
+              cutoffFreq: cutoffFreq,
+              order: order,
+              samplingFreq: samplingFreq,
+            ),
+          ),
+        );
+      } else {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CompletedPage(
+                webFlag: webFlag,
+              ),
+            ));
+      }
+    } else if (dataSent == false) {
+      title = 'Error';
+      messageText = 'Data has not been uploaded to the server';
+      showAlertDialog(context);
+    } else {
+      serverTimeout = Timer(Duration(seconds: 15), () {
+        title = 'Error';
+        messageText = 'Server not found';
+        showAlertDialog(context);
+      });
+    }
+  }
+
   void _mistrialSlider(PointerEvent details) {
     setState(() {
+      dataMap[addQuotesToString("TaskVersion")] =
+          addQuotesToString(taskVersion);
+      dataMap[addQuotesToString("Platform")] = addQuotesToString(platformType);
+      /*dataMap[addQuotesToString("Web")] = webFlag;
+      dataMap[addQuotesToString("Browser")] = addQuotesToString(browserType);*/
+      //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
+      // has double quoted android_ia32
+      dataMap[addQuotesToString("DeviceData")] = _deviceData;
+      dataMap[addQuotesToString("SubjectID")] = addQuotesToString(subjectId);
+      dataMap['\"TrialNumber\"'] = addQuotesToString(trialNumber.toString());
+      dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
+      dataMap['\"EndTime\"'] =
+          addQuotesToString(DateTime.now().toIso8601String());
+      dataMap['\"Sensitivity\"'] = addQuotesToString(timeMax.toString());
+      dataMap['\"FilterCutoffFrequency\"'] =
+          addQuotesToString(cutoffFreq.toString());
+      dataMap['\"FilterOrder\"'] = addQuotesToString(order.toString());
+      dataMap['\"FilterSamplingFeq\"'] =
+          addQuotesToString(samplingFreq.toString());
+      dataMap['\"TotalTrials\"'] = addQuotesToString(totalTrials.toString());
+      dataMap['\"ScreenSize\"'] = addQuotesToString('$lpc'); //fix this later
+      dataMap[addQuotesToString("CompletedTrial")] = addQuotesToString('no');
+      dataMap['\"Moves\"'] = dataList;
+      _timerController.stop();
+      _carController.stop();
+      _countdownController.stop();
+      carTimer.cancel();
+      colorTimer.cancel();
+      trialTimer.cancel();
+      createData('driving01', uuid, dataMap.toString(), '01');
+      //_serverUpload('driving01', uuid, dataMap.toString(), '01');
       trialTimer.cancel();
       Navigator.push(
         context,
@@ -389,7 +486,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     initPlatformState();
-    var startTime = new DateTime.now();
+    print(trialNumber);
     CarEngine carEngine = CarEngine(
       timeMax: timeMax,
       lpc: lpc,
@@ -410,69 +507,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       addQuotesToString("carVel"),
       addQuotesToString("eventcode")
     ]);
-
-    _serverUpload(studycode, guid, dataList, data_version) async {
-      bool dataSent = await createData(studycode, guid, dataList, data_version);
-      if (dataSent == true) {
-        if (trialNumber == totalTrials / 2) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BlockPage(
-                subjectId: subjectId,
-                uuid: uuid,
-                trialNumber: trialNumber,
-                blockNumber: blockNumber,
-                lpc: lpc,
-                timeMax: timeMax,
-                totalTrials: totalTrials,
-                iceGain: iceGain,
-                cutoffFreq: cutoffFreq,
-                order: order,
-                samplingFreq: samplingFreq,
-              ),
-            ),
-          );
-        } else if (trialNumber != totalTrials) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ContinuationPage(
-                subjectId: subjectId,
-                uuid: uuid,
-                trialNumber: trialNumber,
-                blockNumber: blockNumber,
-                lpc: lpc,
-                totalTrials: totalTrials,
-                timeMax: timeMax,
-                iceGain: iceGain,
-                cutoffFreq: cutoffFreq,
-                order: order,
-                samplingFreq: samplingFreq,
-              ),
-            ),
-          );
-        } else {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CompletedPage(
-                  webFlag: webFlag,
-                ),
-              ));
-        }
-      } else if (dataSent == false) {
-        title = 'Error';
-        messageText = 'Data has not been uploaded to the server';
-        showAlertDialog(context);
-      } else {
-        serverTimeout = Timer(Duration(seconds: 15), () {
-          title = 'Error';
-          messageText = 'Server not found';
-          showAlertDialog(context);
-        });
-      }
-    }
 
     //animation controllers
     _countdownController =
@@ -495,9 +529,45 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         prevTime = currentTime;
         currentTime = stopwatch.elapsedMilliseconds.toDouble();
         if (posList[0] < -2.0 || posList[0] > 1.0) {
-          //if you go off the screen in either direction
+          //if you go off the screen in either direction a
+          dataMap[addQuotesToString("TaskVersion")] =
+              addQuotesToString(taskVersion);
+          dataMap[addQuotesToString("Platform")] =
+              addQuotesToString(platformType);
+          /*dataMap[addQuotesToString("Web")] = webFlag;
+      dataMap[addQuotesToString("Browser")] = addQuotesToString(browserType);*/
+          //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
+          // has double quoted android_ia32
+          dataMap[addQuotesToString("DeviceData")] = _deviceData;
+          dataMap[addQuotesToString("SubjectID")] =
+              addQuotesToString(subjectId);
+          dataMap['\"TrialNumber\"'] =
+              addQuotesToString(trialNumber.toString());
+          dataMap['\"StartTime\"'] =
+              addQuotesToString(startTime.toIso8601String());
+          dataMap['\"EndTime\"'] =
+              addQuotesToString(DateTime.now().toIso8601String());
+          dataMap['\"Sensitivity\"'] = addQuotesToString(timeMax.toString());
+          dataMap['\"FilterCutoffFrequency\"'] =
+              addQuotesToString(cutoffFreq.toString());
+          dataMap['\"FilterOrder\"'] = addQuotesToString(order.toString());
+          dataMap['\"FilterSamplingFeq\"'] =
+              addQuotesToString(samplingFreq.toString());
+          dataMap['\"TotalTrials\"'] =
+              addQuotesToString(totalTrials.toString());
+          dataMap['\"ScreenSize\"'] =
+              addQuotesToString('$lpc'); //fix this later
+          dataMap[addQuotesToString("CompletedTrial")] =
+              addQuotesToString('no');
+          dataMap['\"Moves\"'] = dataList;
+          _timerController.stop();
+          _carController.stop();
+          _countdownController.stop();
           carTimer.cancel();
+          colorTimer.cancel();
           trialTimer.cancel();
+          createData('driving01', uuid, dataMap.toString(), '01');
+          //_serverUpload('driving01', uuid, dataMap.toString(), '01');
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -516,20 +586,31 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               ),
             ),
           );
+        } else if (posList[0] < -1.3) {
+          setState(() {
+            textColor = Colors.white;
+            feedbackText = 'WATCH OUT!!';
+          });
+        } else if (posList[0] > .2) {
+          setState(() {
+            textColor = Colors.white;
+            feedbackText = 'WRONG WAY!!';
+          });
+        } else {
+          setState(() {
+            textColor = Colors.black;
+          });
         }
       });
       posList = carEngine.getPos(
           joyStickPos, posList[1], timeMax, posList[0], currentTime, prevTime);
       dataList.add(outputList());
     });
-    //dataList.add(outputList(prevPos, prevTime));
     colorTimer = Timer.periodic(
         Duration(milliseconds: 17),
         (Timer t) => posList[1] < -lpc * .25 && posList[1] > -lpc * .435
             ? timerColor = Colors.green
             : timerColor = Colors.blue);
-    /*dataTimer = Timer.periodic(Duration(milliseconds: 17),
-        (Timer t) => dataList.add(outputList(prevPos, prevTime)));*/
     //Timer for the end of the trial
     trialTimer = Timer(Duration(seconds: 14), () {
       var endTime = new DateTime.now();
@@ -558,6 +639,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           addQuotesToString(samplingFreq.toString());
       dataMap['\"TotalTrials\"'] = addQuotesToString(totalTrials.toString());
       dataMap['\"ScreenSize\"'] = addQuotesToString('$width x $height');
+      dataMap[addQuotesToString("CompletedTrial")] = addQuotesToString('yes');
       dataMap['\"Moves\"'] = dataList;
       _timerController.stop();
       _carController.stop();
@@ -635,10 +717,24 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * .01,
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height * .09,
+                  width: MediaQuery.of(context).size.width * .45,
+                  child: Text(
+                    feedbackText,
+                    style: TextStyle(
+                      color: textColor,
+                      fontSize: 30.0,
+                    ),
+                  ),
+                ),
                 Container(
                   // StopSign at top
-                  height: lpc * 0.25,
-                  width: 250.0,
+                  height: lpc * 0.14,
+                  width: MediaQuery.of(context).size.width * .65,
                   child: Image.asset("images/stopsign.png"),
                 ),
                 Container(
@@ -685,8 +781,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     );
                   },
                 ),
-
-                //SizedBox(height: lpc * 0.05),
                 // Slider
                 Container(
                   height: lpc * 0.30,
@@ -719,7 +813,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                             max: 100.0,
                             onChanged: (double newValue) {
                               setState(() {
-                                print(posList[0]);
                                 if (timerString == '0') {
                                   joyStickPos = newValue / 100;
                                 } else {}

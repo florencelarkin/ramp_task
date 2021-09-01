@@ -60,7 +60,7 @@ class _InstructionPage5State extends State<InstructionPage5> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'Tips:',
+                'Important:',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -73,7 +73,7 @@ class _InstructionPage5State extends State<InstructionPage5> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                '- Do not remove your finger from the screen.',
+                '- Keep your finger on the slider throughout the task',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -86,7 +86,20 @@ class _InstructionPage5State extends State<InstructionPage5> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                '- Note that you have to keep moving forward to keep the car stopped at the line.',
+                '- Try your best to keep your car within the white lines',
+                style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Text(
+                '- Driving off the screen or lifting your finger off the slider will cause the trial to restart.',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
