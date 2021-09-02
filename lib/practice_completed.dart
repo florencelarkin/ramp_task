@@ -1,16 +1,13 @@
-import 'main_page.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter/services.dart';
+import 'instruction_page7.dart';
 
-class ContinuationPage extends StatefulWidget {
-  ContinuationPage({
+class PracticeCompleted extends StatefulWidget {
+  PracticeCompleted({
     @required this.subjectId,
     @required this.uuid,
-    this.trialNumber,
-    this.blockNumber,
-    this.lpc,
-    this.timeMax,
-    this.totalTrials,
+    @required this.lpc,
+    @required this.timeMax,
+    @required this.totalTrials,
     this.iceGain,
     this.cutoffFreq,
     this.order,
@@ -18,8 +15,6 @@ class ContinuationPage extends StatefulWidget {
   });
   final String subjectId;
   final String uuid;
-  final int trialNumber;
-  final int blockNumber;
   final double lpc;
   final double timeMax;
   final int totalTrials;
@@ -29,11 +24,9 @@ class ContinuationPage extends StatefulWidget {
   final double samplingFreq;
 
   @override
-  _ContinuationPageState createState() => _ContinuationPageState(
+  _PracticeCompletedState createState() => _PracticeCompletedState(
         subjectId: subjectId,
         uuid: uuid,
-        trialNumber: trialNumber,
-        blockNumber: blockNumber,
         lpc: lpc,
         timeMax: timeMax,
         totalTrials: totalTrials,
@@ -44,15 +37,13 @@ class ContinuationPage extends StatefulWidget {
       );
 }
 
-class _ContinuationPageState extends State<ContinuationPage> {
-  _ContinuationPageState({
+class _PracticeCompletedState extends State<PracticeCompleted> {
+  _PracticeCompletedState({
     @required this.subjectId,
     @required this.uuid,
-    this.trialNumber,
-    this.blockNumber,
-    this.lpc,
-    this.timeMax,
-    this.totalTrials,
+    @required this.lpc,
+    @required this.timeMax,
+    @required this.totalTrials,
     this.iceGain,
     this.cutoffFreq,
     this.order,
@@ -61,8 +52,6 @@ class _ContinuationPageState extends State<ContinuationPage> {
   String subjectId;
   double maxVelocity;
   String uuid;
-  int trialNumber;
-  int blockNumber;
   double lpc;
   double timeMax;
   int totalTrials;
@@ -79,14 +68,45 @@ class _ContinuationPageState extends State<ContinuationPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          SizedBox(height: MediaQuery.of(context).size.height * .1),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Center(
                 child: Text(
-                  'Click start to begin the next trial',
+                  'Congratulations!',
                   style: TextStyle(
-                      fontSize: 20.0,
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'You have completed the practice session.',
+                  style: TextStyle(
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Click \'start\' to begin the task!',
+                  style: TextStyle(
+                      fontSize: 25.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.white),
                   textAlign: TextAlign.center,
@@ -105,24 +125,19 @@ class _ContinuationPageState extends State<ContinuationPage> {
                     onPrimary: Colors.white, // foreground
                   ),
                   onPressed: () {
-                    print(
-                        '$cutoffFreq , $samplingFreq , $order, $timeMax, $lpc');
-                    trialNumber++;
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MainPage(
+                        builder: (context) => InstructionPage7(
                           timeMax: timeMax,
                           subjectId: subjectId,
-                          uuid: uuid,
-                          trialNumber: trialNumber,
-                          blockNumber: blockNumber,
-                          lpc: lpc,
                           totalTrials: totalTrials,
                           iceGain: iceGain,
                           cutoffFreq: cutoffFreq,
                           order: order,
                           samplingFreq: samplingFreq,
+                          uuid: uuid,
+                          lpc: lpc,
                         ),
                       ),
                     );

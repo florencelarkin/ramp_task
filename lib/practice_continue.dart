@@ -1,13 +1,10 @@
-import 'main_page.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter/services.dart';
+import 'package:driving_task/practice.dart';
 
-class ContinuationPage extends StatefulWidget {
-  ContinuationPage({
+class ContinuePractice extends StatefulWidget {
+  ContinuePractice({
     @required this.subjectId,
     @required this.uuid,
-    this.trialNumber,
-    this.blockNumber,
     this.lpc,
     this.timeMax,
     this.totalTrials,
@@ -18,8 +15,6 @@ class ContinuationPage extends StatefulWidget {
   });
   final String subjectId;
   final String uuid;
-  final int trialNumber;
-  final int blockNumber;
   final double lpc;
   final double timeMax;
   final int totalTrials;
@@ -29,11 +24,9 @@ class ContinuationPage extends StatefulWidget {
   final double samplingFreq;
 
   @override
-  _ContinuationPageState createState() => _ContinuationPageState(
+  _ContinuePracticeState createState() => _ContinuePracticeState(
         subjectId: subjectId,
         uuid: uuid,
-        trialNumber: trialNumber,
-        blockNumber: blockNumber,
         lpc: lpc,
         timeMax: timeMax,
         totalTrials: totalTrials,
@@ -44,12 +37,10 @@ class ContinuationPage extends StatefulWidget {
       );
 }
 
-class _ContinuationPageState extends State<ContinuationPage> {
-  _ContinuationPageState({
+class _ContinuePracticeState extends State<ContinuePractice> {
+  _ContinuePracticeState({
     @required this.subjectId,
     @required this.uuid,
-    this.trialNumber,
-    this.blockNumber,
     this.lpc,
     this.timeMax,
     this.totalTrials,
@@ -61,8 +52,6 @@ class _ContinuationPageState extends State<ContinuationPage> {
   String subjectId;
   double maxVelocity;
   String uuid;
-  int trialNumber;
-  int blockNumber;
   double lpc;
   double timeMax;
   int totalTrials;
@@ -84,7 +73,22 @@ class _ContinuationPageState extends State<ContinuationPage> {
               padding: const EdgeInsets.all(8.0),
               child: Center(
                 child: Text(
-                  'Click start to begin the next trial',
+                  'Try again!',
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Make sure you are not ',
                   style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
@@ -105,18 +109,13 @@ class _ContinuationPageState extends State<ContinuationPage> {
                     onPrimary: Colors.white, // foreground
                   ),
                   onPressed: () {
-                    print(
-                        '$cutoffFreq , $samplingFreq , $order, $timeMax, $lpc');
-                    trialNumber++;
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MainPage(
+                        builder: (context) => PracticePage(
                           timeMax: timeMax,
                           subjectId: subjectId,
                           uuid: uuid,
-                          trialNumber: trialNumber,
-                          blockNumber: blockNumber,
                           lpc: lpc,
                           totalTrials: totalTrials,
                           iceGain: iceGain,

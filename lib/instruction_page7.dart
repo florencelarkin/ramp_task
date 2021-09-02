@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'continue_trial.dart';
-import 'package:uuid/uuid.dart';
 
 class InstructionPage7 extends StatefulWidget {
   InstructionPage7({
@@ -11,6 +10,8 @@ class InstructionPage7 extends StatefulWidget {
     this.cutoffFreq,
     this.order,
     this.samplingFreq,
+    this.lpc,
+    this.uuid,
   });
   final double timeMax;
   final String subjectId;
@@ -19,6 +20,8 @@ class InstructionPage7 extends StatefulWidget {
   final double cutoffFreq;
   final int order;
   final double samplingFreq;
+  final String uuid;
+  final double lpc;
 
   @override
   _InstructionPage7State createState() => _InstructionPage7State(
@@ -29,6 +32,8 @@ class InstructionPage7 extends StatefulWidget {
         cutoffFreq: cutoffFreq,
         order: order,
         samplingFreq: samplingFreq,
+        lpc: lpc,
+        uuid: uuid,
       );
 }
 
@@ -41,6 +46,8 @@ class _InstructionPage7State extends State<InstructionPage7> {
     this.cutoffFreq,
     this.order,
     this.samplingFreq,
+    this.uuid,
+    this.lpc,
   });
   double timeMax;
   String subjectId;
@@ -49,10 +56,12 @@ class _InstructionPage7State extends State<InstructionPage7> {
   double cutoffFreq;
   int order;
   double samplingFreq;
+  double lpc;
+  String uuid;
 
-  var uuid = Uuid();
   int trialNumber = 0;
   int blockNumber = 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,14 +114,12 @@ class _InstructionPage7State extends State<InstructionPage7> {
                     onPrimary: Colors.white, // foreground
                   ),
                   onPressed: () {
-                    double lpc = MediaQuery.of(context).size.height;
-                    String newId = uuid.v1();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => ContinuationPage(
                           subjectId: subjectId,
-                          uuid: newId,
+                          uuid: uuid,
                           trialNumber: trialNumber,
                           blockNumber: blockNumber,
                           lpc: lpc,

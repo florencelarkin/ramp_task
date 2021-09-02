@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:driving_task/continue_trial.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
@@ -7,13 +6,12 @@ import 'dart:async';
 import 'car_engine.dart';
 import 'data.dart';
 import 'package:flutter/foundation.dart';
-import 'block_page.dart';
-import 'completed_screen.dart';
 import 'package:web_browser_detect/web_browser_detect.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'practice_completed.dart';
 
-class MainPage extends StatefulWidget {
-  MainPage({
+class PracticePage extends StatefulWidget {
+  PracticePage({
     @required this.timeMax,
     @required this.subjectId,
     @required this.uuid,
@@ -39,7 +37,7 @@ class MainPage extends StatefulWidget {
   final double samplingFreq;
 
   @override
-  _MainPageState createState() => _MainPageState(
+  _PracticePageState createState() => _PracticePageState(
         timeMax: timeMax,
         subjectId: subjectId,
         uuid: uuid,
@@ -54,8 +52,9 @@ class MainPage extends StatefulWidget {
       );
 }
 
-class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
-  _MainPageState({
+class _PracticePageState extends State<PracticePage>
+    with TickerProviderStateMixin {
+  _PracticePageState({
     @required this.timeMax,
     @required this.subjectId,
     @required this.uuid,
@@ -84,10 +83,32 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   AnimationController _carController;
   AnimationController _countdownController;
+  AnimationController _demoCarController;
+  Animation<double> animation;
   Timer carTimer;
-  Timer colorTimer;
+  Timer trialTimer;
   Timer dataTimer;
   Timer serverTimeout;
+
+  Stopwatch stopwatch = new Stopwatch()..start();
+  int time = 0;
+  double carStartPos = -5.0;
+  double joyStickPos = 0.0;
+  double getCurrentPos = 0.0;
+  double dy = 0.0;
+  double carVelocity = 0.0;
+  List<dynamic> dataList = [];
+  //Future<Data> _futureData;
+  String title = '';
+  String messageText = '';
+  Map dataMap = {};
+  Future<bool> dataSent;
+  double getAdjustedPos = 0.0;
+  Map<String, String> urlArgs = {};
+  List posList = [0.0, 0.0, 0.0];
+  double prevPos = 0.0;
+  double prevTime = 0.0;
+  double currentTime = 0.0;
 
   bool webFlag = false; // true if running web
   String platformType = ""; // the platform: android, ios, windows, linux
@@ -127,78 +148,28 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     }
   }
 
-  Stopwatch stopwatch = new Stopwatch()..start();
-  int time = 0;
-  double carStartPos = -5.0;
-  double joyStickPos = 0.0;
-  double getCurrentPos = 0.0;
-  double dy = 0.0;
-  double carVelocity = 0.0;
-  List<dynamic> dataList = [];
-  //Future<Data> _futureData;
-  String title = '';
-  String messageText = '';
-  Map dataMap = {};
-  Future<bool> dataSent;
-  double getAdjustedPos = 0.0;
-  Map<String, String> urlArgs = {};
-  List posList = [0.0, 0.0, 0.0];
-  double prevPos = 0.0;
-  double prevTime = 0.0;
-  double currentTime = 0.0;
-
   showAlertDialog(BuildContext context) {
     // set up the button
     Widget okButton = ElevatedButton(
       child: Text('OK'),
       onPressed: () {
-        if (trialNumber == totalTrials / 2) {
-          Navigator.push(
+        trialTimer.cancel();
+        carTimer.cancel();
+        Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => BlockPage(
+              builder: (context) => PracticeCompleted(
+                lpc: lpc,
                 subjectId: subjectId,
                 uuid: uuid,
-                trialNumber: trialNumber,
-                blockNumber: blockNumber,
-                lpc: lpc,
+                cutoffFreq: cutoffFreq,
+                iceGain: iceGain,
                 timeMax: timeMax,
                 totalTrials: totalTrials,
-                iceGain: iceGain,
-                cutoffFreq: cutoffFreq,
-                order: order,
                 samplingFreq: samplingFreq,
-              ),
-            ),
-          );
-        } else if (trialNumber != totalTrials) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ContinuationPage(
-                subjectId: subjectId,
-                uuid: uuid,
-                trialNumber: trialNumber,
-                blockNumber: blockNumber,
-                lpc: lpc,
-                totalTrials: totalTrials,
-                timeMax: timeMax,
-                iceGain: iceGain,
-                cutoffFreq: cutoffFreq,
                 order: order,
-                samplingFreq: samplingFreq,
               ),
-            ),
-          );
-        } else {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CompletedPage(
-                  webFlag: webFlag,
-                ),
-              ));
-        }
+            ));
       },
     );
     AlertDialog alert = AlertDialog(
@@ -215,6 +186,10 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       },
     );
   }
+
+  //todo: animation for red car
+  //todo: start over if your car touches red car or falls too far behind red car
+  //todo: put the device info thing in here as well
 
   @override
   void initState() {
@@ -244,53 +219,23 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     _serverUpload(studycode, guid, dataList, data_version) async {
       bool dataSent = await createData(studycode, guid, dataList, data_version);
       if (dataSent == true) {
-        if (trialNumber == totalTrials / 2) {
-          Navigator.push(
+        trialTimer.cancel();
+        carTimer.cancel();
+        Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => BlockPage(
+              builder: (context) => PracticeCompleted(
+                lpc: lpc,
                 subjectId: subjectId,
                 uuid: uuid,
-                trialNumber: trialNumber,
-                blockNumber: blockNumber,
-                lpc: lpc,
+                cutoffFreq: cutoffFreq,
+                iceGain: iceGain,
                 timeMax: timeMax,
                 totalTrials: totalTrials,
-                iceGain: iceGain,
-                cutoffFreq: cutoffFreq,
-                order: order,
                 samplingFreq: samplingFreq,
-              ),
-            ),
-          );
-        } else if (trialNumber != totalTrials) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ContinuationPage(
-                subjectId: subjectId,
-                uuid: uuid,
-                trialNumber: trialNumber,
-                blockNumber: blockNumber,
-                lpc: lpc,
-                totalTrials: totalTrials,
-                timeMax: timeMax,
-                iceGain: iceGain,
-                cutoffFreq: cutoffFreq,
                 order: order,
-                samplingFreq: samplingFreq,
               ),
-            ),
-          );
-        } else {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CompletedPage(
-                  webFlag: webFlag,
-                ),
-              ));
-        }
+            ));
       } else if (dataSent == false) {
         title = 'Error';
         messageText = 'Data has not been uploaded to the server';
@@ -305,6 +250,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     }
 
     //animation controllers
+    //countdown controller is the countdown text at the beginning of the trial
     _countdownController =
         AnimationController(duration: Duration(seconds: 4), vsync: this);
     _countdownController.forward();
@@ -312,9 +258,24 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         from: _countdownController.value == 0.0
             ? 1.0
             : _countdownController.value);
+    //car controller is the controller for the car the participant controls
     _carController =
         AnimationController(duration: const Duration(seconds: 10), vsync: this)
           ..repeat();
+    //demo car controller is the controller for the car the participant is supposed to follow during practice
+    Future.delayed(Duration(milliseconds: 3250), () {
+      _demoCarController = AnimationController(
+          duration: Duration(milliseconds: 750), vsync: this);
+      _demoCarController.forward();
+
+      _demoCarController = AnimationController(
+          duration: const Duration(seconds: 2), vsync: this);
+      animation = Tween<double>(begin: 0, end: 325).animate(_demoCarController)
+        ..addListener(() {
+          setState(() {});
+        });
+      _demoCarController.forward();
+    });
 
     //calls functions that check for joystick movement and car position, then adds that to the output list
     carTimer = Timer.periodic(Duration(microseconds: 16667), (Timer t) {
@@ -327,7 +288,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       dataList.add(outputList());
     });
     //dataList.add(outputList(prevPos, prevTime));
-    Timer(Duration(seconds: 14), () {
+    trialTimer = Timer(Duration(seconds: 14), () {
       var endTime = new DateTime.now();
       double width = MediaQuery.of(context).size.width;
       double height = MediaQuery.of(context).size.height;
@@ -342,7 +303,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       // has double quoted android_ia32
 
       dataMap['\"SubjectID\"'] = addQuotesToString(subjectId);
-      dataMap['\"TrialNumber\"'] = addQuotesToString(trialNumber.toString());
+      dataMap['\"TrialNumber\"'] = addQuotesToString("Practice");
       dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
       dataMap['\"EndTime\"'] = addQuotesToString(endTime.toIso8601String());
       dataMap['\"Sensitivity\"'] = addQuotesToString(timeMax.toString());
@@ -357,7 +318,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       _carController.stop();
       _countdownController.stop();
       carTimer.cancel();
-      colorTimer.cancel();
       _serverUpload('driving01', uuid, dataMap.toString(), '01');
     });
   }
@@ -394,7 +354,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       joyStickPos.toString(),
       getAdjustedPos.toString(),
       carVelocity.toString(),
-      '8'
+      'practice'
     ]);
 
     return data;
@@ -426,7 +386,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   color: Colors.white,
                 ),
                 AnimatedBuilder(
-                  // 321 counter
                   animation: _countdownController,
                   builder: (BuildContext context, Widget child) {
                     return Container(
@@ -449,11 +408,30 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   color: Colors.white,
                 ),
                 AnimatedBuilder(
+                  // car to follow
+                  animation: _demoCarController,
+                  child: Container(
+                    width: 50.0,
+                    height: lpc * 0.06,
+                    child: Icon(
+                      Icons.directions_car,
+                      size: lpc * 0.075,
+                      color: Colors.red,
+                    ),
+                  ),
+                  builder: (BuildContext context, Widget child) {
+                    return Transform.translate(
+                      offset: Offset(0.0, -animation.value),
+                      child: child,
+                    );
+                  },
+                ),
+                AnimatedBuilder(
                   // car
                   animation: _carController,
                   child: Container(
                     width: 50.0,
-                    height: lpc * 0.03,
+                    height: lpc * 0.06,
                     child: Icon(Icons.directions_car, size: lpc * 0.075),
                   ),
                   builder: (BuildContext context, Widget child) {
@@ -467,7 +445,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 //SizedBox(height: lpc * 0.05),
                 // Slider
                 Container(
-                  height: lpc * 0.30,
+                  height: lpc * 0.21,
                   width: 300.0,
                   child: Transform.scale(
                     scale: 0.75,
