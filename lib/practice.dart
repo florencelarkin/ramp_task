@@ -251,31 +251,30 @@ class _PracticePageState extends State<PracticePage>
 
     //animation controllers
     //countdown controller is the countdown text at the beginning of the trial
-    _countdownController =
+    /*_countdownController =
         AnimationController(duration: Duration(seconds: 4), vsync: this);
     _countdownController.forward();
     _countdownController.reverse(
         from: _countdownController.value == 0.0
             ? 1.0
-            : _countdownController.value);
+            : _countdownController.value);*/
     //car controller is the controller for the car the participant controls
     _carController =
         AnimationController(duration: const Duration(seconds: 10), vsync: this)
           ..repeat();
     //demo car controller is the controller for the car the participant is supposed to follow during practice
-    Future.delayed(Duration(milliseconds: 3250), () {
-      _demoCarController = AnimationController(
-          duration: Duration(milliseconds: 750), vsync: this);
-      _demoCarController.forward();
 
-      _demoCarController = AnimationController(
-          duration: const Duration(seconds: 2), vsync: this);
-      animation = Tween<double>(begin: 0, end: 325).animate(_demoCarController)
-        ..addListener(() {
-          setState(() {});
-        });
-      _demoCarController.forward();
-    });
+    _demoCarController =
+        AnimationController(duration: Duration(milliseconds: 750), vsync: this);
+    _demoCarController.forward();
+
+    _demoCarController =
+        AnimationController(duration: const Duration(seconds: 2), vsync: this);
+    animation = Tween<double>(begin: 0, end: 325).animate(_demoCarController)
+      ..addListener(() {
+        setState(() {});
+      });
+    _demoCarController.forward();
 
     //calls functions that check for joystick movement and car position, then adds that to the output list
     carTimer = Timer.periodic(Duration(microseconds: 16667), (Timer t) {
@@ -316,7 +315,7 @@ class _PracticePageState extends State<PracticePage>
       dataMap['\"ScreenSize\"'] = addQuotesToString('$width x $height');
       dataMap['\"Moves\"'] = dataList;
       _carController.stop();
-      _countdownController.stop();
+      //_countdownController.stop();
       carTimer.cancel();
       _serverUpload('driving01', uuid, dataMap.toString(), '01');
     });
@@ -324,7 +323,7 @@ class _PracticePageState extends State<PracticePage>
 
   @override
   void dispose() {
-    _countdownController.dispose();
+    //_countdownController.dispose();
     _carController.dispose();
     super.dispose();
   }
@@ -385,7 +384,7 @@ class _PracticePageState extends State<PracticePage>
                   width: 220.0,
                   color: Colors.white,
                 ),
-                AnimatedBuilder(
+                /*AnimatedBuilder( //this is the countdown, put back eventually
                   animation: _countdownController,
                   builder: (BuildContext context, Widget child) {
                     return Container(
@@ -400,6 +399,9 @@ class _PracticePageState extends State<PracticePage>
                       ),
                     );
                   },
+                ),*/
+                Container(
+                  height: lpc * 0.41,
                 ),
                 Container(
                   // white starting line
@@ -421,7 +423,8 @@ class _PracticePageState extends State<PracticePage>
                   ),
                   builder: (BuildContext context, Widget child) {
                     return Transform.translate(
-                      offset: Offset(0.0, -animation.value),
+                      offset: Offset(0.0,
+                          animation.value != null ? -animation.value : 0.0),
                       child: child,
                     );
                   },
@@ -468,9 +471,10 @@ class _PracticePageState extends State<PracticePage>
                           max: 100.0,
                           onChanged: (double newValue) {
                             setState(() {
-                              if (timerString == '0') {
+                              /*if (timerString == '0') {
                                 joyStickPos = newValue / 100;
-                              } else {}
+                              } else {}*/
+                              joyStickPos = newValue / 100;
                             });
                           },
                         ),
