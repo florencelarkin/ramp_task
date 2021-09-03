@@ -187,7 +187,7 @@ class _PracticePageState extends State<PracticePage>
     );
   }
 
-  //todo: animation for red car
+  //todo: better animation for red car
   //todo: start over if your car touches red car or falls too far behind red car
   //todo: put the device info thing in here as well
 
@@ -325,6 +325,7 @@ class _PracticePageState extends State<PracticePage>
   void dispose() {
     //_countdownController.dispose();
     _carController.dispose();
+    _demoCarController.dispose();
     super.dispose();
   }
 
