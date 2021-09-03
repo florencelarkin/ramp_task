@@ -1,8 +1,8 @@
 import 'main_page.dart';
 import 'package:flutter/material.dart';
 
-class MistrialPage extends StatefulWidget {
-  MistrialPage({
+class TryAgainPage extends StatefulWidget {
+  TryAgainPage({
     @required this.subjectId,
     @required this.uuid,
     @required this.trialNumber,
@@ -28,7 +28,7 @@ class MistrialPage extends StatefulWidget {
   final double samplingFreq;
 
   @override
-  _MistrialPageState createState() => _MistrialPageState(
+  _TryAgainPageState createState() => _TryAgainPageState(
         subjectId: subjectId,
         uuid: uuid,
         trialNumber: trialNumber,
@@ -43,8 +43,8 @@ class MistrialPage extends StatefulWidget {
       );
 }
 
-class _MistrialPageState extends State<MistrialPage> {
-  _MistrialPageState({
+class _TryAgainPageState extends State<TryAgainPage> {
+  _TryAgainPageState({
     @required this.subjectId,
     @required this.uuid,
     this.trialNumber,
@@ -113,7 +113,22 @@ class _MistrialPageState extends State<MistrialPage> {
               padding: const EdgeInsets.all(8.0),
               child: Center(
                 child: Text(
-                  'Tip 2: Try to keep your car within the white lines',
+                  'Tip 2: Do not drive off the screen',
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Tip 3: Try not to end too far away from the stop sign',
                   style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,

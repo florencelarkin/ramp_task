@@ -12,7 +12,7 @@ import 'block_page.dart';
 import 'completed_screen.dart';
 import 'package:web_browser_detect/web_browser_detect.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'mistrial.dart';
+import 'try_again_page.dart';
 import 'package:flutter/widgets.dart';
 
 class MainPage extends StatefulWidget {
@@ -267,7 +267,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   Stopwatch stopwatch = new Stopwatch()..start();
   int time = 0;
   double carStartPos = -5.0;
-  double joyStickPos = 0.0;
+  double sliderPos = 0.0;
   double getCurrentPos = 0.0;
   double dy = 0.0;
   Color timerColor = Colors.blue;
@@ -367,52 +367,73 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   _serverUpload(studycode, guid, dataList, data_version) async {
     bool dataSent = await createData(studycode, guid, dataList, data_version);
     if (dataSent == true) {
-      if (trialNumber == totalTrials / 2) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BlockPage(
-              subjectId: subjectId,
-              uuid: uuid,
-              trialNumber: trialNumber,
-              blockNumber: blockNumber,
-              lpc: lpc,
-              timeMax: timeMax,
-              totalTrials: totalTrials,
-              iceGain: iceGain,
-              cutoffFreq: cutoffFreq,
-              order: order,
-              samplingFreq: samplingFreq,
-            ),
-          ),
-        );
-      } else if (trialNumber != totalTrials) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ContinuationPage(
-              subjectId: subjectId,
-              uuid: uuid,
-              trialNumber: trialNumber,
-              blockNumber: blockNumber,
-              lpc: lpc,
-              totalTrials: totalTrials,
-              timeMax: timeMax,
-              iceGain: iceGain,
-              cutoffFreq: cutoffFreq,
-              order: order,
-              samplingFreq: samplingFreq,
-            ),
-          ),
-        );
-      } else {
-        Navigator.push(
+      if (posList[0] > -1.3 && posList[0] < -.6) {
+        if (trialNumber == totalTrials / 2) {
+          Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => CompletedPage(
-                webFlag: webFlag,
+              builder: (context) => BlockPage(
+                subjectId: subjectId,
+                uuid: uuid,
+                trialNumber: trialNumber,
+                blockNumber: blockNumber,
+                lpc: lpc,
+                timeMax: timeMax,
+                totalTrials: totalTrials,
+                iceGain: iceGain,
+                cutoffFreq: cutoffFreq,
+                order: order,
+                samplingFreq: samplingFreq,
               ),
-            ));
+            ),
+          );
+        } else if (trialNumber != totalTrials) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ContinuationPage(
+                subjectId: subjectId,
+                uuid: uuid,
+                trialNumber: trialNumber,
+                blockNumber: blockNumber,
+                lpc: lpc,
+                totalTrials: totalTrials,
+                timeMax: timeMax,
+                iceGain: iceGain,
+                cutoffFreq: cutoffFreq,
+                order: order,
+                samplingFreq: samplingFreq,
+              ),
+            ),
+          );
+        } else {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CompletedPage(
+                  webFlag: webFlag,
+                ),
+              ));
+        }
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TryAgainPage(
+              subjectId: subjectId,
+              uuid: uuid,
+              trialNumber: trialNumber,
+              blockNumber: blockNumber,
+              lpc: lpc,
+              timeMax: timeMax,
+              totalTrials: totalTrials,
+              iceGain: iceGain,
+              cutoffFreq: cutoffFreq,
+              order: order,
+              samplingFreq: samplingFreq,
+            ),
+          ),
+        );
       }
     } else if (dataSent == false) {
       title = 'Error';
@@ -464,7 +485,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => MistrialPage(
+          builder: (context) => TryAgainPage(
             subjectId: subjectId,
             uuid: uuid,
             trialNumber: trialNumber,
@@ -486,7 +507,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     initPlatformState();
-    print(trialNumber);
     CarEngine carEngine = CarEngine(
       timeMax: timeMax,
       lpc: lpc,
@@ -529,7 +549,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         prevTime = currentTime;
         currentTime = stopwatch.elapsedMilliseconds.toDouble();
         if (posList[0] < -2.0 || posList[0] > 1.0) {
-          //if you go off the screen in either direction a
+          //if you go off the screen in either direction
           dataMap[addQuotesToString("TaskVersion")] =
               addQuotesToString(taskVersion);
           dataMap[addQuotesToString("Platform")] =
@@ -571,7 +591,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => MistrialPage(
+              builder: (context) => TryAgainPage(
                 subjectId: subjectId,
                 uuid: uuid,
                 trialNumber: trialNumber,
@@ -603,7 +623,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         }
       });
       posList = carEngine.getPos(
-          joyStickPos, posList[1], timeMax, posList[0], currentTime, prevTime);
+          sliderPos, posList[1], timeMax, posList[0], currentTime, prevTime);
       dataList.add(outputList());
     });
     colorTimer = Timer.periodic(
@@ -682,7 +702,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     carVelocity = -posList[2];
     data.addAll([
       stopwatch.elapsedMilliseconds.toString(),
-      joyStickPos.toString(),
+      sliderPos.toString(),
       getAdjustedPos.toString(),
       carVelocity.toString(),
       '8'
@@ -808,13 +828,13 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                           child: Slider(
                             inactiveColor: Colors.white,
                             activeColor: Colors.white,
-                            value: joyStickPos,
+                            value: sliderPos,
                             min: -100.0,
                             max: 100.0,
                             onChanged: (double newValue) {
                               setState(() {
                                 if (timerString == '0') {
-                                  joyStickPos = newValue / 100;
+                                  sliderPos = newValue / 100;
                                 } else {}
                               });
                             },

@@ -55,9 +55,9 @@ class CarEngine {
     sliderFilter = butterworth.filter(
         sliderPos); //takes in slider position and puts it through a low pass filter
 
-    sliderFilter =
+    /*sliderFilter =
         sliderPos; //get rid of butterworth for now when testing out practice trials + other updates
-    //please delete this if we start to use butterworth again
+    */
 
     dy = (iceGain * sliderFilter * vW) * (deltaTime / 1000);
 

@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:web_browser_detect/web_browser_detect.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'practice_completed.dart';
+import 'package:flutter/services.dart';
 
 class PracticePage extends StatefulWidget {
   PracticePage({
@@ -109,6 +110,168 @@ class _PracticePageState extends State<PracticePage>
   double prevPos = 0.0;
   double prevTime = 0.0;
   double currentTime = 0.0;
+  int counter = 0;
+  String text = '';
+  static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  Map<String, dynamic> _deviceData = <String, dynamic>{};
+
+  void checkWebPlatform() {
+    // check the platform and whether web
+    kIsWeb
+        ? platformType = 'Web Browser'
+        : Platform.isAndroid
+            ? platformType = 'Android'
+            : Platform.isIOS
+                ? platformType = 'iOS'
+                : Platform.isLinux
+                    ? platformType = 'Linux'
+                    : Platform.isMacOS
+                        ? platformType = 'MacOS'
+                        : Platform.isWindows
+                            ? platformType = 'Windows'
+                            : platformType = '';
+  }
+
+  Future<void> initPlatformState() async {
+    var deviceData = <String, dynamic>{};
+
+    try {
+      if (kIsWeb) {
+        deviceData = _readWebBrowserInfo(await deviceInfoPlugin.webBrowserInfo);
+      } else {
+        if (Platform.isAndroid) {
+          deviceData =
+              _readAndroidBuildData(await deviceInfoPlugin.androidInfo);
+        } else if (Platform.isIOS) {
+          deviceData = _readIosDeviceInfo(await deviceInfoPlugin.iosInfo);
+        } else if (Platform.isLinux) {
+          deviceData = _readLinuxDeviceInfo(await deviceInfoPlugin.linuxInfo);
+        } else if (Platform.isMacOS) {
+          deviceData = _readMacOsDeviceInfo(await deviceInfoPlugin.macOsInfo);
+        } else if (Platform.isWindows) {
+          deviceData =
+              _readWindowsDeviceInfo(await deviceInfoPlugin.windowsInfo);
+        }
+      }
+    } on PlatformException {
+      deviceData = <String, dynamic>{
+        'Error:': 'Failed to get platform version.'
+      };
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _deviceData = deviceData;
+    });
+  }
+
+  Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {
+    return <String, dynamic>{
+      'version.securityPatch': build.version.securityPatch,
+      'version.sdkInt': build.version.sdkInt,
+      'version.release': build.version.release,
+      'version.previewSdkInt': build.version.previewSdkInt,
+      'version.incremental': build.version.incremental,
+      'version.codename': build.version.codename,
+      'version.baseOS': build.version.baseOS,
+      'board': build.board,
+      'bootloader': build.bootloader,
+      'brand': build.brand,
+      'device': build.device,
+      'display': build.display,
+      'fingerprint': build.fingerprint,
+      'hardware': build.hardware,
+      'host': build.host,
+      'id': build.id,
+      'manufacturer': build.manufacturer,
+      'model': build.model,
+      'product': build.product,
+      'supported32BitAbis': build.supported32BitAbis,
+      'supported64BitAbis': build.supported64BitAbis,
+      'supportedAbis': build.supportedAbis,
+      'tags': build.tags,
+      'type': build.type,
+      'isPhysicalDevice': build.isPhysicalDevice,
+      'androidId': build.androidId,
+      'systemFeatures': build.systemFeatures,
+    };
+  }
+
+  Map<String, dynamic> _readIosDeviceInfo(IosDeviceInfo data) {
+    return <String, dynamic>{
+      'name': data.name,
+      'systemName': data.systemName,
+      'systemVersion': data.systemVersion,
+      'model': data.model,
+      'localizedModel': data.localizedModel,
+      'identifierForVendor': data.identifierForVendor,
+      'isPhysicalDevice': data.isPhysicalDevice,
+      'utsname.sysname:': data.utsname.sysname,
+      'utsname.nodename:': data.utsname.nodename,
+      'utsname.release:': data.utsname.release,
+      'utsname.version:': data.utsname.version,
+      'utsname.machine:': data.utsname.machine,
+    };
+  }
+
+  Map<String, dynamic> _readLinuxDeviceInfo(LinuxDeviceInfo data) {
+    return <String, dynamic>{
+      'name': data.name,
+      'version': data.version,
+      'id': data.id,
+      'idLike': data.idLike,
+      'versionCodename': data.versionCodename,
+      'versionId': data.versionId,
+      'prettyName': data.prettyName,
+      'buildId': data.buildId,
+      'variant': data.variant,
+      'variantId': data.variantId,
+      'machineId': data.machineId,
+    };
+  }
+
+  Map<String, dynamic> _readWebBrowserInfo(WebBrowserInfo data) {
+    return <String, dynamic>{
+      'browserName': describeEnum(data.browserName),
+      'appCodeName': data.appCodeName,
+      'appName': data.appName,
+      'appVersion': data.appVersion,
+      'deviceMemory': data.deviceMemory,
+      'language': data.language,
+      'languages': data.languages,
+      'platform': data.platform,
+      'product': data.product,
+      'productSub': data.productSub,
+      'userAgent': data.userAgent,
+      'vendor': data.vendor,
+      'vendorSub': data.vendorSub,
+      'hardwareConcurrency': data.hardwareConcurrency,
+      'maxTouchPoints': data.maxTouchPoints,
+    };
+  }
+
+  Map<String, dynamic> _readMacOsDeviceInfo(MacOsDeviceInfo data) {
+    return <String, dynamic>{
+      'computerName': data.computerName,
+      'hostName': data.hostName,
+      'arch': data.arch,
+      'model': data.model,
+      'kernelVersion': data.kernelVersion,
+      'osRelease': data.osRelease,
+      'activeCPUs': data.activeCPUs,
+      'memorySize': data.memorySize,
+      'cpuFrequency': data.cpuFrequency,
+    };
+  }
+
+  Map<String, dynamic> _readWindowsDeviceInfo(WindowsDeviceInfo data) {
+    return <String, dynamic>{
+      'numberOfCores': data.numberOfCores,
+      'computerName': data.computerName,
+      'systemMemoryInMegabytes': data.systemMemoryInMegabytes,
+    };
+  }
 
   bool webFlag = false; // true if running web
   String platformType = ""; // the platform: android, ios, windows, linux
@@ -118,34 +281,6 @@ class _PracticePageState extends State<PracticePage>
   String addQuotesToString(String text) {
     var quoteText = '\"' + text + '\"';
     return quoteText;
-  }
-
-  void checkWebPlatform() {
-    // check the platform and whether web
-
-    if (kIsWeb) {
-      webFlag = true;
-      browserType = browser.toString();
-    } else {
-      webFlag = false;
-      browserType = '';
-
-      platformType = Platform.operatingSystem;
-      // now check platform
-      if (Platform.isAndroid) {
-        platformType = 'android';
-      } else if (Platform.isIOS) {
-        platformType = 'ios';
-      } else if (Platform.isLinux) {
-        platformType = 'linux';
-      } else if (Platform.isWindows) {
-        platformType = 'windows';
-      } else if (Platform.isMacOS) {
-        platformType = 'macOS';
-      } else if (Platform.isFuchsia) {
-        platformType = 'fuchsia';
-      }
-    }
   }
 
   showAlertDialog(BuildContext context) {
@@ -188,7 +323,6 @@ class _PracticePageState extends State<PracticePage>
   }
 
   //todo: better animation for red car
-  //todo: start over if your car touches red car or falls too far behind red car
   //todo: put the device info thing in here as well
 
   @override
@@ -249,32 +383,31 @@ class _PracticePageState extends State<PracticePage>
       }
     }
 
-    //animation controllers
-    //countdown controller is the countdown text at the beginning of the trial
-    /*_countdownController =
-        AnimationController(duration: Duration(seconds: 4), vsync: this);
-    _countdownController.forward();
-    _countdownController.reverse(
-        from: _countdownController.value == 0.0
-            ? 1.0
-            : _countdownController.value);*/
-    //car controller is the controller for the car the participant controls
     _carController =
         AnimationController(duration: const Duration(seconds: 10), vsync: this)
           ..repeat();
     //demo car controller is the controller for the car the participant is supposed to follow during practice
-
-    _demoCarController =
-        AnimationController(duration: Duration(milliseconds: 750), vsync: this);
-    _demoCarController.forward();
-
-    _demoCarController =
-        AnimationController(duration: const Duration(seconds: 2), vsync: this);
-    animation = Tween<double>(begin: 0, end: 325).animate(_demoCarController)
+    _demoCarController = AnimationController(
+        duration: const Duration(milliseconds: 2000), vsync: this);
+    animation = Tween<double>(begin: 0, end: 310).animate(
+        CurvedAnimation(parent: _demoCarController, curve: Curves.easeInOut))
       ..addListener(() {
         setState(() {});
       });
-    _demoCarController.forward();
+    Future.delayed(Duration(milliseconds: 2500), () {
+      _demoCarController.repeat(reverse: true);
+      text = '';
+    });
+
+    Future.delayed(Duration(milliseconds: 1000), () {
+      setState(() {
+        text = 'GET READY';
+      });
+    });
+
+    Future.delayed(Duration(milliseconds: 2000), () {
+      text = 'GO!';
+    });
 
     //calls functions that check for joystick movement and car position, then adds that to the output list
     carTimer = Timer.periodic(Duration(microseconds: 16667), (Timer t) {
@@ -287,7 +420,7 @@ class _PracticePageState extends State<PracticePage>
       dataList.add(outputList());
     });
     //dataList.add(outputList(prevPos, prevTime));
-    trialTimer = Timer(Duration(seconds: 14), () {
+    trialTimer = Timer(Duration(seconds: 30), () {
       var endTime = new DateTime.now();
       double width = MediaQuery.of(context).size.width;
       double height = MediaQuery.of(context).size.height;
@@ -295,12 +428,7 @@ class _PracticePageState extends State<PracticePage>
       // add data to dataMap for output
       dataMap[addQuotesToString("TaskVersion")] =
           addQuotesToString(taskVersion);
-      dataMap[addQuotesToString("Platform")] = addQuotesToString(platformType);
-      dataMap[addQuotesToString("Web")] = webFlag;
-      dataMap[addQuotesToString("Browser")] = addQuotesToString(browserType);
-      //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
-      // has double quoted android_ia32
-
+      dataMap[addQuotesToString("DeviceData")] = _deviceData;
       dataMap['\"SubjectID\"'] = addQuotesToString(subjectId);
       dataMap['\"TrialNumber\"'] = addQuotesToString("Practice");
       dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
@@ -327,22 +455,6 @@ class _PracticePageState extends State<PracticePage>
     _carController.dispose();
     _demoCarController.dispose();
     super.dispose();
-  }
-
-  String get timerString {
-    Duration duration =
-        _countdownController.duration * _countdownController.value;
-    return '${(duration.inSeconds % 60).toString()}';
-  }
-
-  Color get countdownColor {
-    Duration duration =
-        _countdownController.duration * _countdownController.value;
-    if (duration.inSeconds > 0) {
-      return Colors.white;
-    } else {
-      return Colors.black;
-    }
   }
 
   List outputList() {
@@ -385,24 +497,17 @@ class _PracticePageState extends State<PracticePage>
                   width: 220.0,
                   color: Colors.white,
                 ),
-                /*AnimatedBuilder( //this is the countdown, put back eventually
-                  animation: _countdownController,
-                  builder: (BuildContext context, Widget child) {
-                    return Container(
-                      height: lpc * 0.41,
-                      child: Text(
-                        timerString,
-                        style: TextStyle(
-                          fontSize: 50.0,
-                          fontWeight: FontWeight.bold,
-                          color: countdownColor,
-                        ),
-                      ),
-                    );
-                  },
-                ),*/
+                SizedBox(height: lpc * .18),
                 Container(
-                  height: lpc * 0.41,
+                  height: lpc * 0.23,
+                  child: Text(
+                    text,
+                    style: TextStyle(
+                      fontSize: 50.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
                 Container(
                   // white starting line
@@ -410,42 +515,48 @@ class _PracticePageState extends State<PracticePage>
                   width: 220.0,
                   color: Colors.white,
                 ),
-                AnimatedBuilder(
-                  // car to follow
-                  animation: _demoCarController,
-                  child: Container(
-                    width: 50.0,
-                    height: lpc * 0.06,
-                    child: Icon(
-                      Icons.directions_car,
-                      size: lpc * 0.075,
-                      color: Colors.red,
+                Row(
+                  children: [
+                    AnimatedBuilder(
+                      // car to follow
+                      animation: _demoCarController,
+                      child: Container(
+                        width: 50.0,
+                        height: lpc * 0.06,
+                        child: Icon(
+                          Icons.directions_car,
+                          size: lpc * 0.075,
+                          color: Colors.red,
+                        ),
+                      ),
+                      builder: (BuildContext context, Widget child) {
+                        return Transform.translate(
+                          offset: Offset(0.0,
+                              animation.value != null ? -animation.value : 0.0),
+                          child: child,
+                        );
+                      },
                     ),
-                  ),
-                  builder: (BuildContext context, Widget child) {
-                    return Transform.translate(
-                      offset: Offset(0.0,
-                          animation.value != null ? -animation.value : 0.0),
-                      child: child,
-                    );
-                  },
+                    SizedBox(
+                      width: lpc * .1,
+                    ),
+                    AnimatedBuilder(
+                      // car
+                      animation: _carController,
+                      child: Container(
+                        width: 50.0,
+                        height: lpc * 0.06,
+                        child: Icon(Icons.directions_car, size: lpc * 0.075),
+                      ),
+                      builder: (BuildContext context, Widget child) {
+                        return Transform.translate(
+                          offset: Offset(0.0, posList[1]),
+                          child: child,
+                        );
+                      },
+                    ),
+                  ],
                 ),
-                AnimatedBuilder(
-                  // car
-                  animation: _carController,
-                  child: Container(
-                    width: 50.0,
-                    height: lpc * 0.06,
-                    child: Icon(Icons.directions_car, size: lpc * 0.075),
-                  ),
-                  builder: (BuildContext context, Widget child) {
-                    return Transform.translate(
-                      offset: Offset(0.0, posList[1]),
-                      child: child,
-                    );
-                  },
-                ),
-
                 //SizedBox(height: lpc * 0.05),
                 // Slider
                 Container(
@@ -472,9 +583,6 @@ class _PracticePageState extends State<PracticePage>
                           max: 100.0,
                           onChanged: (double newValue) {
                             setState(() {
-                              /*if (timerString == '0') {
-                                joyStickPos = newValue / 100;
-                              } else {}*/
                               joyStickPos = newValue / 100;
                             });
                           },

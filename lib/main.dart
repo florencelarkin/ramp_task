@@ -11,7 +11,7 @@ double maxTime = 0.75;
 String defaultTitle = 'test page';
 double iceGain = 1.0;
 double cutoffFreq = 10.0;
-int order = 2;
+int order = 0;
 double samplingFreq = 60.0;
 
 class DrivingTask extends StatelessWidget {

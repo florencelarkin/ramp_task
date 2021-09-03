@@ -64,7 +64,7 @@ class _InstructionPracticeState extends State<InstructionPractice> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'For the practice session your task is to follow the red car',
+                'For the practice session your task is to match the movements of the red car',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -77,7 +77,7 @@ class _InstructionPracticeState extends State<InstructionPractice> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'Try to keep within one or two car lengths behind the other car',
+                'Try to keep your car parallel to the white car throughout the practice session',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -90,7 +90,7 @@ class _InstructionPracticeState extends State<InstructionPractice> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'Falling too far behind or touching the red car will cause the practice to restart.',
+                'Falling too far behind or too far ahead the red car will cause the practice to restart.',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,

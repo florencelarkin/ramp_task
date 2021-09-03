@@ -105,8 +105,6 @@ class _ContinuationPageState extends State<ContinuationPage> {
                     onPrimary: Colors.white, // foreground
                   ),
                   onPressed: () {
-                    print(
-                        '$cutoffFreq , $samplingFreq , $order, $timeMax, $lpc');
                     trialNumber++;
                     Navigator.push(
                       context,
