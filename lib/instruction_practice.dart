@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
-import 'package:driving_task/practice_continue.dart';
+import 'package:driving_task/practice_restart.dart';
 import 'package:driving_task/practice.dart';
 
 class InstructionPractice extends StatefulWidget {

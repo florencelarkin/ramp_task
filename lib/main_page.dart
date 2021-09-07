@@ -12,7 +12,7 @@ import 'block_page.dart';
 import 'completed_screen.dart';
 import 'package:web_browser_detect/web_browser_detect.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'try_again_page.dart';
+import 'restart_page.dart';
 import 'package:flutter/widgets.dart';
 
 class MainPage extends StatefulWidget {
@@ -419,7 +419,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => TryAgainPage(
+            builder: (context) => RestartPage(
               subjectId: subjectId,
               uuid: uuid,
               trialNumber: trialNumber,
@@ -485,7 +485,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => TryAgainPage(
+          builder: (context) => RestartPage(
             subjectId: subjectId,
             uuid: uuid,
             trialNumber: trialNumber,
@@ -591,7 +591,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => TryAgainPage(
+              builder: (context) => RestartPage(
                 subjectId: subjectId,
                 uuid: uuid,
                 trialNumber: trialNumber,

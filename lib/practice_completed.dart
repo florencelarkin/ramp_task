@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'instruction_page7.dart';
+import 'instruction_page3.dart';
 
 class PracticeCompleted extends StatefulWidget {
   PracticeCompleted({
@@ -104,7 +104,7 @@ class _PracticeCompletedState extends State<PracticeCompleted> {
               padding: const EdgeInsets.all(8.0),
               child: Center(
                 child: Text(
-                  'Click \'start\' to begin the task!',
+                  'Click \'NEXT\' to read the additional instructions for the task',
                   style: TextStyle(
                       fontSize: 25.0,
                       fontWeight: FontWeight.bold,
@@ -119,7 +119,7 @@ class _PracticeCompletedState extends State<PracticeCompleted> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                  child: Text('START'),
+                  child: Text('NEXT'),
                   style: ElevatedButton.styleFrom(
                     primary: Colors.green, // background
                     onPrimary: Colors.white, // foreground
@@ -128,7 +128,7 @@ class _PracticeCompletedState extends State<PracticeCompleted> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => InstructionPage7(
+                        builder: (context) => InstructionPage3(
                           timeMax: timeMax,
                           subjectId: subjectId,
                           totalTrials: totalTrials,

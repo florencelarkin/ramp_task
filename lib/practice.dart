@@ -10,6 +10,7 @@ import 'package:web_browser_detect/web_browser_detect.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'practice_completed.dart';
 import 'package:flutter/services.dart';
+import 'practice_restart.dart';
 
 class PracticePage extends StatefulWidget {
   PracticePage({
@@ -112,8 +113,19 @@ class _PracticePageState extends State<PracticePage>
   double currentTime = 0.0;
   int counter = 0;
   String text = '';
+  Color textColor = Colors.black;
+  String feedbackText = '';
+  bool pointerCheck = false;
+  int tweenCounter = 0;
+  var startTime = new DateTime.now();
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   Map<String, dynamic> _deviceData = <String, dynamic>{};
+
+  void _pointerCheck(PointerEvent details) {
+    setState(() {
+      pointerCheck = true;
+    });
+  }
 
   void checkWebPlatform() {
     // check the platform and whether web
@@ -322,8 +334,55 @@ class _PracticePageState extends State<PracticePage>
     );
   }
 
-  //todo: better animation for red car
-  //todo: put the device info thing in here as well
+  void _mistrialSlider(PointerEvent details) {
+    setState(() {
+      dataMap[addQuotesToString("TaskVersion")] =
+          addQuotesToString(taskVersion);
+      dataMap[addQuotesToString("Platform")] = addQuotesToString(platformType);
+      /*dataMap[addQuotesToString("Web")] = webFlag;
+      dataMap[addQuotesToString("Browser")] = addQuotesToString(browserType);*/
+      //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
+      // has double quoted android_ia32
+      dataMap[addQuotesToString("DeviceData")] = _deviceData;
+      dataMap[addQuotesToString("SubjectID")] = addQuotesToString(subjectId);
+      dataMap['\"TrialNumber\"'] = addQuotesToString(trialNumber.toString());
+      dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
+      dataMap['\"EndTime\"'] =
+          addQuotesToString(DateTime.now().toIso8601String());
+      dataMap['\"Sensitivity\"'] = addQuotesToString(timeMax.toString());
+      dataMap['\"FilterCutoffFrequency\"'] =
+          addQuotesToString(cutoffFreq.toString());
+      dataMap['\"FilterOrder\"'] = addQuotesToString(order.toString());
+      dataMap['\"FilterSamplingFeq\"'] =
+          addQuotesToString(samplingFreq.toString());
+      dataMap['\"TotalTrials\"'] = addQuotesToString(totalTrials.toString());
+      dataMap['\"ScreenSize\"'] = addQuotesToString('$lpc'); //fix this later
+      dataMap[addQuotesToString("CompletedTrial")] = addQuotesToString('no');
+      dataMap['\"Moves\"'] = dataList;
+      _carController.stop();
+      _demoCarController.stop();
+      carTimer.cancel();
+      createData('driving01', uuid, dataMap.toString(), '01');
+      //_serverUpload('driving01', uuid, dataMap.toString(), '01');
+      trialTimer.cancel();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => RestartPractice(
+            subjectId: subjectId,
+            uuid: uuid,
+            lpc: lpc,
+            timeMax: timeMax,
+            totalTrials: totalTrials,
+            iceGain: iceGain,
+            cutoffFreq: cutoffFreq,
+            order: order,
+            samplingFreq: samplingFreq,
+          ),
+        ),
+      );
+    });
+  }
 
   @override
   void initState() {
@@ -347,11 +406,12 @@ class _PracticePageState extends State<PracticePage>
       addQuotesToString("slider"),
       addQuotesToString("carPos"),
       addQuotesToString("carVel"),
-      addQuotesToString("eventcode")
+      addQuotesToString("carDelta"),
+      addQuotesToString("eventcode"),
     ]);
 
-    _serverUpload(studycode, guid, dataList, data_version) async {
-      bool dataSent = await createData(studycode, guid, dataList, data_version);
+    _serverUpload(studycode, guid, dataList, dataVersion) async {
+      bool dataSent = await createData(studycode, guid, dataList, dataVersion);
       if (dataSent == true) {
         trialTimer.cancel();
         carTimer.cancel();
@@ -392,7 +452,9 @@ class _PracticePageState extends State<PracticePage>
     animation = Tween<double>(begin: 0, end: 310).animate(
         CurvedAnimation(parent: _demoCarController, curve: Curves.easeInOut))
       ..addListener(() {
-        setState(() {});
+        setState(() {
+          tweenCounter++;
+        });
       });
     Future.delayed(Duration(milliseconds: 2500), () {
       _demoCarController.repeat(reverse: true);
@@ -414,17 +476,91 @@ class _PracticePageState extends State<PracticePage>
       setState(() {
         prevTime = currentTime;
         currentTime = stopwatch.elapsedMilliseconds.toDouble();
+        tweenCounter == 750 ? _demoCarController.stop() : null;
+        if (posList[0] < -2.0 || posList[0] > 1.0) {
+          //if you go off the screen in either direction
+          dataMap[addQuotesToString("TaskVersion")] =
+              addQuotesToString(taskVersion);
+          dataMap[addQuotesToString("Platform")] =
+              addQuotesToString(platformType);
+          /*dataMap[addQuotesToString("Web")] = webFlag;
+      dataMap[addQuotesToString("Browser")] = addQuotesToString(browserType);*/
+          //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
+          // has double quoted android_ia32
+          dataMap[addQuotesToString("DeviceData")] = _deviceData;
+          dataMap[addQuotesToString("SubjectID")] =
+              addQuotesToString(subjectId);
+          dataMap['\"TrialNumber\"'] =
+              addQuotesToString(trialNumber.toString());
+          dataMap['\"StartTime\"'] =
+              addQuotesToString(startTime.toIso8601String());
+          dataMap['\"EndTime\"'] =
+              addQuotesToString(DateTime.now().toIso8601String());
+          dataMap['\"Sensitivity\"'] = addQuotesToString(timeMax.toString());
+          dataMap['\"FilterCutoffFrequency\"'] =
+              addQuotesToString(cutoffFreq.toString());
+          dataMap['\"FilterOrder\"'] = addQuotesToString(order.toString());
+          dataMap['\"FilterSamplingFeq\"'] =
+              addQuotesToString(samplingFreq.toString());
+          dataMap['\"TotalTrials\"'] =
+              addQuotesToString(totalTrials.toString());
+          dataMap['\"ScreenSize\"'] =
+              addQuotesToString('$lpc'); //fix this later
+          dataMap[addQuotesToString("CompletedTrial")] =
+              addQuotesToString('no');
+          dataMap['\"Moves\"'] = dataList;
+          _carController.stop();
+          _demoCarController.stop();
+          carTimer.cancel();
+          trialTimer.cancel();
+          createData('driving01', uuid, dataMap.toString(), '01');
+          //_serverUpload('driving01', uuid, dataMap.toString(), '01');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RestartPractice(
+                subjectId: subjectId,
+                uuid: uuid,
+                lpc: lpc,
+                timeMax: timeMax,
+                totalTrials: totalTrials,
+                iceGain: iceGain,
+                cutoffFreq: cutoffFreq,
+                order: order,
+                samplingFreq: samplingFreq,
+              ),
+            ),
+          );
+        } else if (posList[0] < -1.3) {
+          setState(() {
+            textColor = Colors.white;
+            feedbackText = 'WATCH OUT!!';
+          });
+        } else if (posList[0] > .2) {
+          setState(() {
+            textColor = Colors.white;
+            feedbackText = 'WRONG WAY!!';
+          });
+        } else if (posList[0] - (-animation.value / 310) > .15 ||
+            posList[0] - (-animation.value / 310) < -.15) {
+          setState(() {
+            textColor = Colors.white;
+            feedbackText = "Stay closer to the red car!";
+          });
+        } else {
+          setState(() {
+            textColor = Colors.black;
+          });
+        }
       });
       posList = carEngine.getPos(
           joyStickPos, posList[1], timeMax, posList[0], currentTime, prevTime);
       dataList.add(outputList());
     });
-    //dataList.add(outputList(prevPos, prevTime));
     trialTimer = Timer(Duration(seconds: 30), () {
       var endTime = new DateTime.now();
       double width = MediaQuery.of(context).size.width;
       double height = MediaQuery.of(context).size.height;
-
       // add data to dataMap for output
       dataMap[addQuotesToString("TaskVersion")] =
           addQuotesToString(taskVersion);
@@ -443,7 +579,7 @@ class _PracticePageState extends State<PracticePage>
       dataMap['\"ScreenSize\"'] = addQuotesToString('$width x $height');
       dataMap['\"Moves\"'] = dataList;
       _carController.stop();
-      //_countdownController.stop();
+      _demoCarController.stop();
       carTimer.cancel();
       _serverUpload('driving01', uuid, dataMap.toString(), '01');
     });
@@ -466,6 +602,7 @@ class _PracticePageState extends State<PracticePage>
       joyStickPos.toString(),
       getAdjustedPos.toString(),
       carVelocity.toString(),
+      (posList[0] - (-animation.value / 310)).toString(),
       'practice'
     ]);
 
@@ -485,9 +622,23 @@ class _PracticePageState extends State<PracticePage>
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * .01,
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height * .09,
+                  width: MediaQuery.of(context).size.width * .45,
+                  child: Text(
+                    feedbackText,
+                    style: TextStyle(
+                      color: textColor,
+                      fontSize: 30.0,
+                    ),
+                  ),
+                ),
                 Container(
                   // StopSign at top
-                  height: lpc * 0.25,
+                  height: lpc * 0.14,
                   width: 250.0,
                   child: Image.asset("images/stopsign.png"),
                 ),
@@ -575,17 +726,25 @@ class _PracticePageState extends State<PracticePage>
                           activeTrackColor: Colors.transparent,
                           inactiveTrackColor: Colors.transparent,
                         ),
-                        child: Slider(
-                          inactiveColor: Colors.white,
-                          activeColor: Colors.white,
-                          value: joyStickPos,
-                          min: -100.0,
-                          max: 100.0,
-                          onChanged: (double newValue) {
-                            setState(() {
-                              joyStickPos = newValue / 100;
-                            });
-                          },
+                        child: Listener(
+                          onPointerDown: _pointerCheck,
+                          onPointerUp: pointerCheck == true ||
+                                  pointerCheck == false &&
+                                      stopwatch.elapsedMilliseconds > 5000
+                              ? _mistrialSlider
+                              : null,
+                          child: Slider(
+                            inactiveColor: Colors.white,
+                            activeColor: Colors.white,
+                            value: joyStickPos,
+                            min: -100.0,
+                            max: 100.0,
+                            onChanged: (double newValue) {
+                              setState(() {
+                                joyStickPos = newValue / 100;
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ),

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'instruction_page7.dart';
-import 'instruction_practice.dart';
 
 class InstructionPage6 extends StatefulWidget {
   InstructionPage6({
     @required this.timeMax,
     @required this.subjectId,
     @required this.totalTrials,
+    @required this.uuid,
+    @required this.lpc,
     this.iceGain,
     this.cutoffFreq,
     this.order,
@@ -19,6 +20,8 @@ class InstructionPage6 extends StatefulWidget {
   final double cutoffFreq;
   final int order;
   final double samplingFreq;
+  final String uuid;
+  final double lpc;
 
   @override
   _InstructionPage6State createState() => _InstructionPage6State(
@@ -29,6 +32,8 @@ class InstructionPage6 extends StatefulWidget {
         cutoffFreq: cutoffFreq,
         order: order,
         samplingFreq: samplingFreq,
+        uuid: uuid,
+        lpc: lpc,
       );
 }
 
@@ -37,6 +42,8 @@ class _InstructionPage6State extends State<InstructionPage6> {
     @required this.timeMax,
     @required this.subjectId,
     @required this.totalTrials,
+    @required this.uuid,
+    @required this.lpc,
     this.iceGain,
     this.cutoffFreq,
     this.order,
@@ -49,6 +56,8 @@ class _InstructionPage6State extends State<InstructionPage6> {
   double cutoffFreq;
   int order;
   double samplingFreq;
+  String uuid;
+  double lpc;
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +128,7 @@ class _InstructionPage6State extends State<InstructionPage6> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => InstructionPractice(
+                        builder: (context) => InstructionPage7(
                           timeMax: timeMax,
                           totalTrials: totalTrials,
                           subjectId: subjectId,
@@ -127,6 +136,8 @@ class _InstructionPage6State extends State<InstructionPage6> {
                           cutoffFreq: cutoffFreq,
                           order: order,
                           samplingFreq: samplingFreq,
+                          uuid: uuid,
+                          lpc: lpc,
                         ),
                       ),
                     );

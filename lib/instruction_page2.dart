@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'instruction_page3.dart';
+//import 'instruction_page3.dart';
+import 'instruction_practice.dart';
 
 class InstructionPage2 extends StatefulWidget {
   InstructionPage2({
@@ -104,7 +105,7 @@ class _InstructionPage2State extends State<InstructionPage2> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => InstructionPage3(
+                        builder: (context) => InstructionPractice(
                           timeMax: timeMax,
                           totalTrials: totalTrials,
                           subjectId: subjectId,
