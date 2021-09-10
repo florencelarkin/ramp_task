@@ -52,8 +52,10 @@ class CarEngine {
     double deltaTime =
         currentTime - prevTime; //change in time to measure frame rate
 
-    sliderFilter = butterworth.filter(
-        sliderPos); //takes in slider position and puts it through a low pass filter
+    order == 0
+        ? sliderFilter = sliderPos
+        : sliderFilter = butterworth.filter(
+            sliderPos); //takes in slider position and puts it through a low pass filter
 
     /*sliderFilter =
         sliderPos; //get rid of butterworth for now when testing out practice trials + other updates
