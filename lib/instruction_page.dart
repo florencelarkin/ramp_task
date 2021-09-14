@@ -62,12 +62,15 @@ class _InstructionPageState extends State<InstructionPage> {
               child: Text(
                 'Driving Task',
                 style: TextStyle(
-                    fontSize: 20.0,
+                    fontSize: 30.0,
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
                 textAlign: TextAlign.center,
               ),
             ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.1,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -81,6 +84,9 @@ class _InstructionPageState extends State<InstructionPage> {
                 textAlign: TextAlign.center,
               ),
             ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.1,
           ),
           ElevatedButton(
               child: Text('NEXT'),

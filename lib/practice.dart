@@ -448,7 +448,7 @@ class _PracticePageState extends State<PracticePage>
           ..repeat();
     //demo car controller is the controller for the car the participant is supposed to follow during practice
     _demoCarController = AnimationController(
-        duration: const Duration(milliseconds: 2000), vsync: this);
+        duration: const Duration(milliseconds: 3500), vsync: this);
     animation = Tween<double>(begin: 0, end: 310).animate(
         CurvedAnimation(parent: _demoCarController, curve: Curves.easeInOut))
       ..addListener(() {
@@ -623,16 +623,19 @@ class _PracticePageState extends State<PracticePage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * .01,
+                  height: lpc * .01,
                 ),
-                Container(
-                  height: MediaQuery.of(context).size.height * .09,
-                  width: MediaQuery.of(context).size.width * .45,
-                  child: Text(
-                    feedbackText,
-                    style: TextStyle(
-                      color: textColor,
-                      fontSize: 30.0,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: lpc * .09,
+                    width: lpc * .45,
+                    child: Text(
+                      feedbackText,
+                      style: TextStyle(
+                        color: textColor,
+                        fontSize: lpc * 0.02,
+                      ),
                     ),
                   ),
                 ),
