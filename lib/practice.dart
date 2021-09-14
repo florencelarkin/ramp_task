@@ -449,7 +449,7 @@ class _PracticePageState extends State<PracticePage>
     //demo car controller is the controller for the car the participant is supposed to follow during practice
     _demoCarController = AnimationController(
         duration: const Duration(milliseconds: 3500), vsync: this);
-    animation = Tween<double>(begin: 0, end: 310).animate(
+    animation = Tween<double>(begin: 0, end: lpc * 0.43).animate(
         CurvedAnimation(parent: _demoCarController, curve: Curves.easeInOut))
       ..addListener(() {
         setState(() {
