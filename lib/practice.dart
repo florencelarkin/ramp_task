@@ -476,7 +476,7 @@ class _PracticePageState extends State<PracticePage>
       setState(() {
         prevTime = currentTime;
         currentTime = stopwatch.elapsedMilliseconds.toDouble();
-        tweenCounter == 750 ? _demoCarController.stop() : null;
+        tweenCounter == 800 ? _demoCarController.stop() : null;
         if (posList[0] < -2.0 || posList[0] > 1.0) {
           //if you go off the screen in either direction
           dataMap[addQuotesToString("TaskVersion")] =
