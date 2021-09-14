@@ -343,7 +343,7 @@ class _PracticePageState extends State<PracticePage>
       dataMap[addQuotesToString("Browser")] = addQuotesToString(browserType);*/
       //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
       // has double quoted android_ia32
-      dataMap[addQuotesToString("DeviceData")] = _deviceData;
+      dataMap[addQuotesToString("DeviceData")] = _deviceData.toString();
       dataMap[addQuotesToString("SubjectID")] = addQuotesToString(subjectId);
       dataMap['\"TrialNumber\"'] = addQuotesToString(trialNumber.toString());
       dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
@@ -353,7 +353,7 @@ class _PracticePageState extends State<PracticePage>
       dataMap['\"FilterCutoffFrequency\"'] =
           addQuotesToString(cutoffFreq.toString());
       dataMap['\"FilterOrder\"'] = addQuotesToString(order.toString());
-      dataMap['\"FilterSamplingFeq\"'] =
+      dataMap['\"FilterSamplingFreq\"'] =
           addQuotesToString(samplingFreq.toString());
       dataMap['\"TotalTrials\"'] = addQuotesToString(totalTrials.toString());
       dataMap['\"ScreenSize\"'] = addQuotesToString('$lpc'); //fix this later
@@ -487,7 +487,7 @@ class _PracticePageState extends State<PracticePage>
       dataMap[addQuotesToString("Browser")] = addQuotesToString(browserType);*/
           //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
           // has double quoted android_ia32
-          dataMap[addQuotesToString("DeviceData")] = _deviceData;
+          dataMap[addQuotesToString("DeviceData")] = _deviceData.toString();
           dataMap[addQuotesToString("SubjectID")] =
               addQuotesToString(subjectId);
           dataMap['\"TrialNumber\"'] =
@@ -500,7 +500,7 @@ class _PracticePageState extends State<PracticePage>
           dataMap['\"FilterCutoffFrequency\"'] =
               addQuotesToString(cutoffFreq.toString());
           dataMap['\"FilterOrder\"'] = addQuotesToString(order.toString());
-          dataMap['\"FilterSamplingFeq\"'] =
+          dataMap['\"FilterSamplingFreq\"'] =
               addQuotesToString(samplingFreq.toString());
           dataMap['\"TotalTrials\"'] =
               addQuotesToString(totalTrials.toString());
@@ -564,7 +564,7 @@ class _PracticePageState extends State<PracticePage>
       // add data to dataMap for output
       dataMap[addQuotesToString("TaskVersion")] =
           addQuotesToString(taskVersion);
-      dataMap[addQuotesToString("DeviceData")] = _deviceData;
+      dataMap[addQuotesToString("DeviceData")] = _deviceData.toString();
       dataMap['\"SubjectID\"'] = addQuotesToString(subjectId);
       dataMap['\"TrialNumber\"'] = addQuotesToString("Practice");
       dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
@@ -573,7 +573,7 @@ class _PracticePageState extends State<PracticePage>
       dataMap['\"FilterCutoffFrequency\"'] =
           addQuotesToString(cutoffFreq.toString());
       dataMap['\"FilterOrder\"'] = addQuotesToString(order.toString());
-      dataMap['\"FilterSamplingFeq\"'] =
+      dataMap['\"FilterSamplingFreq\"'] =
           addQuotesToString(samplingFreq.toString());
       dataMap['\"TotalTrials\"'] = addQuotesToString(totalTrials.toString());
       dataMap['\"ScreenSize\"'] = addQuotesToString('$width x $height');

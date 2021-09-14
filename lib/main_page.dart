@@ -457,7 +457,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       dataMap[addQuotesToString("Browser")] = addQuotesToString(browserType);*/
       //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
       // has double quoted android_ia32
-      dataMap[addQuotesToString("DeviceData")] = _deviceData;
+      dataMap[addQuotesToString("DeviceData")] = _deviceData.toString();
       dataMap[addQuotesToString("SubjectID")] = addQuotesToString(subjectId);
       dataMap['\"TrialNumber\"'] = addQuotesToString(trialNumber.toString());
       dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
@@ -467,7 +467,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       dataMap['\"FilterCutoffFrequency\"'] =
           addQuotesToString(cutoffFreq.toString());
       dataMap['\"FilterOrder\"'] = addQuotesToString(order.toString());
-      dataMap['\"FilterSamplingFeq\"'] =
+      dataMap['\"FilterSamplingFreq\"'] =
           addQuotesToString(samplingFreq.toString());
       dataMap['\"TotalTrials\"'] = addQuotesToString(totalTrials.toString());
       dataMap['\"ScreenSize\"'] = addQuotesToString('$lpc'); //fix this later
@@ -558,7 +558,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       dataMap[addQuotesToString("Browser")] = addQuotesToString(browserType);*/
           //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
           // has double quoted android_ia32
-          dataMap[addQuotesToString("DeviceData")] = _deviceData;
+          dataMap[addQuotesToString("DeviceData")] = _deviceData.toString();
           dataMap[addQuotesToString("SubjectID")] =
               addQuotesToString(subjectId);
           dataMap['\"TrialNumber\"'] =
@@ -571,7 +571,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           dataMap['\"FilterCutoffFrequency\"'] =
               addQuotesToString(cutoffFreq.toString());
           dataMap['\"FilterOrder\"'] = addQuotesToString(order.toString());
-          dataMap['\"FilterSamplingFeq\"'] =
+          dataMap['\"FilterSamplingFreq\"'] =
               addQuotesToString(samplingFreq.toString());
           dataMap['\"TotalTrials\"'] =
               addQuotesToString(totalTrials.toString());
@@ -645,7 +645,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       dataMap[addQuotesToString("Browser")] = addQuotesToString(browserType);*/
       //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
       // has double quoted android_ia32
-      dataMap[addQuotesToString("DeviceData")] = _deviceData;
+      dataMap[addQuotesToString("DeviceData")] = _deviceData.toString();
 
       dataMap[addQuotesToString("SubjectID")] = addQuotesToString(subjectId);
       dataMap['\"TrialNumber\"'] = addQuotesToString(trialNumber.toString());
@@ -655,7 +655,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       dataMap['\"FilterCutoffFrequency\"'] =
           addQuotesToString(cutoffFreq.toString());
       dataMap['\"FilterOrder\"'] = addQuotesToString(order.toString());
-      dataMap['\"FilterSamplingFeq\"'] =
+      dataMap['\"FilterSamplingFreq\"'] =
           addQuotesToString(samplingFreq.toString());
       dataMap['\"TotalTrials\"'] = addQuotesToString(totalTrials.toString());
       dataMap['\"ScreenSize\"'] = addQuotesToString('$width x $height');
