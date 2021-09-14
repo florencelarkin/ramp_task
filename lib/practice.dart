@@ -388,6 +388,7 @@ class _PracticePageState extends State<PracticePage>
   void initState() {
     super.initState();
     var startTime = new DateTime.now();
+    initPlatformState();
     CarEngine carEngine = CarEngine(
       timeMax: timeMax,
       lpc: lpc,
@@ -582,6 +583,7 @@ class _PracticePageState extends State<PracticePage>
       _demoCarController.stop();
       carTimer.cancel();
       _serverUpload('driving01', uuid, dataMap.toString(), '01');
+      print(_deviceData);
     });
   }
 
