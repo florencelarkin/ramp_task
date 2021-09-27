@@ -368,6 +368,46 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               ? 1.0
               : _countdownController.value);
       _timerController.forward();
+      trialTimer = Timer(Duration(seconds: 13), () {
+        var endTime = new DateTime.now();
+        double width = MediaQuery.of(context).size.width;
+        double height = MediaQuery.of(context).size.height;
+
+        // add data to dataMap for output
+        dataMap[addQuotesToString("TaskVersion")] =
+            addQuotesToString(taskVersion);
+        dataMap[addQuotesToString("Platform")] =
+            addQuotesToString(platformType);
+        dataMap[addQuotesToString("Web")] = webFlag;
+        dataMap[addQuotesToString("Browser")] = addQuotesToString(browserType);
+        //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
+        // has double quoted android_ia32
+        dataMap[addQuotesToString("DeviceData")] = _deviceData.toString();
+
+        dataMap[addQuotesToString("SubjectID")] = addQuotesToString(subjectId);
+        dataMap['\"TrialNumber\"'] = addQuotesToString(trialNumber.toString());
+        dataMap['\"StartTime\"'] =
+            addQuotesToString(startTime.toIso8601String());
+        dataMap['\"EndTime\"'] = addQuotesToString(endTime.toIso8601String());
+        dataMap['\"Sensitivity\"'] = addQuotesToString(timeMax.toString());
+        dataMap['\"FilterCutoffFrequency\"'] =
+            addQuotesToString(cutoffFreq.toString());
+        dataMap['\"FilterOrder\"'] = addQuotesToString(order.toString());
+        dataMap['\"FilterSamplingFreq\"'] =
+            addQuotesToString(samplingFreq.toString());
+        dataMap['\"TotalTrials\"'] = addQuotesToString(totalTrials.toString());
+        dataMap['\"ScreenSize\"'] = addQuotesToString('$width x $height');
+        dataMap[addQuotesToString("CompletedTrial")] = addQuotesToString('yes');
+        dataMap['\"Moves\"'] = dataList;
+        _timerController.stop();
+        _carController.stop();
+        _countdownController.stop();
+        carTimer.cancel();
+        colorTimer.cancel();
+        trialTimer.cancel();
+        //dataTimer.cancel();
+        _serverUpload('driving01', uuid, dataMap.toString(), '01');
+      });
     });
   }
 
@@ -552,7 +592,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         AnimationController(duration: const Duration(seconds: 10), vsync: this)
           ..repeat();
     _timerController =
-        AnimationController(duration: Duration(seconds: 14), vsync: this);
+        AnimationController(duration: Duration(seconds: 13), vsync: this);
     /*_timerController.forward();*/
 
     //calls functions that check for joystick movement and car position, then adds that to the output list
@@ -647,7 +687,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             ? timerColor = Colors.green
             : timerColor = Colors.blue);
     //Timer for the end of the trial
-    trialTimer = Timer(Duration(seconds: 14), () {
+    /*trialTimer = Timer(Duration(seconds: 14), () {
       var endTime = new DateTime.now();
       double width = MediaQuery.of(context).size.width;
       double height = MediaQuery.of(context).size.height;
@@ -684,7 +724,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       trialTimer.cancel();
       //dataTimer.cancel();
       _serverUpload('driving01', uuid, dataMap.toString(), '01');
-    });
+    });*/
   }
 
   @override
