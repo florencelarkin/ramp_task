@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
-import 'package:driving_task/practice_restart.dart';
 import 'package:driving_task/practice.dart';
 
 class InstructionPractice extends StatefulWidget {
@@ -8,6 +6,8 @@ class InstructionPractice extends StatefulWidget {
     @required this.timeMax,
     @required this.subjectId,
     @required this.totalTrials,
+    @required this.uuid,
+    @required this.lpc,
     this.iceGain,
     this.cutoffFreq,
     this.order,
@@ -20,6 +20,8 @@ class InstructionPractice extends StatefulWidget {
   final double cutoffFreq;
   final int order;
   final double samplingFreq;
+  final String uuid;
+  final double lpc;
 
   @override
   _InstructionPracticeState createState() => _InstructionPracticeState(
@@ -30,6 +32,8 @@ class InstructionPractice extends StatefulWidget {
         cutoffFreq: cutoffFreq,
         order: order,
         samplingFreq: samplingFreq,
+        uuid: uuid,
+        lpc: lpc,
       );
 }
 
@@ -38,6 +42,8 @@ class _InstructionPracticeState extends State<InstructionPractice> {
     @required this.timeMax,
     @required this.subjectId,
     @required this.totalTrials,
+    @required this.uuid,
+    @required this.lpc,
     this.iceGain,
     this.cutoffFreq,
     this.order,
@@ -50,8 +56,8 @@ class _InstructionPracticeState extends State<InstructionPractice> {
   double cutoffFreq;
   int order;
   double samplingFreq;
-
-  var uuid = Uuid();
+  String uuid;
+  double lpc;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +70,7 @@ class _InstructionPracticeState extends State<InstructionPractice> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'For the practice session your task is to match the movements of the red car',
+                'The practice will begin after you hold your thumb on the dot for 3 seconds',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -77,7 +83,7 @@ class _InstructionPracticeState extends State<InstructionPractice> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'Try to keep your car parallel to the white car throughout the practice session',
+                'The practice will restart if you:',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -90,7 +96,7 @@ class _InstructionPracticeState extends State<InstructionPractice> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'Falling too far behind or too far ahead the red car will cause the practice to restart.',
+                '1. remove your thumb from the screen',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -103,7 +109,7 @@ class _InstructionPracticeState extends State<InstructionPractice> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'This is just so that you can get used to the movement required for the task',
+                '2. do not stay close enough to the red car or drive off the screen',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -131,14 +137,12 @@ class _InstructionPracticeState extends State<InstructionPractice> {
                     onPrimary: Colors.white, // foreground
                   ),
                   onPressed: () {
-                    double lpc = MediaQuery.of(context).size.height;
-                    String newId = uuid.v1();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => PracticePage(
                           subjectId: subjectId,
-                          uuid: newId,
+                          uuid: uuid,
                           lpc: lpc,
                           totalTrials: totalTrials,
                           timeMax: timeMax,

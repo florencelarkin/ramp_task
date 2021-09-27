@@ -14,6 +14,7 @@ class RestartPage extends StatefulWidget {
     @required this.cutoffFreq,
     @required this.order,
     @required this.samplingFreq,
+    @required this.feedbackText,
   });
   final String subjectId;
   final String uuid;
@@ -26,6 +27,7 @@ class RestartPage extends StatefulWidget {
   final double cutoffFreq;
   final int order;
   final double samplingFreq;
+  final String feedbackText;
 
   @override
   _RestartPageState createState() => _RestartPageState(
@@ -40,6 +42,7 @@ class RestartPage extends StatefulWidget {
         cutoffFreq: cutoffFreq,
         order: order,
         samplingFreq: samplingFreq,
+        feedbackText: feedbackText,
       );
 }
 
@@ -56,6 +59,7 @@ class _RestartPageState extends State<RestartPage> {
     this.cutoffFreq,
     this.order,
     this.samplingFreq,
+    this.feedbackText,
   });
   String subjectId;
   double maxVelocity;
@@ -70,6 +74,7 @@ class _RestartPageState extends State<RestartPage> {
   double cutoffFreq;
   int order;
   double samplingFreq;
+  String feedbackText;
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +83,36 @@ class _RestartPageState extends State<RestartPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Try Again',
+                  style: TextStyle(
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  feedbackText,
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -93,52 +128,7 @@ class _RestartPageState extends State<RestartPage> {
               ),
             ),
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Text(
-                  'Tip 1: Remember to keep your finger on the slider through the whole trial',
-                  style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Text(
-                  'Tip 2: Do not drive off the screen',
-                  style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Text(
-                  'Tip 3: Try not to end too far away from the stop sign',
-                  style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height * .1),
+          SizedBox(height: MediaQuery.of(context).size.height * .3),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

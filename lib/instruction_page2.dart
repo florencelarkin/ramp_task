@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-//import 'instruction_page3.dart';
-import 'instruction_practice.dart';
+import 'instruction_page3.dart';
+import 'package:uuid/uuid.dart';
+//import 'instruction_practice.dart';
 
 class InstructionPage2 extends StatefulWidget {
   InstructionPage2({
@@ -49,6 +50,7 @@ class _InstructionPage2State extends State<InstructionPage2> {
   double cutoffFreq;
   int order;
   double samplingFreq;
+  var uuid = Uuid();
 
   @override
   Widget build(BuildContext context) {
@@ -57,11 +59,12 @@ class _InstructionPage2State extends State<InstructionPage2> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'In this task you will control a vehicle by sliding your thumb on the screen.',
+                'In this task you will control a vehicle by sliding your thumb placed on a white dot at the bottom of the screen.',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -83,6 +86,13 @@ class _InstructionPage2State extends State<InstructionPage2> {
               ),
             ),
           ),
+          Expanded(
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.2,
+              child: Image.asset("images/slider.jpg"),
+            ),
+          ),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -102,11 +112,15 @@ class _InstructionPage2State extends State<InstructionPage2> {
                     onPrimary: Colors.white, // foreground
                   ),
                   onPressed: () {
+                    double lpc = MediaQuery.of(context).size.height;
+                    String newId = uuid.v1();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => InstructionPractice(
+                        builder: (context) => InstructionPage3(
                           timeMax: timeMax,
+                          lpc: lpc,
+                          uuid: newId,
                           totalTrials: totalTrials,
                           subjectId: subjectId,
                           iceGain: iceGain,
@@ -119,6 +133,7 @@ class _InstructionPage2State extends State<InstructionPage2> {
                   }),
             ],
           ),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
         ],
       ),
     );

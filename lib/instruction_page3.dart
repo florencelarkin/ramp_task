@@ -1,3 +1,4 @@
+import 'package:driving_task/instruction_practice.dart';
 import 'package:flutter/material.dart';
 import 'instruction_page4.dart';
 
@@ -66,11 +67,14 @@ class _InstructionPage3State extends State<InstructionPage3> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          SizedBox(
+            height: lpc * .1,
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'Each trial begins with a 3 second countdown.',
+                'First there will be a practice session so you can get a feel for the controls',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -83,7 +87,7 @@ class _InstructionPage3State extends State<InstructionPage3> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'You have ten seconds to complete the trial.',
+                'You will control a white car, and your goal is to keep it next to the red target car',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -96,7 +100,7 @@ class _InstructionPage3State extends State<InstructionPage3> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'A timer bar will appear on the side of the screen to indicate the time left. It turns green when the car approaches the stop sign.',
+                'Try to keep your car parallel to the red car throughout the practice session',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -105,6 +109,13 @@ class _InstructionPage3State extends State<InstructionPage3> {
               ),
             ),
           ),
+          Expanded(
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.3,
+              child: Image.asset("images/practiceCar.png"),
+            ),
+          ),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -127,22 +138,23 @@ class _InstructionPage3State extends State<InstructionPage3> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => InstructionPage4(
+                        builder: (context) => InstructionPractice(
                           timeMax: timeMax,
                           totalTrials: totalTrials,
+                          uuid: uuid,
+                          lpc: lpc,
                           subjectId: subjectId,
                           iceGain: iceGain,
                           cutoffFreq: cutoffFreq,
                           order: order,
                           samplingFreq: samplingFreq,
-                          lpc: lpc,
-                          uuid: uuid,
                         ),
                       ),
                     );
                   }),
             ],
           ),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
         ],
       ),
     );

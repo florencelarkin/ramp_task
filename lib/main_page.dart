@@ -288,6 +288,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   var startTime = new DateTime.now();
   Color textColor = Colors.black;
   String feedbackText = '';
+  String restartText = '';
 
   showAlertDialog(BuildContext context) {
     // set up the button
@@ -361,6 +362,12 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   void _pointerCheck(PointerEvent details) {
     setState(() {
       pointerCheck = true;
+      _countdownController.forward();
+      _countdownController.reverse(
+          from: _countdownController.value == 0.0
+              ? 1.0
+              : _countdownController.value);
+      _timerController.forward();
     });
   }
 
@@ -416,6 +423,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               ));
         }
       } else {
+        restartText = 'Make sure you are closer to the white line next time.';
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -431,6 +439,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               cutoffFreq: cutoffFreq,
               order: order,
               samplingFreq: samplingFreq,
+              feedbackText: restartText,
             ),
           ),
         );
@@ -482,6 +491,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       createData('driving01', uuid, dataMap.toString(), '01');
       //_serverUpload('driving01', uuid, dataMap.toString(), '01');
       trialTimer.cancel();
+      restartText =
+          'Keep your finger on the slider throughout the whole 10 seconds!';
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -497,6 +508,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             cutoffFreq: cutoffFreq,
             order: order,
             samplingFreq: samplingFreq,
+            feedbackText: restartText,
           ),
         ),
       );
@@ -531,17 +543,17 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     //animation controllers
     _countdownController =
         AnimationController(duration: Duration(seconds: 4), vsync: this);
-    _countdownController.forward();
+    /*_countdownController.forward();
     _countdownController.reverse(
         from: _countdownController.value == 0.0
             ? 1.0
-            : _countdownController.value);
+            : _countdownController.value);*/
     _carController =
         AnimationController(duration: const Duration(seconds: 10), vsync: this)
           ..repeat();
     _timerController =
         AnimationController(duration: Duration(seconds: 14), vsync: this);
-    _timerController.forward();
+    /*_timerController.forward();*/
 
     //calls functions that check for joystick movement and car position, then adds that to the output list
     carTimer = Timer.periodic(Duration(microseconds: 16667), (Timer t) {
@@ -554,8 +566,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               addQuotesToString(taskVersion);
           dataMap[addQuotesToString("Platform")] =
               addQuotesToString(platformType);
-          /*dataMap[addQuotesToString("Web")] = webFlag;
-      dataMap[addQuotesToString("Browser")] = addQuotesToString(browserType);*/
+          dataMap[addQuotesToString("Web")] = webFlag;
+          dataMap[addQuotesToString("Browser")] =
+              addQuotesToString(browserType);
           //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
           // has double quoted android_ia32
           dataMap[addQuotesToString("DeviceData")] = _deviceData.toString();
@@ -588,6 +601,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           trialTimer.cancel();
           createData('driving01', uuid, dataMap.toString(), '01');
           //_serverUpload('driving01', uuid, dataMap.toString(), '01');
+          restartText = 'Make sure to stay within the screen boundaries!';
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -603,6 +617,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 cutoffFreq: cutoffFreq,
                 order: order,
                 samplingFreq: samplingFreq,
+                feedbackText: restartText,
               ),
             ),
           );
@@ -641,8 +656,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       dataMap[addQuotesToString("TaskVersion")] =
           addQuotesToString(taskVersion);
       dataMap[addQuotesToString("Platform")] = addQuotesToString(platformType);
-      /*dataMap[addQuotesToString("Web")] = webFlag;
-      dataMap[addQuotesToString("Browser")] = addQuotesToString(browserType);*/
+      dataMap[addQuotesToString("Web")] = webFlag;
+      dataMap[addQuotesToString("Browser")] = addQuotesToString(browserType);
       //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
       // has double quoted android_ia32
       dataMap[addQuotesToString("DeviceData")] = _deviceData.toString();

@@ -12,6 +12,7 @@ class RestartPractice extends StatefulWidget {
     @required this.cutoffFreq,
     @required this.order,
     @required this.samplingFreq,
+    this.restartText,
   });
   final String subjectId;
   final String uuid;
@@ -22,6 +23,7 @@ class RestartPractice extends StatefulWidget {
   final double cutoffFreq;
   final int order;
   final double samplingFreq;
+  final String restartText;
 
   @override
   _RestartPracticeState createState() => _RestartPracticeState(
@@ -34,6 +36,7 @@ class RestartPractice extends StatefulWidget {
         cutoffFreq: cutoffFreq,
         order: order,
         samplingFreq: samplingFreq,
+        restartText: restartText,
       );
 }
 
@@ -48,6 +51,7 @@ class _RestartPracticeState extends State<RestartPractice> {
     this.cutoffFreq,
     this.order,
     this.samplingFreq,
+    this.restartText,
   });
   String subjectId;
   double maxVelocity;
@@ -60,6 +64,7 @@ class _RestartPracticeState extends State<RestartPractice> {
   double cutoffFreq;
   int order;
   double samplingFreq;
+  String restartText;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +78,7 @@ class _RestartPracticeState extends State<RestartPractice> {
               padding: const EdgeInsets.all(8.0),
               child: Center(
                 child: Text(
-                  'Try again!',
+                  'Try again',
                   style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
@@ -88,7 +93,22 @@ class _RestartPracticeState extends State<RestartPractice> {
               padding: const EdgeInsets.all(8.0),
               child: Center(
                 child: Text(
-                  'Make sure you are keeping your finger on the slider and matching the speed of the red car as closely as possible.',
+                  restartText,
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Click \'start\' to retry the practice portion',
                   style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,

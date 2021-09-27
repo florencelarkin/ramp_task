@@ -70,7 +70,7 @@ class _InstructionPage6State extends State<InstructionPage6> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'Other notes:',
+                'Each trial will begin after you hold your thumb on the dot for 3 seconds.',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -83,7 +83,7 @@ class _InstructionPage6State extends State<InstructionPage6> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                '1. The timing bar will turn green when the car is getting close to the stop sign, but...',
+                'The trial will restart if you:',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -96,7 +96,33 @@ class _InstructionPage6State extends State<InstructionPage6> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                '2. The goal is still to drive as quickly as possible and stop it as close as possible to the sign.',
+                '1. remove your thumb from the screen.',
+                style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Text(
+                '2. drive off the screen',
+                style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Text(
+                '3. do not end the trial with your car close enough to the stop sign',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -124,7 +150,6 @@ class _InstructionPage6State extends State<InstructionPage6> {
                     onPrimary: Colors.white, // foreground
                   ),
                   onPressed: () {
-                    print(order);
                     Navigator.push(
                       context,
                       MaterialPageRoute(

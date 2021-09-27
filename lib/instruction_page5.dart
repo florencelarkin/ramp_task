@@ -70,7 +70,7 @@ class _InstructionPage5State extends State<InstructionPage5> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'Important:',
+                'A timer bar will appear on the left side of the screen to indicate the time left.',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -83,33 +83,7 @@ class _InstructionPage5State extends State<InstructionPage5> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                '- Keep your finger on the slider throughout the task',
-                style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Text(
-                '- Try your best to keep your car within the white lines',
-                style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Text(
-                '- Driving off the screen or lifting your finger off the slider will cause the trial to restart.',
+                'It starts out blue and will turn green when the car approaches the stop sign',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,

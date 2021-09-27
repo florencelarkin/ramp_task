@@ -73,7 +73,7 @@ class _InstructionPage7State extends State<InstructionPage7> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'If you have additional questions, please leave them in the feedback survey after the trials.',
+                'If you have any questions or comments, please leave them in the feedback survey after the trials.',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,

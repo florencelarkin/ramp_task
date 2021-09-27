@@ -70,7 +70,7 @@ class _InstructionPage4State extends State<InstructionPage4> {
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'Your task is to drive as quickly as possible and stop at the stop sign within ten seconds and keep it at the line for the remainder of the trial.',
+                'Now we will go over instructions for the main task.',
                 style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
@@ -80,15 +80,15 @@ class _InstructionPage4State extends State<InstructionPage4> {
             ),
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.1,
+            height: MediaQuery.of(context).size.height * 0.05,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
-                'The image on the right end of the row shows where the optimal end point is.',
+                'There will be a set of 10-second trials where your task is to drive to a stop sign as quickly as possible and then keep the car at the line for the remainder of the trial.',
                 style: TextStyle(
-                    fontSize: 14.0,
+                    fontSize: 16.0,
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
                 textAlign: TextAlign.center,
