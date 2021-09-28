@@ -9,6 +9,7 @@ import 'package:web_browser_detect/web_browser_detect.dart';
 import 'practice_completed.dart';
 import 'practice_restart.dart';
 import 'deviceDataWriter.dart';
+import 'dataMapWriter.dart';
 
 class PracticePage extends StatefulWidget {
   PracticePage({
@@ -70,6 +71,7 @@ class _PracticePageState extends State<PracticePage>
   double samplingFreq;
 
   final browser = Browser.detectOrNull();
+  DataMapWriter dataMapWriter = DataMapWriter();
 
   AnimationController _carController;
   AnimationController _demoCarController;
@@ -86,7 +88,6 @@ class _PracticePageState extends State<PracticePage>
   double dy = 0.0;
   double carVelocity = 0.0;
   List<dynamic> dataList = [];
-  //Future<Data> _futureData;
   String title = '';
   String messageText = '';
   Map dataMap = {};
@@ -109,12 +110,6 @@ class _PracticePageState extends State<PracticePage>
   String deviceData = "";
   var startTime = new DateTime.now();
 
-  void _pointerCheck(PointerEvent details) {
-    setState(() {
-      pointerCheck = true;
-    });
-  }
-
   bool webFlag = false; // true if running web
   String platformType = ""; // the platform: android, ios, windows, linux
   final String taskVersion = "driving_task:0.9";
@@ -123,6 +118,12 @@ class _PracticePageState extends State<PracticePage>
   String addQuotesToString(String text) {
     var quoteText = '\"' + text + '\"';
     return quoteText;
+  }
+
+  void _pointerCheck(PointerEvent details) {
+    setState(() {
+      pointerCheck = true;
+    });
   }
 
   _serverUpload(studycode, guid, dataList, dataVersion) async {
@@ -199,34 +200,30 @@ class _PracticePageState extends State<PracticePage>
     );
   }
 
-  void _mistrialSlider(PointerEvent details) {
+  void _restartSlider(PointerEvent details) {
     setState(() {
       pointerCheck = false;
-      dataMap[addQuotesToString("TaskVersion")] =
-          addQuotesToString(taskVersion);
-      dataMap[addQuotesToString("Platform")] = addQuotesToString(platformType);
-      dataMap[addQuotesToString("DeviceData")] = addQuotesToString(deviceData);
-      dataMap[addQuotesToString("SubjectID")] = addQuotesToString(subjectId);
-      dataMap['\"TrialNumber\"'] = addQuotesToString("Practice");
-      dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
-      dataMap['\"EndTime\"'] =
-          addQuotesToString(DateTime.now().toIso8601String());
-      dataMap['\"Sensitivity\"'] = addQuotesToString(timeMax.toString());
-      dataMap['\"FilterCutoffFrequency\"'] =
-          addQuotesToString(cutoffFreq.toString());
-      dataMap['\"FilterOrder\"'] = addQuotesToString(order.toString());
-      dataMap['\"FilterSamplingFreq\"'] =
-          addQuotesToString(samplingFreq.toString());
-      dataMap['\"TotalTrials\"'] = addQuotesToString(totalTrials.toString());
-      dataMap['\"ScreenSize\"'] = addQuotesToString('$lpc'); //fix this later
-      dataMap[addQuotesToString("CompletedTrial")] = addQuotesToString('no');
-      dataMap['\"Moves\"'] = dataList;
+      dataMap = dataMapWriter.writeMap(
+          taskVersion,
+          webFlag,
+          platformType,
+          deviceData,
+          subjectId,
+          0,
+          startTime,
+          timeMax,
+          order,
+          totalTrials,
+          samplingFreq,
+          cutoffFreq,
+          lpc,
+          true,
+          dataList);
       _carController.stop();
       _demoCarController.stop();
       carTimer.cancel();
       trialTimer.cancel();
       createData('driving01', uuid, dataMap.toString(), '01');
-
       restartText =
           'Remember to keep your thumb on the slider until you see the next screen!';
       Navigator.push(
@@ -252,9 +249,6 @@ class _PracticePageState extends State<PracticePage>
   @override
   void initState() {
     super.initState();
-    var startTime = new DateTime.now();
-    //initPlatformState();
-    //initCountdown();
     CarEngine carEngine = CarEngine(
       timeMax: timeMax,
       lpc: lpc,
@@ -320,37 +314,22 @@ class _PracticePageState extends State<PracticePage>
         prevTime = currentTime;
         currentTime = stopwatch.elapsedMilliseconds.toDouble();
         if (stopwatch.elapsedMilliseconds > 5000 && pointerCheck == false) {
-          dataMap[addQuotesToString("TaskVersion")] =
-              addQuotesToString(taskVersion);
-          dataMap[addQuotesToString("Platform")] =
-              addQuotesToString(platformType);
-          dataMap[addQuotesToString("Web")] = webFlag;
-          dataMap[addQuotesToString("Browser")] =
-              addQuotesToString(browserType);
-          //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
-          // has double quoted android_ia32
-          dataMap[addQuotesToString("DeviceData")] =
-              addQuotesToString(deviceData);
-          dataMap[addQuotesToString("SubjectID")] =
-              addQuotesToString(subjectId);
-          dataMap['\"TrialNumber\"'] = addQuotesToString("Practice");
-          dataMap['\"StartTime\"'] =
-              addQuotesToString(startTime.toIso8601String());
-          dataMap['\"EndTime\"'] =
-              addQuotesToString(DateTime.now().toIso8601String());
-          dataMap['\"Sensitivity\"'] = addQuotesToString(timeMax.toString());
-          dataMap['\"FilterCutoffFrequency\"'] =
-              addQuotesToString(cutoffFreq.toString());
-          dataMap['\"FilterOrder\"'] = addQuotesToString(order.toString());
-          dataMap['\"FilterSamplingFreq\"'] =
-              addQuotesToString(samplingFreq.toString());
-          dataMap['\"TotalTrials\"'] =
-              addQuotesToString(totalTrials.toString());
-          dataMap['\"ScreenSize\"'] =
-              addQuotesToString('$lpc'); //fix this later
-          dataMap[addQuotesToString("CompletedTrial")] =
-              addQuotesToString('no');
-          dataMap['\"Moves\"'] = dataList;
+          dataMap = dataMapWriter.writeMap(
+              taskVersion,
+              webFlag,
+              platformType,
+              deviceData,
+              subjectId,
+              0,
+              startTime,
+              timeMax,
+              order,
+              totalTrials,
+              samplingFreq,
+              cutoffFreq,
+              lpc,
+              true,
+              dataList);
           createData('driving01', uuid, dataMap.toString(), '01');
           _carController.stop();
           _demoCarController.stop();
@@ -378,32 +357,22 @@ class _PracticePageState extends State<PracticePage>
         if (posList[0] < -2.0 || posList[0] > 1.0) {
           pointerCheck = false;
           //if you go off the screen in either direction
-          dataMap[addQuotesToString("TaskVersion")] =
-              addQuotesToString(taskVersion);
-          dataMap[addQuotesToString("Platform")] =
-              addQuotesToString(platformType);
-          dataMap[addQuotesToString("DeviceData")] =
-              addQuotesToString(deviceData);
-          dataMap[addQuotesToString("SubjectID")] =
-              addQuotesToString(subjectId);
-          dataMap['\"TrialNumber\"'] = addQuotesToString("Practice");
-          dataMap['\"StartTime\"'] =
-              addQuotesToString(startTime.toIso8601String());
-          dataMap['\"EndTime\"'] =
-              addQuotesToString(DateTime.now().toIso8601String());
-          dataMap['\"Sensitivity\"'] = addQuotesToString(timeMax.toString());
-          dataMap['\"FilterCutoffFrequency\"'] =
-              addQuotesToString(cutoffFreq.toString());
-          dataMap['\"FilterOrder\"'] = addQuotesToString(order.toString());
-          dataMap['\"FilterSamplingFreq\"'] =
-              addQuotesToString(samplingFreq.toString());
-          dataMap['\"TotalTrials\"'] =
-              addQuotesToString(totalTrials.toString());
-          dataMap['\"ScreenSize\"'] =
-              addQuotesToString('$lpc'); //fix this later
-          dataMap[addQuotesToString("CompletedTrial")] =
-              addQuotesToString('no');
-          dataMap['\"Moves\"'] = dataList;
+          dataMap = dataMapWriter.writeMap(
+              taskVersion,
+              webFlag,
+              platformType,
+              deviceData,
+              subjectId,
+              0,
+              startTime,
+              timeMax,
+              order,
+              totalTrials,
+              samplingFreq,
+              cutoffFreq,
+              lpc,
+              true,
+              dataList);
           _carController.stop();
           _demoCarController.stop();
           carTimer.cancel();
@@ -455,27 +424,24 @@ class _PracticePageState extends State<PracticePage>
       dataList.add(outputList());
     });
     trialTimer = Timer(Duration(seconds: 30), () {
-      var endTime = new DateTime.now();
+      dataMap = dataMapWriter.writeMap(
+          taskVersion,
+          webFlag,
+          platformType,
+          deviceData,
+          subjectId,
+          0,
+          startTime,
+          timeMax,
+          order,
+          totalTrials,
+          samplingFreq,
+          cutoffFreq,
+          lpc,
+          true,
+          dataList);
+      print(dataMap);
       _demoCarController.stop();
-      double width = MediaQuery.of(context).size.width;
-      double height = MediaQuery.of(context).size.height;
-      // add data to dataMap for output
-      dataMap[addQuotesToString("TaskVersion")] =
-          addQuotesToString(taskVersion);
-      dataMap[addQuotesToString("DeviceData")] = addQuotesToString(deviceData);
-      dataMap['\"SubjectID\"'] = addQuotesToString(subjectId);
-      dataMap['\"TrialNumber\"'] = addQuotesToString("Practice");
-      dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
-      dataMap['\"EndTime\"'] = addQuotesToString(endTime.toIso8601String());
-      dataMap['\"Sensitivity\"'] = addQuotesToString(timeMax.toString());
-      dataMap['\"FilterCutoffFrequency\"'] =
-          addQuotesToString(cutoffFreq.toString());
-      dataMap['\"FilterOrder\"'] = addQuotesToString(order.toString());
-      dataMap['\"FilterSamplingFreq\"'] =
-          addQuotesToString(samplingFreq.toString());
-      dataMap['\"TotalTrials\"'] = addQuotesToString(totalTrials.toString());
-      dataMap['\"ScreenSize\"'] = addQuotesToString('$width x $height');
-      dataMap['\"Moves\"'] = dataList;
       _carController.stop();
       carTimer.cancel();
       _serverUpload('driving01', uuid, dataMap.toString(), '01');
@@ -501,7 +467,7 @@ class _PracticePageState extends State<PracticePage>
       getAdjustedPos.toString(),
       carVelocity.toString(),
       (posList[0] - (-animation.value / 310)).toString(),
-      'practice'
+      '0'
     ]);
 
     return data;
@@ -633,7 +599,7 @@ class _PracticePageState extends State<PracticePage>
                             child: Listener(
                               onPointerDown: _pointerCheck,
                               onPointerUp:
-                                  pointerCheck == true ? _mistrialSlider : null,
+                                  pointerCheck == true ? _restartSlider : null,
                               child: Slider(
                                 inactiveColor: Colors.white,
                                 activeColor: Colors.white,

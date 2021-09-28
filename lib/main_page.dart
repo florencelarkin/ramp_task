@@ -12,6 +12,7 @@ import 'package:web_browser_detect/web_browser_detect.dart';
 import 'restart_page.dart';
 import 'package:flutter/widgets.dart';
 import 'deviceDataWriter.dart';
+import 'dataMapWriter.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({
@@ -83,6 +84,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   final browser = Browser.detectOrNull();
 
+  DataMapWriter dataMapWriter = DataMapWriter();
+
   AnimationController _timerController;
   AnimationController _carController;
   AnimationController _countdownController;
@@ -129,6 +132,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   Color textColor = Colors.black;
   String feedbackText = '';
   String restartText = '';
+  bool completed;
 
   showAlertDialog(BuildContext context) {
     // set up the button
@@ -209,35 +213,25 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               : _countdownController.value);
       _timerController.forward();
       trialTimer = Timer(Duration(seconds: 13), () {
-        var endTime = new DateTime.now();
-        double width = MediaQuery.of(context).size.width;
-        double height = MediaQuery.of(context).size.height;
+        /*double width = MediaQuery.of(context).size.width;
+        double height = MediaQuery.of(context).size.height;*/
         // add data to dataMap for output
-        dataMap[addQuotesToString("TaskVersion")] =
-            addQuotesToString(taskVersion);
-        dataMap[addQuotesToString("Platform")] =
-            addQuotesToString(platformType);
-        dataMap[addQuotesToString("Web")] = webFlag;
-        dataMap[addQuotesToString("Browser")] = addQuotesToString(browserType);
-        //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
-        // has double quoted android_ia32
-        dataMap[addQuotesToString("DeviceData")] =
-            addQuotesToString(deviceData);
-        dataMap[addQuotesToString("SubjectID")] = addQuotesToString(subjectId);
-        dataMap['\"TrialNumber\"'] = addQuotesToString(trialNumber.toString());
-        dataMap['\"StartTime\"'] =
-            addQuotesToString(startTime.toIso8601String());
-        dataMap['\"EndTime\"'] = addQuotesToString(endTime.toIso8601String());
-        dataMap['\"Sensitivity\"'] = addQuotesToString(timeMax.toString());
-        dataMap['\"FilterCutoffFrequency\"'] =
-            addQuotesToString(cutoffFreq.toString());
-        dataMap['\"FilterOrder\"'] = addQuotesToString(order.toString());
-        dataMap['\"FilterSamplingFreq\"'] =
-            addQuotesToString(samplingFreq.toString());
-        dataMap['\"TotalTrials\"'] = addQuotesToString(totalTrials.toString());
-        dataMap['\"ScreenSize\"'] = addQuotesToString('$width x $height');
-        dataMap[addQuotesToString("CompletedTrial")] = addQuotesToString('yes');
-        dataMap['\"Moves\"'] = dataList;
+        dataMap = dataMapWriter.writeMap(
+            taskVersion,
+            webFlag,
+            platformType,
+            deviceData,
+            subjectId,
+            trialNumber,
+            startTime,
+            timeMax,
+            order,
+            totalTrials,
+            samplingFreq,
+            cutoffFreq,
+            lpc,
+            true,
+            dataList);
         _timerController.stop();
         _carController.stop();
         _countdownController.stop();
@@ -336,31 +330,24 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     }
   }
 
-  void _mistrialSlider(PointerEvent details) {
+  void _restartSlider(PointerEvent details) {
     setState(() {
-      dataMap[addQuotesToString("TaskVersion")] =
-          addQuotesToString(taskVersion);
-      dataMap[addQuotesToString("Platform")] = addQuotesToString(platformType);
-      /*dataMap[addQuotesToString("Web")] = webFlag;
-      dataMap[addQuotesToString("Browser")] = addQuotesToString(browserType);*/
-      //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
-      // has double quoted android_ia32
-      dataMap[addQuotesToString("DeviceData")] = addQuotesToString(deviceData);
-      dataMap[addQuotesToString("SubjectID")] = addQuotesToString(subjectId);
-      dataMap['\"TrialNumber\"'] = addQuotesToString(trialNumber.toString());
-      dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
-      dataMap['\"EndTime\"'] =
-          addQuotesToString(DateTime.now().toIso8601String());
-      dataMap['\"Sensitivity\"'] = addQuotesToString(timeMax.toString());
-      dataMap['\"FilterCutoffFrequency\"'] =
-          addQuotesToString(cutoffFreq.toString());
-      dataMap['\"FilterOrder\"'] = addQuotesToString(order.toString());
-      dataMap['\"FilterSamplingFreq\"'] =
-          addQuotesToString(samplingFreq.toString());
-      dataMap['\"TotalTrials\"'] = addQuotesToString(totalTrials.toString());
-      dataMap['\"ScreenSize\"'] = addQuotesToString('$lpc'); //fix this later
-      dataMap[addQuotesToString("CompletedTrial")] = addQuotesToString('no');
-      dataMap['\"Moves\"'] = dataList;
+      dataMap = dataMapWriter.writeMap(
+          taskVersion,
+          webFlag,
+          platformType,
+          deviceData,
+          subjectId,
+          trialNumber,
+          startTime,
+          timeMax,
+          order,
+          totalTrials,
+          samplingFreq,
+          cutoffFreq,
+          lpc,
+          false,
+          dataList);
       _timerController.stop();
       _carController.stop();
       _countdownController.stop();
@@ -429,17 +416,12 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     //animation controllers
     _countdownController =
         AnimationController(duration: Duration(seconds: 4), vsync: this);
-    /*_countdownController.forward();
-    _countdownController.reverse(
-        from: _countdownController.value == 0.0
-            ? 1.0
-            : _countdownController.value);*/
+
     _carController =
         AnimationController(duration: const Duration(seconds: 10), vsync: this)
           ..repeat();
     _timerController =
         AnimationController(duration: Duration(seconds: 13), vsync: this);
-    /*_timerController.forward();*/
 
     //calls functions that check for joystick movement and car position, then adds that to the output list
     carTimer = Timer.periodic(Duration(microseconds: 16667), (Timer t) {
@@ -448,38 +430,23 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         currentTime = stopwatch.elapsedMilliseconds.toDouble();
         if (posList[0] < -2.0 || posList[0] > 1.0) {
           //if you go off the screen in either direction
-          dataMap[addQuotesToString("TaskVersion")] =
-              addQuotesToString(taskVersion);
-          dataMap[addQuotesToString("Platform")] =
-              addQuotesToString(platformType);
-          dataMap[addQuotesToString("Web")] = webFlag;
-          dataMap[addQuotesToString("Browser")] =
-              addQuotesToString(browserType);
-          //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
-          // has double quoted android_ia32
-          dataMap[addQuotesToString("DeviceData")] =
-              addQuotesToString(deviceData);
-          dataMap[addQuotesToString("SubjectID")] =
-              addQuotesToString(subjectId);
-          dataMap['\"TrialNumber\"'] =
-              addQuotesToString(trialNumber.toString());
-          dataMap['\"StartTime\"'] =
-              addQuotesToString(startTime.toIso8601String());
-          dataMap['\"EndTime\"'] =
-              addQuotesToString(DateTime.now().toIso8601String());
-          dataMap['\"Sensitivity\"'] = addQuotesToString(timeMax.toString());
-          dataMap['\"FilterCutoffFrequency\"'] =
-              addQuotesToString(cutoffFreq.toString());
-          dataMap['\"FilterOrder\"'] = addQuotesToString(order.toString());
-          dataMap['\"FilterSamplingFreq\"'] =
-              addQuotesToString(samplingFreq.toString());
-          dataMap['\"TotalTrials\"'] =
-              addQuotesToString(totalTrials.toString());
-          dataMap['\"ScreenSize\"'] =
-              addQuotesToString('$lpc'); //fix this later
-          dataMap[addQuotesToString("CompletedTrial")] =
-              addQuotesToString('no');
-          dataMap['\"Moves\"'] = dataList;
+          dataMap = dataMapWriter.writeMap(
+              taskVersion,
+              webFlag,
+              platformType,
+              deviceData,
+              subjectId,
+              trialNumber,
+              startTime,
+              timeMax,
+              order,
+              totalTrials,
+              samplingFreq,
+              cutoffFreq,
+              lpc,
+              false,
+              dataList);
+          print(dataMap);
           _timerController.stop();
           _carController.stop();
           _countdownController.stop();
@@ -487,7 +454,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           colorTimer.cancel();
           trialTimer.cancel();
           createData('driving01', uuid, dataMap.toString(), '01');
-          //_serverUpload('driving01', uuid, dataMap.toString(), '01');
           restartText = 'Make sure to stay within the screen boundaries!';
           Navigator.push(
             context,
@@ -528,50 +494,12 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           sliderPos, posList[1], timeMax, posList[0], currentTime, prevTime);
       dataList.add(outputList());
     });
+
     colorTimer = Timer.periodic(
         Duration(milliseconds: 17),
         (Timer t) => posList[1] < -lpc * .25 && posList[1] > -lpc * .435
             ? timerColor = Colors.green
             : timerColor = Colors.blue);
-    //Timer for the end of the trial
-    /*trialTimer = Timer(Duration(seconds: 14), () {
-      var endTime = new DateTime.now();
-      double width = MediaQuery.of(context).size.width;
-      double height = MediaQuery.of(context).size.height;
-
-      // add data to dataMap for output
-      dataMap[addQuotesToString("TaskVersion")] =
-          addQuotesToString(taskVersion);
-      dataMap[addQuotesToString("Platform")] = addQuotesToString(platformType);
-      dataMap[addQuotesToString("Web")] = webFlag;
-      dataMap[addQuotesToString("Browser")] = addQuotesToString(browserType);
-      //dataMap[addQuotesToString("DartVersion")] = addQuotesToString(Platform.version);
-      // has double quoted android_ia32
-      dataMap[addQuotesToString("DeviceData")] = _deviceData.toString();
-
-      dataMap[addQuotesToString("SubjectID")] = addQuotesToString(subjectId);
-      dataMap['\"TrialNumber\"'] = addQuotesToString(trialNumber.toString());
-      dataMap['\"StartTime\"'] = addQuotesToString(startTime.toIso8601String());
-      dataMap['\"EndTime\"'] = addQuotesToString(endTime.toIso8601String());
-      dataMap['\"Sensitivity\"'] = addQuotesToString(timeMax.toString());
-      dataMap['\"FilterCutoffFrequency\"'] =
-          addQuotesToString(cutoffFreq.toString());
-      dataMap['\"FilterOrder\"'] = addQuotesToString(order.toString());
-      dataMap['\"FilterSamplingFreq\"'] =
-          addQuotesToString(samplingFreq.toString());
-      dataMap['\"TotalTrials\"'] = addQuotesToString(totalTrials.toString());
-      dataMap['\"ScreenSize\"'] = addQuotesToString('$width x $height');
-      dataMap[addQuotesToString("CompletedTrial")] = addQuotesToString('yes');
-      dataMap['\"Moves\"'] = dataList;
-      _timerController.stop();
-      _carController.stop();
-      _countdownController.stop();
-      carTimer.cancel();
-      colorTimer.cancel();
-      trialTimer.cancel();
-      //dataTimer.cancel();
-      _serverUpload('driving01', uuid, dataMap.toString(), '01');
-    });*/
   }
 
   @override
@@ -725,7 +653,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                           onPointerUp: pointerCheck == true ||
                                   pointerCheck == false &&
                                       stopwatch.elapsedMilliseconds > 5000
-                              ? _mistrialSlider
+                              ? _restartSlider
                               : null,
                           child: Slider(
                             inactiveColor: Colors.white,
