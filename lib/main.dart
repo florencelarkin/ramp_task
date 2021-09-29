@@ -6,7 +6,7 @@ import 'main_page.dart';
 void main() => runApp(DrivingTask());
 
 Map<String, String> urlArgs = {};
-String subjectID = 'cutoffFreqTest';
+String subjectID = 'test123';
 int totalTrials = 20;
 double maxTime = 0.75;
 String defaultTitle = 'test page';

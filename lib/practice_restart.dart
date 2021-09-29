@@ -108,7 +108,7 @@ class _RestartPracticeState extends State<RestartPractice> {
               padding: const EdgeInsets.all(8.0),
               child: Center(
                 child: Text(
-                  'Click \'start\' to retry the practice portion',
+                  'Click \'start\' to retry the practice session',
                   style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,

@@ -11,8 +11,8 @@ import 'completed_screen.dart';
 import 'package:web_browser_detect/web_browser_detect.dart';
 import 'restart_page.dart';
 import 'package:flutter/widgets.dart';
-import 'deviceDataWriter.dart';
-import 'dataMapWriter.dart';
+import 'device_data_writer.dart';
+import 'data_map_writer.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({
@@ -71,68 +71,79 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     this.samplingFreq,
   });
   double timeMax;
-  String subjectId;
-  String uuid;
-  int trialNumber;
-  int blockNumber;
-  double lpc;
-  int totalTrials;
   double iceGain;
   double cutoffFreq;
-  int order;
   double samplingFreq;
+  double lpc;
+  int trialNumber;
+  int blockNumber;
+  int totalTrials;
+  int order;
+  String subjectId;
+  String uuid;
 
   final browser = Browser.detectOrNull();
-
   DataMapWriter dataMapWriter = DataMapWriter();
+  Stopwatch stopwatch = new Stopwatch()..start();
+  var startTime = new DateTime.now();
 
   AnimationController _timerController;
   AnimationController _carController;
   AnimationController _countdownController;
+
   Timer carTimer;
   Timer colorTimer;
   Timer dataTimer;
   Timer serverTimeout;
   Timer trialTimer;
 
-  bool webFlag = false; // true if running web
+  double carStartPos = -5.0;
+  double sliderPos = 0.0;
+  double getCurrentPos = 0.0;
+  double dy = 0.0;
+  double prevPos = 0.0;
+  double prevTime = 0.0;
+  double currentTime = 0.0;
+  double carVelocity = 0.0;
+  double getAdjustedPos = 0.0;
+  double x = 0.0;
+  double y = 0.0;
+
+  List<dynamic> dataList = [];
+  List posList = [0.0, 0.0, 0.0];
+  Map dataMap = {};
+  Map<String, String> urlArgs = {};
+
+  Color timerColor = Colors.blue;
+  Color textColor = Colors.white;
+
+  String title = '';
+  String messageText = '';
+  String feedbackText = 'Put your thumb on the white dot to begin';
+  String restartText = '';
   String platformType = ""; // the platform: android, ios, windows, linux
-  final String taskVersion = "driving_task:0.9";
-  String browserType = "";
-  Future<String> futureDeviceData;
   String deviceData = "";
+  String browserType = "";
+  final String taskVersion = "driving_task:0.9";
+  Future<String> futureDeviceData;
+
+  bool pointerCheck = false;
+  bool completed;
+  bool pretrial = true;
+  bool webFlag = false; // true if running web
+  Future<bool> dataSent;
 
   String addQuotesToString(String text) {
     var quoteText = '\"' + text + '\"';
     return quoteText;
   }
 
-  Stopwatch stopwatch = new Stopwatch()..start();
-  int time = 0;
-  double carStartPos = -5.0;
-  double sliderPos = 0.0;
-  double getCurrentPos = 0.0;
-  double dy = 0.0;
-  Color timerColor = Colors.blue;
-  double carVelocity = 0.0;
-  List<dynamic> dataList = [];
-  //Future<Data> _futureData;
-  String title = '';
-  String messageText = '';
-  Map dataMap = {};
-  Future<bool> dataSent;
-  double getAdjustedPos = 0.0;
-  Map<String, String> urlArgs = {};
-  List posList = [0.0, 0.0, 0.0];
-  double prevPos = 0.0;
-  double prevTime = 0.0;
-  double currentTime = 0.0;
-  bool pointerCheck = false;
-  var startTime = new DateTime.now();
-  Color textColor = Colors.black;
-  String feedbackText = '';
-  String restartText = '';
-  bool completed;
+  void _updateLocation(PointerEvent details) {
+    setState(() {
+      x = details.position.dx;
+      y = details.position.dy;
+    });
+  }
 
   showAlertDialog(BuildContext context) {
     // set up the button
@@ -205,42 +216,44 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   void _pointerCheck(PointerEvent details) {
     setState(() {
-      pointerCheck = true;
-      _countdownController.forward();
-      _countdownController.reverse(
-          from: _countdownController.value == 0.0
-              ? 1.0
-              : _countdownController.value);
-      _timerController.forward();
-      trialTimer = Timer(Duration(seconds: 13), () {
-        /*double width = MediaQuery.of(context).size.width;
-        double height = MediaQuery.of(context).size.height;*/
-        // add data to dataMap for output
-        dataMap = dataMapWriter.writeMap(
-            taskVersion,
-            webFlag,
-            platformType,
-            deviceData,
-            subjectId,
-            trialNumber,
-            startTime,
-            timeMax,
-            order,
-            totalTrials,
-            samplingFreq,
-            cutoffFreq,
-            lpc,
-            true,
-            dataList);
-        _timerController.stop();
-        _carController.stop();
-        _countdownController.stop();
-        carTimer.cancel();
-        colorTimer.cancel();
-        trialTimer.cancel();
-        //dataTimer.cancel();
-        _serverUpload('driving01', uuid, dataMap.toString(), '01');
-      });
+      _updateLocation(details);
+      if ((y / lpc) > 0.78 && (y / lpc) < 0.88) {
+        pointerCheck = true;
+        pretrial = false;
+        _countdownController.forward();
+        _countdownController.reverse(
+            from: _countdownController.value == 0.0
+                ? 1.0
+                : _countdownController.value);
+        _timerController.forward();
+        trialTimer = Timer(Duration(seconds: 13), () {
+          dataMap = dataMapWriter.writeMap(
+              taskVersion,
+              webFlag,
+              platformType,
+              deviceData,
+              subjectId,
+              trialNumber,
+              startTime,
+              timeMax,
+              order,
+              totalTrials,
+              samplingFreq,
+              cutoffFreq,
+              lpc,
+              true,
+              dataList);
+          _timerController.stop();
+          _carController.stop();
+          _countdownController.stop();
+          carTimer.cancel();
+          colorTimer.cancel();
+          trialTimer.cancel();
+          _serverUpload('driving01', uuid, dataMap.toString(), '01');
+        });
+      } else {
+        pointerCheck = false;
+      }
     });
   }
 
@@ -484,6 +497,10 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             textColor = Colors.white;
             feedbackText = 'WRONG WAY!!';
           });
+        } else if (pretrial == true) {
+          setState(() {
+            textColor = Colors.white;
+          });
         } else {
           setState(() {
             textColor = Colors.black;
@@ -570,14 +587,16 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * .01,
                 ),
-                Container(
-                  height: MediaQuery.of(context).size.height * .09,
-                  width: MediaQuery.of(context).size.width * .45,
-                  child: Text(
-                    feedbackText,
-                    style: TextStyle(
-                      color: textColor,
-                      fontSize: 30.0,
+                Center(
+                  child: Container(
+                    height: lpc * .09,
+                    child: Text(
+                      feedbackText,
+                      style: TextStyle(
+                        color: textColor,
+                        fontSize: lpc * 0.03,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),

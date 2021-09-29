@@ -8,8 +8,8 @@ import 'package:flutter/foundation.dart';
 import 'package:web_browser_detect/web_browser_detect.dart';
 import 'practice_completed.dart';
 import 'practice_restart.dart';
-import 'deviceDataWriter.dart';
-import 'dataMapWriter.dart';
+import 'device_data_writer.dart';
+import 'data_map_writer.dart';
 
 class PracticePage extends StatefulWidget {
   PracticePage({
@@ -61,103 +61,146 @@ class _PracticePageState extends State<PracticePage>
     this.samplingFreq,
   });
   double timeMax;
-  String subjectId;
-  String uuid;
-  double lpc;
-  int totalTrials;
   double iceGain;
   double cutoffFreq;
-  int order;
+  String subjectId;
   double samplingFreq;
+  double lpc;
+  int totalTrials;
+  int order;
+  String uuid;
 
   final browser = Browser.detectOrNull();
   DataMapWriter dataMapWriter = DataMapWriter();
+  Stopwatch stopwatch = new Stopwatch()..start();
+  var startTime = new DateTime.now();
 
   AnimationController _carController;
   AnimationController _demoCarController;
   Animation<double> animation;
+
   Timer carTimer;
   Timer trialTimer;
   Timer serverTimeout;
 
-  Stopwatch stopwatch = new Stopwatch()..start();
-  int time = 0;
   double carStartPos = -5.0;
   double joyStickPos = 0.0;
   double getCurrentPos = 0.0;
   double dy = 0.0;
   double carVelocity = 0.0;
-  List<dynamic> dataList = [];
-  String title = '';
-  String messageText = '';
-  Map dataMap = {};
-  Future<bool> dataSent;
   double getAdjustedPos = 0.0;
-  Map<String, String> urlArgs = {};
-  List posList = [0.0, 0.0, 0.0];
   double prevPos = 0.0;
   double prevTime = 0.0;
   double currentTime = 0.0;
-  int counter = 0;
-  String text = '';
-  Color textColor = Colors.black;
-  Color countdownColor = Colors.black;
-  String feedbackText = '';
-  String restartText = '';
-  bool pointerCheck = false;
-  int tweenCounter = 0;
-  Future<String> futureDeviceData;
-  String deviceData = "";
-  var startTime = new DateTime.now();
+  double x = 0.0;
+  double y = 0.0;
 
-  bool webFlag = false; // true if running web
+  String title = '';
+  String messageText = '';
+  String feedbackText = 'Put your thumb on the white circle to begin';
+  String restartText = '';
+  String deviceData = "";
+  String text = '';
   String platformType = ""; // the platform: android, ios, windows, linux
-  final String taskVersion = "driving_task:0.9";
   String browserType = "";
+  final String taskVersion = "driving_task:0.9";
+  Future<String> futureDeviceData;
+
+  Map<String, String> urlArgs = {};
+  Map dataMap = {};
+
+  List posList = [0.0, 0.0, 0.0];
+  List<dynamic> dataList = [];
+
+  Color textColor = Colors.white;
+  Color countdownColor = Colors.white;
+
+  bool pointerCheck = false;
+  bool movementCheck = false;
+  bool pretrial = true;
+  bool webFlag = false; // true if running web
+  Future<bool> dataSent;
 
   String addQuotesToString(String text) {
     var quoteText = '\"' + text + '\"';
     return quoteText;
   }
 
+  void _updateLocation(PointerEvent details) {
+    setState(() {
+      x = details.position.dx;
+      y = details.position.dy;
+    });
+  }
+
   void _pointerCheck(PointerEvent details) {
     setState(() {
-      pointerCheck = true;
+      _updateLocation(details);
+      if ((y / lpc) > 0.78 && (y / lpc) < 0.88) {
+        pointerCheck = true;
+        print(' lpc: $lpc, x: $x, y:$y');
+        pretrial = false;
+        textColor = Colors.black;
+        Future.delayed(Duration(milliseconds: 2500), () {
+          _demoCarController.repeat(reverse: true);
+          countdownColor = Colors.black;
+          text = 'start';
+        });
+
+        Future.delayed(Duration(milliseconds: 1000), () {
+          setState(() {
+            countdownColor = Colors.white;
+            text = 'GET READY';
+          });
+        });
+
+        Future.delayed(Duration(milliseconds: 2000), () {
+          text = 'GO!';
+        });
+      } else {
+        pointerCheck = false;
+      }
     });
   }
 
   _serverUpload(studycode, guid, dataList, dataVersion) async {
-    bool dataSent = await createData(studycode, guid, dataList, dataVersion);
-    if (dataSent == true) {
-      trialTimer.cancel();
-      carTimer.cancel();
-      _demoCarController.stop();
-      _carController.stop();
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PracticeCompleted(
-              lpc: lpc,
-              subjectId: subjectId,
-              uuid: uuid,
-              cutoffFreq: cutoffFreq,
-              iceGain: iceGain,
-              timeMax: timeMax,
-              totalTrials: totalTrials,
-              samplingFreq: samplingFreq,
-              order: order,
-            ),
-          ));
-    } else if (dataSent == false) {
+    try {
+      bool dataSent = await createData(studycode, guid, dataList, dataVersion);
+      print(dataSent);
+      if (dataSent == true) {
+        _demoCarController.stop();
+        _carController.stop();
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PracticeCompleted(
+                lpc: lpc,
+                subjectId: subjectId,
+                uuid: uuid,
+                cutoffFreq: cutoffFreq,
+                iceGain: iceGain,
+                timeMax: timeMax,
+                totalTrials: totalTrials,
+                samplingFreq: samplingFreq,
+                order: order,
+              ),
+            ));
+      } else if (dataSent == false) {
+        title = 'Error';
+        messageText = 'Data has not been uploaded to the server';
+        showAlertDialog(context);
+      } else {
+        serverTimeout = Timer(Duration(seconds: 15), () {
+          title = 'Error';
+          messageText = 'Server not found';
+          showAlertDialog(context);
+        });
+      }
+    } on Exception {
       title = 'Error';
       messageText = 'Data has not been uploaded to the server';
       showAlertDialog(context);
-    } else {
-      serverTimeout = Timer(Duration(seconds: 15), () {
-        title = 'Error';
-        messageText = 'Server not found';
-        showAlertDialog(context);
-      });
+      print('Something went wrong:/');
     }
   }
 
@@ -277,23 +320,6 @@ class _PracticePageState extends State<PracticePage>
       addQuotesToString("eventcode"),
     ]);
 
-    Future.delayed(Duration(milliseconds: 2500), () {
-      _demoCarController.repeat(reverse: true);
-      countdownColor = Colors.black;
-      text = 'start';
-    });
-
-    Future.delayed(Duration(milliseconds: 1000), () {
-      setState(() {
-        countdownColor = Colors.white;
-        text = 'GET READY';
-      });
-    });
-
-    Future.delayed(Duration(milliseconds: 2000), () {
-      text = 'GO!';
-    });
-
     _carController =
         AnimationController(duration: const Duration(seconds: 10), vsync: this)
           ..repeat(); //putting in pointer event for now
@@ -303,17 +329,80 @@ class _PracticePageState extends State<PracticePage>
     animation = Tween<double>(begin: 0, end: lpc * 0.43).animate(
         CurvedAnimation(parent: _demoCarController, curve: Curves.easeInOut))
       ..addListener(() {
-        setState(() {
-          tweenCounter++;
-        });
+        setState(() {});
       });
+
+    trialTimer = Timer(Duration(seconds: 30), () {
+      if (movementCheck == true) {
+        dataMap = dataMapWriter.writeMap(
+            taskVersion,
+            webFlag,
+            platformType,
+            deviceData,
+            subjectId,
+            0,
+            startTime,
+            timeMax,
+            order,
+            totalTrials,
+            samplingFreq,
+            cutoffFreq,
+            lpc,
+            true,
+            dataList);
+        _demoCarController.stop();
+        _carController.stop();
+        carTimer.cancel();
+        _serverUpload('driving01', uuid, dataMap.toString(), '01');
+        trialTimer.cancel();
+      } else {
+        dataMap = dataMapWriter.writeMap(
+            taskVersion,
+            webFlag,
+            platformType,
+            deviceData,
+            subjectId,
+            0,
+            startTime,
+            timeMax,
+            order,
+            totalTrials,
+            samplingFreq,
+            cutoffFreq,
+            lpc,
+            false,
+            dataList);
+        _demoCarController.stop();
+        _carController.stop();
+        carTimer.cancel();
+        trialTimer.cancel();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RestartPractice(
+              subjectId: subjectId,
+              uuid: uuid,
+              lpc: lpc,
+              timeMax: timeMax,
+              totalTrials: totalTrials,
+              iceGain: iceGain,
+              cutoffFreq: cutoffFreq,
+              order: order,
+              samplingFreq: samplingFreq,
+              restartText:
+                  'Make sure you are moving your car and trying to match the target car.',
+            ),
+          ),
+        );
+      }
+    });
 
     //calls functions that check for joystick movement and car position, then adds that to the output list
     carTimer = Timer.periodic(Duration(microseconds: 16667), (Timer t) {
       setState(() {
         prevTime = currentTime;
         currentTime = stopwatch.elapsedMilliseconds.toDouble();
-        if (stopwatch.elapsedMilliseconds > 5000 && pointerCheck == false) {
+        if (stopwatch.elapsedMilliseconds > 6000 && pointerCheck == false) {
           dataMap = dataMapWriter.writeMap(
               taskVersion,
               webFlag,
@@ -413,6 +502,12 @@ class _PracticePageState extends State<PracticePage>
             textColor = Colors.white;
             feedbackText = "Stay closer to the red car!";
           });
+        } else if (posList[0] < -.4) {
+          movementCheck = true;
+        } else if (pretrial == true) {
+          setState(() {
+            textColor = Colors.white;
+          });
         } else {
           setState(() {
             textColor = Colors.black;
@@ -422,30 +517,6 @@ class _PracticePageState extends State<PracticePage>
       posList = carEngine.getPos(
           joyStickPos, posList[1], timeMax, posList[0], currentTime, prevTime);
       dataList.add(outputList());
-    });
-    trialTimer = Timer(Duration(seconds: 30), () {
-      dataMap = dataMapWriter.writeMap(
-          taskVersion,
-          webFlag,
-          platformType,
-          deviceData,
-          subjectId,
-          0,
-          startTime,
-          timeMax,
-          order,
-          totalTrials,
-          samplingFreq,
-          cutoffFreq,
-          lpc,
-          true,
-          dataList);
-      print(dataMap);
-      _demoCarController.stop();
-      _carController.stop();
-      carTimer.cancel();
-      _serverUpload('driving01', uuid, dataMap.toString(), '01');
-      trialTimer.cancel();
     });
   }
 
@@ -490,14 +561,16 @@ class _PracticePageState extends State<PracticePage>
                   SizedBox(
                     height: lpc * .05,
                   ),
-                  Container(
-                    height: lpc * .04,
-                    width: lpc * .45,
-                    child: Text(
-                      feedbackText,
-                      style: TextStyle(
-                        color: textColor,
-                        fontSize: lpc * 0.02,
+                  Center(
+                    child: Container(
+                      height: lpc * .07,
+                      child: Text(
+                        feedbackText,
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: lpc * 0.03,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -514,14 +587,16 @@ class _PracticePageState extends State<PracticePage>
                     color: Colors.white,
                   ),
                   SizedBox(height: lpc * .18),
-                  Container(
-                    height: lpc * 0.23,
-                    child: Text(
-                      text,
-                      style: TextStyle(
-                        fontSize: 50.0,
-                        fontWeight: FontWeight.bold,
-                        color: countdownColor,
+                  Center(
+                    child: Container(
+                      height: lpc * 0.23,
+                      child: Text(
+                        text,
+                        style: TextStyle(
+                          fontSize: lpc * .05,
+                          fontWeight: FontWeight.bold,
+                          color: countdownColor,
+                        ),
                       ),
                     ),
                   ),
@@ -581,8 +656,8 @@ class _PracticePageState extends State<PracticePage>
                   // Slider
                   Expanded(
                     child: Container(
-                      height: lpc * 0.21,
-                      width: lpc * 0.4,
+                      height: lpc * 0.18,
+                      width: lpc * 0.3,
                       child: Transform.scale(
                         scale: 0.75,
                         child: Transform.rotate(

@@ -46,37 +46,27 @@ class _CompletedPageState extends State<CompletedPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
-              child: (webFlag == true)
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'You may now exit the tab.',
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * .1),
-                        ElevatedButton(
-                          onPressed: _launchURL,
-                          child: Text('Launch URL'),
-                        ),
-                      ],
-                    )
-                  : Text(
-                      'You may now delete the app',
-                      style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                      textAlign: TextAlign.center,
-                    ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'You may now close out of the tab.',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * .1),
+                  ElevatedButton(
+                    onPressed: _launchURL,
+                    child: Text('Launch URL'),
+                  ),
+                ],
+              ),
             ),
           ),
-          Visibility(
+          /*Visibility(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: Colors.red, // background
@@ -85,7 +75,7 @@ class _CompletedPageState extends State<CompletedPage> {
                 child: Text('CLICK HERE TO EXIT THE APP'),
                 onPressed: () => SystemNavigator.pop(),
               ),
-              visible: (webFlag == true) ? false : true),
+              visible: (webFlag == true) ? false : true),*/
         ],
       ),
     );
