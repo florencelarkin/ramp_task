@@ -10,6 +10,7 @@ import 'practice_completed.dart';
 import 'practice_restart.dart';
 import 'device_data_writer.dart';
 import 'data_map_writer.dart';
+import 'alert_dialog.dart';
 
 class PracticePage extends StatefulWidget {
   PracticePage({
@@ -17,6 +18,7 @@ class PracticePage extends StatefulWidget {
     @required this.subjectId,
     @required this.uuid,
     @required this.lpc,
+    this.width,
     this.totalTrials,
     this.iceGain,
     this.cutoffFreq,
@@ -32,6 +34,7 @@ class PracticePage extends StatefulWidget {
   final double cutoffFreq;
   final int order;
   final double samplingFreq;
+  final double width;
 
   @override
   _PracticePageState createState() => _PracticePageState(
@@ -39,6 +42,7 @@ class PracticePage extends StatefulWidget {
         subjectId: subjectId,
         uuid: uuid,
         lpc: lpc,
+        width: width,
         totalTrials: totalTrials,
         iceGain: iceGain,
         cutoffFreq: cutoffFreq,
@@ -53,7 +57,8 @@ class _PracticePageState extends State<PracticePage>
     @required this.timeMax,
     @required this.subjectId,
     @required this.uuid,
-    this.lpc,
+    @required this.lpc,
+    this.width,
     this.totalTrials,
     this.iceGain,
     this.cutoffFreq,
@@ -69,11 +74,13 @@ class _PracticePageState extends State<PracticePage>
   int totalTrials;
   int order;
   String uuid;
+  double width;
 
   final browser = Browser.detectOrNull();
   DataMapWriter dataMapWriter = DataMapWriter();
   Stopwatch stopwatch = new Stopwatch()..start();
   var startTime = new DateTime.now();
+  AlertDialogClass alertDialog = AlertDialogClass();
 
   AnimationController _carController;
   AnimationController _demoCarController;
@@ -164,104 +171,95 @@ class _PracticePageState extends State<PracticePage>
   }
 
   _serverUpload(studycode, guid, dataList, dataVersion) async {
-    try {
-      bool dataSent = await createData(studycode, guid, dataList, dataVersion);
-      print(dataSent);
-      if (dataSent == true) {
-        _demoCarController.stop();
-        _carController.stop();
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PracticeCompleted(
-                lpc: lpc,
-                subjectId: subjectId,
-                uuid: uuid,
-                cutoffFreq: cutoffFreq,
-                iceGain: iceGain,
-                timeMax: timeMax,
-                totalTrials: totalTrials,
-                samplingFreq: samplingFreq,
-                order: order,
-              ),
-            ));
-      } else if (dataSent == false) {
-        title = 'Error';
-        messageText = 'Data has not been uploaded to the server';
-        showAlertDialog(context);
-      } else {
-        serverTimeout = Timer(Duration(seconds: 15), () {
-          title = 'Error';
-          messageText = 'Server not found';
-          showAlertDialog(context);
-        });
-      }
-    } on Exception {
+    bool dataSent = await createData(studycode, guid, dataList, dataVersion);
+    print(dataSent);
+    if (dataSent == true) {
+      _demoCarController.stop();
+      _carController.stop();
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PracticeCompleted(
+              lpc: lpc,
+              width: width,
+              subjectId: subjectId,
+              uuid: uuid,
+              cutoffFreq: cutoffFreq,
+              iceGain: iceGain,
+              timeMax: timeMax,
+              totalTrials: totalTrials,
+              samplingFreq: samplingFreq,
+              order: order,
+            ),
+          ));
+    } else if (dataSent == false) {
       title = 'Error';
       messageText = 'Data has not been uploaded to the server';
-      showAlertDialog(context);
-      print('Something went wrong:/');
+      alertDialog.showAlertDialog(
+        context,
+        subjectId,
+        uuid,
+        0,
+        0,
+        lpc,
+        timeMax,
+        totalTrials,
+        iceGain,
+        cutoffFreq,
+        samplingFreq,
+        order,
+        webFlag,
+        title,
+        messageText,
+        true,
+      );
+    } else {
+      serverTimeout = Timer(Duration(seconds: 15), () {
+        title = 'Error';
+        messageText = 'Server not found';
+        alertDialog.showAlertDialog(
+          context,
+          subjectId,
+          uuid,
+          0,
+          0,
+          lpc,
+          timeMax,
+          totalTrials,
+          iceGain,
+          cutoffFreq,
+          samplingFreq,
+          order,
+          webFlag,
+          title,
+          messageText,
+          true,
+        );
+      });
     }
-  }
-
-  showAlertDialog(BuildContext context) {
-    // set up the button
-    Widget okButton = ElevatedButton(
-      child: Text('OK'),
-      onPressed: () {
-        trialTimer.cancel();
-        carTimer.cancel();
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PracticeCompleted(
-                lpc: lpc,
-                subjectId: subjectId,
-                uuid: uuid,
-                cutoffFreq: cutoffFreq,
-                iceGain: iceGain,
-                timeMax: timeMax,
-                totalTrials: totalTrials,
-                samplingFreq: samplingFreq,
-                order: order,
-              ),
-            ));
-      },
-    );
-    AlertDialog alert = AlertDialog(
-      title: Text("$title"),
-      content: Text("$messageText"),
-      actions: [
-        okButton,
-      ],
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
   }
 
   void _restartSlider(PointerEvent details) {
     setState(() {
       pointerCheck = false;
       dataMap = dataMapWriter.writeMap(
-          taskVersion,
-          webFlag,
-          platformType,
-          deviceData,
-          subjectId,
-          0,
-          startTime,
-          timeMax,
-          order,
-          totalTrials,
-          samplingFreq,
-          cutoffFreq,
-          lpc,
-          true,
-          dataList);
+        taskVersion,
+        webFlag,
+        platformType,
+        deviceData,
+        subjectId,
+        0,
+        startTime,
+        timeMax,
+        order,
+        totalTrials,
+        samplingFreq,
+        cutoffFreq,
+        lpc,
+        true,
+        dataList,
+        width,
+      );
       _carController.stop();
       _demoCarController.stop();
       carTimer.cancel();
@@ -276,6 +274,7 @@ class _PracticePageState extends State<PracticePage>
             subjectId: subjectId,
             uuid: uuid,
             lpc: lpc,
+            width: width,
             timeMax: timeMax,
             totalTrials: totalTrials,
             iceGain: iceGain,
@@ -349,7 +348,8 @@ class _PracticePageState extends State<PracticePage>
             cutoffFreq,
             lpc,
             true,
-            dataList);
+            dataList,
+            width);
         _demoCarController.stop();
         _carController.stop();
         carTimer.cancel();
@@ -371,7 +371,8 @@ class _PracticePageState extends State<PracticePage>
             cutoffFreq,
             lpc,
             false,
-            dataList);
+            dataList,
+            width);
         _demoCarController.stop();
         _carController.stop();
         carTimer.cancel();
@@ -383,6 +384,7 @@ class _PracticePageState extends State<PracticePage>
               subjectId: subjectId,
               uuid: uuid,
               lpc: lpc,
+              width: width,
               timeMax: timeMax,
               totalTrials: totalTrials,
               iceGain: iceGain,
@@ -418,7 +420,8 @@ class _PracticePageState extends State<PracticePage>
               cutoffFreq,
               lpc,
               true,
-              dataList);
+              dataList,
+              width);
           createData('driving01', uuid, dataMap.toString(), '01');
           _carController.stop();
           _demoCarController.stop();
@@ -431,6 +434,7 @@ class _PracticePageState extends State<PracticePage>
                 subjectId: subjectId,
                 uuid: uuid,
                 lpc: lpc,
+                width: width,
                 timeMax: timeMax,
                 totalTrials: totalTrials,
                 iceGain: iceGain,
@@ -461,7 +465,8 @@ class _PracticePageState extends State<PracticePage>
               cutoffFreq,
               lpc,
               true,
-              dataList);
+              dataList,
+              width);
           _carController.stop();
           _demoCarController.stop();
           carTimer.cancel();
@@ -476,6 +481,7 @@ class _PracticePageState extends State<PracticePage>
                 subjectId: subjectId,
                 uuid: uuid,
                 lpc: lpc,
+                width: width,
                 timeMax: timeMax,
                 totalTrials: totalTrials,
                 iceGain: iceGain,

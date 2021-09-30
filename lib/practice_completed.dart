@@ -8,6 +8,7 @@ class PracticeCompleted extends StatefulWidget {
     @required this.lpc,
     @required this.timeMax,
     @required this.totalTrials,
+    this.width,
     this.iceGain,
     this.cutoffFreq,
     this.order,
@@ -22,6 +23,7 @@ class PracticeCompleted extends StatefulWidget {
   final double cutoffFreq;
   final int order;
   final double samplingFreq;
+  final double width;
 
   @override
   _PracticeCompletedState createState() => _PracticeCompletedState(
@@ -34,6 +36,7 @@ class PracticeCompleted extends StatefulWidget {
         cutoffFreq: cutoffFreq,
         order: order,
         samplingFreq: samplingFreq,
+        width: width,
       );
 }
 
@@ -44,6 +47,7 @@ class _PracticeCompletedState extends State<PracticeCompleted> {
     @required this.lpc,
     @required this.timeMax,
     @required this.totalTrials,
+    this.width,
     this.iceGain,
     this.cutoffFreq,
     this.order,
@@ -60,6 +64,7 @@ class _PracticeCompletedState extends State<PracticeCompleted> {
   double cutoffFreq;
   int order;
   double samplingFreq;
+  double width;
 
   @override
   Widget build(BuildContext context) {
@@ -138,6 +143,7 @@ class _PracticeCompletedState extends State<PracticeCompleted> {
                           samplingFreq: samplingFreq,
                           uuid: uuid,
                           lpc: lpc,
+                          width: width,
                         ),
                       ),
                     );

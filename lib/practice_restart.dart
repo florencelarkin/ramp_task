@@ -12,6 +12,7 @@ class RestartPractice extends StatefulWidget {
     @required this.cutoffFreq,
     @required this.order,
     @required this.samplingFreq,
+    this.width,
     this.restartText,
   });
   final String subjectId;
@@ -24,6 +25,7 @@ class RestartPractice extends StatefulWidget {
   final int order;
   final double samplingFreq;
   final String restartText;
+  final double width;
 
   @override
   _RestartPracticeState createState() => _RestartPracticeState(
@@ -37,6 +39,7 @@ class RestartPractice extends StatefulWidget {
         order: order,
         samplingFreq: samplingFreq,
         restartText: restartText,
+        width: width,
       );
 }
 
@@ -52,6 +55,7 @@ class _RestartPracticeState extends State<RestartPractice> {
     this.order,
     this.samplingFreq,
     this.restartText,
+    this.width,
   });
   String subjectId;
   double maxVelocity;
@@ -65,6 +69,7 @@ class _RestartPracticeState extends State<RestartPractice> {
   int order;
   double samplingFreq;
   String restartText;
+  double width;
 
   @override
   Widget build(BuildContext context) {
@@ -137,6 +142,7 @@ class _RestartPracticeState extends State<RestartPractice> {
                           subjectId: subjectId,
                           uuid: uuid,
                           lpc: lpc,
+                          width: width,
                           totalTrials: totalTrials,
                           iceGain: iceGain,
                           cutoffFreq: cutoffFreq,

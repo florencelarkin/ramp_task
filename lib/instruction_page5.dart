@@ -8,6 +8,7 @@ class InstructionPage5 extends StatefulWidget {
     @required this.totalTrials,
     @required this.uuid,
     @required this.lpc,
+    this.width,
     this.iceGain,
     this.cutoffFreq,
     this.order,
@@ -22,6 +23,7 @@ class InstructionPage5 extends StatefulWidget {
   final double samplingFreq;
   final String uuid;
   final double lpc;
+  final double width;
 
   @override
   _InstructionPage5State createState() => _InstructionPage5State(
@@ -34,6 +36,7 @@ class InstructionPage5 extends StatefulWidget {
         samplingFreq: samplingFreq,
         uuid: uuid,
         lpc: lpc,
+        width: width,
       );
 }
 
@@ -44,6 +47,7 @@ class _InstructionPage5State extends State<InstructionPage5> {
     @required this.totalTrials,
     @required this.uuid,
     @required this.lpc,
+    this.width,
     this.iceGain,
     this.cutoffFreq,
     this.order,
@@ -58,6 +62,7 @@ class _InstructionPage5State extends State<InstructionPage5> {
   double samplingFreq;
   String uuid;
   double lpc;
+  double width;
 
   @override
   Widget build(BuildContext context) {
@@ -124,6 +129,7 @@ class _InstructionPage5State extends State<InstructionPage5> {
                           samplingFreq: samplingFreq,
                           uuid: uuid,
                           lpc: lpc,
+                          width: width,
                         ),
                       ),
                     );

@@ -6,6 +6,7 @@ class InstructionPage7 extends StatefulWidget {
     @required this.timeMax,
     @required this.subjectId,
     @required this.totalTrials,
+    this.width,
     this.iceGain,
     this.cutoffFreq,
     this.order,
@@ -22,6 +23,7 @@ class InstructionPage7 extends StatefulWidget {
   final double samplingFreq;
   final String uuid;
   final double lpc;
+  final double width;
 
   @override
   _InstructionPage7State createState() => _InstructionPage7State(
@@ -34,6 +36,7 @@ class InstructionPage7 extends StatefulWidget {
         samplingFreq: samplingFreq,
         lpc: lpc,
         uuid: uuid,
+        width: width,
       );
 }
 
@@ -42,6 +45,7 @@ class _InstructionPage7State extends State<InstructionPage7> {
     @required this.timeMax,
     @required this.subjectId,
     @required this.totalTrials,
+    this.width,
     this.iceGain,
     this.cutoffFreq,
     this.order,
@@ -58,6 +62,7 @@ class _InstructionPage7State extends State<InstructionPage7> {
   double samplingFreq;
   double lpc;
   String uuid;
+  double width;
 
   int trialNumber = 0;
   int blockNumber = 1;
@@ -129,6 +134,7 @@ class _InstructionPage7State extends State<InstructionPage7> {
                           cutoffFreq: cutoffFreq,
                           order: order,
                           samplingFreq: samplingFreq,
+                          width: width,
                         ),
                       ),
                     );

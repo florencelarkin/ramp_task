@@ -15,6 +15,7 @@ class ContinuationPage extends StatefulWidget {
     this.cutoffFreq,
     this.order,
     this.samplingFreq,
+    this.width,
   });
   final String subjectId;
   final String uuid;
@@ -27,6 +28,7 @@ class ContinuationPage extends StatefulWidget {
   final double cutoffFreq;
   final int order;
   final double samplingFreq;
+  final double width;
 
   @override
   _ContinuationPageState createState() => _ContinuationPageState(
@@ -41,6 +43,7 @@ class ContinuationPage extends StatefulWidget {
         cutoffFreq: cutoffFreq,
         order: order,
         samplingFreq: samplingFreq,
+        width: width,
       );
 }
 
@@ -57,6 +60,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
     this.cutoffFreq,
     this.order,
     this.samplingFreq,
+    this.width,
   });
   String subjectId;
   double maxVelocity;
@@ -71,6 +75,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
   double cutoffFreq;
   int order;
   double samplingFreq;
+  double width;
 
   @override
   Widget build(BuildContext context) {
@@ -121,6 +126,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
                           cutoffFreq: cutoffFreq,
                           order: order,
                           samplingFreq: samplingFreq,
+                          width: width,
                         ),
                       ),
                     );

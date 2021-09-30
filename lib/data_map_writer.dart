@@ -23,7 +23,8 @@ class DataMapWriter {
       double cutoffFreq,
       double lpc,
       bool completed,
-      List dataList) {
+      List dataList,
+      double width) {
     dataMap[addQuotesToString("TaskVersion")] = addQuotesToString(taskVersion);
     dataMap[addQuotesToString("Web")] = webFlag;
     dataMap[addQuotesToString("Platform")] = addQuotesToString(platformType);
@@ -46,7 +47,7 @@ class DataMapWriter {
     dataMap[addQuotesToString("TotalTrials")] =
         addQuotesToString(totalTrials.toString());
     dataMap[addQuotesToString("ScreenSize")] =
-        addQuotesToString(lpc.toString()); //fix this later
+        addQuotesToString("$width x $lpc");
     dataMap[addQuotesToString("CompletedTrial")] =
         addQuotesToString(completed.toString());
     dataMap[addQuotesToString("Moves")] = dataList;

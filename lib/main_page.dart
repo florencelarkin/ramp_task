@@ -28,6 +28,7 @@ class MainPage extends StatefulWidget {
     this.cutoffFreq,
     this.order,
     this.samplingFreq,
+    this.width,
   });
   final double timeMax;
   final String subjectId;
@@ -40,6 +41,7 @@ class MainPage extends StatefulWidget {
   final double cutoffFreq;
   final int order;
   final double samplingFreq;
+  final double width;
 
   @override
   _MainPageState createState() => _MainPageState(
@@ -54,6 +56,7 @@ class MainPage extends StatefulWidget {
         cutoffFreq: cutoffFreq,
         order: order,
         samplingFreq: samplingFreq,
+        width: width,
       );
 }
 
@@ -70,6 +73,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     this.cutoffFreq,
     this.order,
     this.samplingFreq,
+    this.width,
   });
   double timeMax;
   double iceGain;
@@ -82,11 +86,13 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   int order;
   String subjectId;
   String uuid;
+  double width;
 
   final browser = Browser.detectOrNull();
   DataMapWriter dataMapWriter = DataMapWriter();
   Stopwatch stopwatch = new Stopwatch()..start();
   var startTime = new DateTime.now();
+  AlertDialogClass alertDialog = AlertDialogClass();
 
   AnimationController _timerController;
   AnimationController _carController;
@@ -146,75 +152,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     });
   }
 
-  showAlertDialog(BuildContext context) {
-    // set up the button
-    Widget okButton = ElevatedButton(
-      child: Text('OK'),
-      onPressed: () {
-        if (trialNumber == totalTrials / 2) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BlockPage(
-                subjectId: subjectId,
-                uuid: uuid,
-                trialNumber: trialNumber,
-                blockNumber: blockNumber,
-                lpc: lpc,
-                timeMax: timeMax,
-                totalTrials: totalTrials,
-                iceGain: iceGain,
-                cutoffFreq: cutoffFreq,
-                order: order,
-                samplingFreq: samplingFreq,
-              ),
-            ),
-          );
-        } else if (trialNumber != totalTrials) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ContinuationPage(
-                subjectId: subjectId,
-                uuid: uuid,
-                trialNumber: trialNumber,
-                blockNumber: blockNumber,
-                lpc: lpc,
-                totalTrials: totalTrials,
-                timeMax: timeMax,
-                iceGain: iceGain,
-                cutoffFreq: cutoffFreq,
-                order: order,
-                samplingFreq: samplingFreq,
-              ),
-            ),
-          );
-        } else {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CompletedPage(
-                  webFlag: webFlag,
-                ),
-              ));
-        }
-      },
-    );
-    AlertDialog alert = AlertDialog(
-      title: Text("$title"),
-      content: Text("$messageText"),
-      actions: [
-        okButton,
-      ],
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
   void _pointerCheck(PointerEvent details) {
     setState(() {
       _updateLocation(details);
@@ -243,7 +180,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               cutoffFreq,
               lpc,
               true,
-              dataList);
+              dataList,
+              width);
           _timerController.stop();
           _carController.stop();
           _countdownController.stop();
@@ -278,6 +216,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 cutoffFreq: cutoffFreq,
                 order: order,
                 samplingFreq: samplingFreq,
+                width: width,
               ),
             ),
           );
@@ -297,6 +236,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 cutoffFreq: cutoffFreq,
                 order: order,
                 samplingFreq: samplingFreq,
+                width: width,
               ),
             ),
           );
@@ -327,6 +267,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               order: order,
               samplingFreq: samplingFreq,
               feedbackText: restartText,
+              width: width,
             ),
           ),
         );
@@ -334,12 +275,45 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     } else if (dataSent == false) {
       title = 'Error';
       messageText = 'Data has not been uploaded to the server';
-      showAlertDialog(context);
+      alertDialog.showAlertDialog(
+        context,
+        subjectId,
+        uuid,
+        trialNumber,
+        blockNumber,
+        lpc,
+        timeMax,
+        totalTrials,
+        iceGain,
+        cutoffFreq,
+        samplingFreq,
+        order,
+        webFlag,
+        title,
+        messageText,
+        false,
+      );
     } else {
       serverTimeout = Timer(Duration(seconds: 15), () {
         title = 'Error';
         messageText = 'Server not found';
-        showAlertDialog(context);
+        alertDialog.showAlertDialog(
+            context,
+            subjectId,
+            uuid,
+            trialNumber,
+            blockNumber,
+            lpc,
+            timeMax,
+            totalTrials,
+            iceGain,
+            cutoffFreq,
+            samplingFreq,
+            order,
+            webFlag,
+            title,
+            messageText,
+            false);
       });
     }
   }
@@ -361,7 +335,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           cutoffFreq,
           lpc,
           false,
-          dataList);
+          dataList,
+          width);
       _timerController.stop();
       _carController.stop();
       _countdownController.stop();
@@ -389,6 +364,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             order: order,
             samplingFreq: samplingFreq,
             feedbackText: restartText,
+            width: width,
           ),
         ),
       );
@@ -415,7 +391,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       });
     });
 
-    AlertDialogClass alertDialog = AlertDialogClass();
     //put in constructors later
 
     // check platform
@@ -462,7 +437,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               cutoffFreq,
               lpc,
               false,
-              dataList);
+              dataList,
+              width);
           print(dataMap);
           _timerController.stop();
           _carController.stop();
@@ -488,6 +464,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 order: order,
                 samplingFreq: samplingFreq,
                 feedbackText: restartText,
+                width: width,
               ),
             ),
           );
@@ -585,119 +562,123 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 );
               },
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * .01,
-                ),
-                Center(
-                  child: Container(
-                    height: lpc * .09,
-                    child: Text(
-                      feedbackText,
-                      style: TextStyle(
-                        color: textColor,
-                        fontSize: lpc * 0.03,
-                        fontWeight: FontWeight.bold,
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * .04,
+                  ),
+                  Center(
+                    child: Container(
+                      height: lpc * .05,
+                      child: Text(
+                        feedbackText,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: lpc * 0.02,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Container(
-                  // StopSign at top
-                  height: lpc * 0.14,
-                  width: MediaQuery.of(context).size.width * .65,
-                  child: Image.asset("images/stopsign.png"),
-                ),
-                Container(
-                  // white end line at stop sign
-                  height: lpc * 0.005,
-                  width: 220.0,
-                  color: Colors.white,
-                ),
-                AnimatedBuilder(
-                  // 321 counter
-                  animation: _countdownController,
-                  builder: (BuildContext context, Widget child) {
-                    return Container(
-                      height: lpc * 0.41,
-                      child: Text(
-                        timerString,
-                        style: TextStyle(
-                          fontSize: 50.0,
-                          fontWeight: FontWeight.bold,
-                          color: countdownColor,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                Container(
-                  // white starting line
-                  height: lpc * 0.005,
-                  width: 220.0,
-                  color: Colors.white,
-                ),
-                AnimatedBuilder(
-                  // car
-                  animation: _carController,
-                  child: Container(
-                    width: 50.0,
-                    height: lpc * 0.03,
-                    child: Icon(Icons.directions_car, size: lpc * 0.075),
+                  Container(
+                    // StopSign at top
+                    height: lpc * 0.14,
+                    width: MediaQuery.of(context).size.width * .65,
+                    child: Image.asset("images/stopsign.png"),
                   ),
-                  builder: (BuildContext context, Widget child) {
-                    return Transform.translate(
-                      offset: Offset(0.0, posList[1]),
-                      child: child,
-                    );
-                  },
-                ),
-                // Slider
-                Container(
-                  height: lpc * 0.30,
-                  width: 300.0,
-                  child: Transform.scale(
-                    scale: 0.75,
-                    child: Transform.rotate(
-                      angle: pi / 2,
-                      child: SliderTheme(
-                        data: SliderTheme.of(context).copyWith(
-                          trackHeight: 0.0,
-                          thumbColor: Colors.white,
-                          thumbShape: RoundSliderThumbShape(
-                              enabledThumbRadius: lpc * 0.05),
-                          activeTrackColor: Colors.transparent,
-                          inactiveTrackColor: Colors.transparent,
+                  Container(
+                    // white end line at stop sign
+                    height: lpc * 0.005,
+                    width: 220.0,
+                    color: Colors.white,
+                  ),
+                  AnimatedBuilder(
+                    // 321 counter
+                    animation: _countdownController,
+                    builder: (BuildContext context, Widget child) {
+                      return Container(
+                        height: lpc * 0.41,
+                        child: Text(
+                          timerString,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: lpc * 0.08,
+                            fontWeight: FontWeight.bold,
+                            color: countdownColor,
+                          ),
                         ),
-                        child: Listener(
-                          onPointerDown: _pointerCheck,
-                          onPointerUp: pointerCheck == true ||
-                                  pointerCheck == false &&
-                                      stopwatch.elapsedMilliseconds > 5000
-                              ? _restartSlider
-                              : null,
-                          child: Slider(
-                            inactiveColor: Colors.white,
-                            activeColor: Colors.white,
-                            value: sliderPos,
-                            min: -100.0,
-                            max: 100.0,
-                            onChanged: (double newValue) {
-                              setState(() {
-                                if (timerString == '0') {
-                                  sliderPos = newValue / 100;
-                                } else {}
-                              });
-                            },
+                      );
+                    },
+                  ),
+                  Container(
+                    // white starting line
+                    height: lpc * 0.005,
+                    width: 220.0,
+                    color: Colors.white,
+                  ),
+                  AnimatedBuilder(
+                    // car
+                    animation: _carController,
+                    child: Container(
+                      width: 50.0,
+                      height: lpc * 0.03,
+                      child: Icon(Icons.directions_car, size: lpc * 0.075),
+                    ),
+                    builder: (BuildContext context, Widget child) {
+                      return Transform.translate(
+                        offset: Offset(0.0, posList[1]),
+                        child: child,
+                      );
+                    },
+                  ),
+                  // Slider
+                  Container(
+                    height: lpc * 0.30,
+                    width: MediaQuery.of(context).size.width,
+                    child: Transform.scale(
+                      scale: 0.75,
+                      child: Transform.rotate(
+                        angle: pi / 2,
+                        child: SliderTheme(
+                          data: SliderTheme.of(context).copyWith(
+                            trackHeight: 0.0,
+                            thumbColor: Colors.white,
+                            thumbShape: RoundSliderThumbShape(
+                                enabledThumbRadius: lpc * 0.05),
+                            activeTrackColor: Colors.transparent,
+                            inactiveTrackColor: Colors.transparent,
+                          ),
+                          child: Listener(
+                            onPointerDown: _pointerCheck,
+                            onPointerUp: pointerCheck == true ||
+                                    pointerCheck == false &&
+                                        stopwatch.elapsedMilliseconds > 5000
+                                ? _restartSlider
+                                : null,
+                            child: Slider(
+                              inactiveColor: Colors.white,
+                              activeColor: Colors.white,
+                              value: sliderPos,
+                              min: -100.0,
+                              max: 100.0,
+                              onChanged: (double newValue) {
+                                setState(() {
+                                  if (timerString == '0') {
+                                    sliderPos = newValue / 100;
+                                  } else {}
+                                });
+                              },
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

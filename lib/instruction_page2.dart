@@ -113,6 +113,7 @@ class _InstructionPage2State extends State<InstructionPage2> {
                   ),
                   onPressed: () {
                     double lpc = MediaQuery.of(context).size.height;
+                    double width = MediaQuery.of(context).size.width;
                     String newId = uuid.v1();
                     Navigator.push(
                       context,
@@ -120,6 +121,7 @@ class _InstructionPage2State extends State<InstructionPage2> {
                         builder: (context) => InstructionPage3(
                           timeMax: timeMax,
                           lpc: lpc,
+                          width: width,
                           uuid: newId,
                           totalTrials: totalTrials,
                           subjectId: subjectId,
