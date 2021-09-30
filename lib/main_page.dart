@@ -13,6 +13,7 @@ import 'restart_page.dart';
 import 'package:flutter/widgets.dart';
 import 'device_data_writer.dart';
 import 'data_map_writer.dart';
+import 'alert_dialog.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({
@@ -413,6 +414,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         deviceData = futureDeviceData;
       });
     });
+
+    AlertDialogClass alertDialog = AlertDialogClass();
+    //put in constructors later
 
     // check platform
     platformType = deviceDataWriter.checkWebPlatform();

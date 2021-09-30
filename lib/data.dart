@@ -53,20 +53,26 @@ Future<bool> createData(
   );
   String jsonUser = jsonEncode(data);
 
-  final http.Response response = await http.post(
-    _serverURL,
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonUser,
-  );
+  try {
+    final http.Response response = await http.post(
+      _serverURL,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonUser,
+    );
 
-  if (response.statusCode == 200) {
-    Data.fromJson(jsonDecode(response.body));
-    print(response.statusCode);
-    return Future.value(true);
-  } else {
-    print(response.statusCode);
+    if (response.statusCode == 200) {
+      Data.fromJson(jsonDecode(response.body));
+      print(response.statusCode);
+      return Future.value(true);
+    } else {
+      print(response.statusCode);
+      return Future.value(false);
+    }
+  } catch (e) {
+    print('Something went wrong');
+    print(e);
     return Future.value(false);
   }
 }

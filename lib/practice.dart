@@ -566,6 +566,7 @@ class _PracticePageState extends State<PracticePage>
                       height: lpc * .07,
                       child: Text(
                         feedbackText,
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: textColor,
                           fontSize: lpc * 0.03,

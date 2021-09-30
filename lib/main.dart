@@ -1,7 +1,6 @@
 import 'package:driving_task/instruction_page.dart';
 import 'package:flutter/material.dart';
 import 'url_args.dart';
-import 'main_page.dart';
 
 void main() => runApp(DrivingTask());
 
@@ -92,48 +91,3 @@ class DrivingTask extends StatelessWidget {
     );
   }
 }
-/*
-class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => InstructionPage(
-                      subjectId: subjectID,
-                      timeMax: maxTime,
-                      totalTrials: totalTrials,
-                    ),
-                  ),
-                );
-              },
-              child: Text(
-                'CONFIRM',
-                style: Theme.of(context).textTheme.headline4,
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}*/
