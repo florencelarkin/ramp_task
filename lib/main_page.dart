@@ -439,7 +439,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               false,
               dataList,
               width);
-          print(dataMap);
           _timerController.stop();
           _carController.stop();
           _countdownController.stop();

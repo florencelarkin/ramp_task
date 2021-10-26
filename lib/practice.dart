@@ -256,7 +256,7 @@ class _PracticePageState extends State<PracticePage>
         samplingFreq,
         cutoffFreq,
         lpc,
-        true,
+        false,
         dataList,
         width,
       );
@@ -419,7 +419,7 @@ class _PracticePageState extends State<PracticePage>
               samplingFreq,
               cutoffFreq,
               lpc,
-              true,
+              false,
               dataList,
               width);
           createData('driving01', uuid, dataMap.toString(), '01');
@@ -464,7 +464,7 @@ class _PracticePageState extends State<PracticePage>
               samplingFreq,
               cutoffFreq,
               lpc,
-              true,
+              false,
               dataList,
               width);
           _carController.stop();
