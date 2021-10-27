@@ -11,6 +11,7 @@ import 'practice_restart.dart';
 import 'device_data_writer.dart';
 import 'data_map_writer.dart';
 import 'alert_dialog.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 
 class PracticePage extends StatefulWidget {
   PracticePage({
@@ -112,6 +113,7 @@ class _PracticePageState extends State<PracticePage>
   String browserType = "";
   final String taskVersion = "driving_task:0.9";
   Future<String> futureDeviceData;
+  String _timezone = 'Unknown';
 
   Map<String, String> urlArgs = {};
   Map dataMap = {};
@@ -138,6 +140,17 @@ class _PracticePageState extends State<PracticePage>
       x = details.position.dx;
       y = details.position.dy;
     });
+  }
+
+  Future<void> _initData() async {
+    try {
+      _timezone = await FlutterNativeTimezone.getLocalTimezone();
+    } catch (e) {
+      print('Could not get the local timezone');
+    }
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   void _pointerCheck(PointerEvent details) {
@@ -249,6 +262,7 @@ class _PracticePageState extends State<PracticePage>
         deviceData,
         subjectId,
         0,
+        _timezone,
         startTime,
         timeMax,
         order,
@@ -256,6 +270,7 @@ class _PracticePageState extends State<PracticePage>
         samplingFreq,
         cutoffFreq,
         lpc,
+        true,
         false,
         dataList,
         width,
@@ -291,6 +306,7 @@ class _PracticePageState extends State<PracticePage>
   @override
   void initState() {
     super.initState();
+    _initData();
     CarEngine carEngine = CarEngine(
       timeMax: timeMax,
       lpc: lpc,
@@ -340,6 +356,7 @@ class _PracticePageState extends State<PracticePage>
             deviceData,
             subjectId,
             0,
+            _timezone,
             startTime,
             timeMax,
             order,
@@ -347,6 +364,7 @@ class _PracticePageState extends State<PracticePage>
             samplingFreq,
             cutoffFreq,
             lpc,
+            true,
             true,
             dataList,
             width);
@@ -363,6 +381,7 @@ class _PracticePageState extends State<PracticePage>
             deviceData,
             subjectId,
             0,
+            _timezone,
             startTime,
             timeMax,
             order,
@@ -370,6 +389,7 @@ class _PracticePageState extends State<PracticePage>
             samplingFreq,
             cutoffFreq,
             lpc,
+            true,
             false,
             dataList,
             width);
@@ -412,6 +432,7 @@ class _PracticePageState extends State<PracticePage>
               deviceData,
               subjectId,
               0,
+              _timezone,
               startTime,
               timeMax,
               order,
@@ -419,6 +440,7 @@ class _PracticePageState extends State<PracticePage>
               samplingFreq,
               cutoffFreq,
               lpc,
+              true,
               false,
               dataList,
               width);
@@ -457,6 +479,7 @@ class _PracticePageState extends State<PracticePage>
               deviceData,
               subjectId,
               0,
+              _timezone,
               startTime,
               timeMax,
               order,
@@ -464,6 +487,7 @@ class _PracticePageState extends State<PracticePage>
               samplingFreq,
               cutoffFreq,
               lpc,
+              true,
               false,
               dataList,
               width);

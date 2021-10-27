@@ -15,6 +15,7 @@ class DataMapWriter {
       String deviceData,
       String subjectId,
       int trialNumber,
+      String timezone,
       DateTime startTime,
       double timeMax,
       int order,
@@ -22,6 +23,7 @@ class DataMapWriter {
       double samplingFreq,
       double cutoffFreq,
       double lpc,
+      bool isPractice,
       bool completed,
       List dataList,
       double width) {
@@ -32,6 +34,7 @@ class DataMapWriter {
     dataMap[addQuotesToString("SubjectID")] = addQuotesToString(subjectId);
     dataMap[addQuotesToString("TrialNumber")] =
         addQuotesToString(trialNumber.toString());
+    dataMap[addQuotesToString("TimeZone")] = addQuotesToString(timezone);
     dataMap[addQuotesToString("StartTime")] =
         addQuotesToString(startTime.toIso8601String());
     dataMap[addQuotesToString("EndTime")] =
@@ -48,6 +51,8 @@ class DataMapWriter {
         addQuotesToString(totalTrials.toString());
     dataMap[addQuotesToString("ScreenSize")] =
         addQuotesToString("$width x $lpc");
+    dataMap[addQuotesToString("IsPractice")] =
+        addQuotesToString(isPractice.toString());
     dataMap[addQuotesToString("CompletedTrial")] =
         addQuotesToString(completed.toString());
     dataMap[addQuotesToString("Moves")] = dataList;

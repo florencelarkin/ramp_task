@@ -14,6 +14,7 @@ import 'package:flutter/widgets.dart';
 import 'device_data_writer.dart';
 import 'data_map_writer.dart';
 import 'alert_dialog.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({
@@ -133,6 +134,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   String browserType = "";
   final String taskVersion = "driving_task:0.9";
   Future<String> futureDeviceData;
+  String _timezone = 'Unknown';
 
   bool pointerCheck = false;
   bool completed;
@@ -172,6 +174,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               deviceData,
               subjectId,
               trialNumber,
+              _timezone,
               startTime,
               timeMax,
               order,
@@ -179,6 +182,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               samplingFreq,
               cutoffFreq,
               lpc,
+              false,
               true,
               dataList,
               width);
@@ -194,6 +198,17 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         pointerCheck = false;
       }
     });
+  }
+
+  Future<void> _initData() async {
+    try {
+      _timezone = await FlutterNativeTimezone.getLocalTimezone();
+    } catch (e) {
+      print('Could not get the local timezone');
+    }
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   _serverUpload(studycode, guid, dataList, data_version) async {
@@ -327,6 +342,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           deviceData,
           subjectId,
           trialNumber,
+          _timezone,
           startTime,
           timeMax,
           order,
@@ -334,6 +350,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           samplingFreq,
           cutoffFreq,
           lpc,
+          false,
           false,
           dataList,
           width);
@@ -374,6 +391,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    _initData();
     CarEngine carEngine = CarEngine(
       timeMax: timeMax,
       lpc: lpc,
@@ -429,6 +447,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               deviceData,
               subjectId,
               trialNumber,
+              _timezone,
               startTime,
               timeMax,
               order,
@@ -436,6 +455,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               samplingFreq,
               cutoffFreq,
               lpc,
+              false,
               false,
               dataList,
               width);
