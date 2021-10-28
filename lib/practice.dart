@@ -147,6 +147,7 @@ class _PracticePageState extends State<PracticePage>
       _timezone = await FlutterNativeTimezone.getLocalTimezone();
     } catch (e) {
       print('Could not get the local timezone');
+      print('error');
     }
     if (mounted) {
       setState(() {});
