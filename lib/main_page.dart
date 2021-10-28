@@ -183,7 +183,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               cutoffFreq,
               lpc,
               false,
-              true,
+              posList[0] > -1.3 && posList[0] < -.6 ? true : false,
               dataList,
               width);
           _timerController.stop();
