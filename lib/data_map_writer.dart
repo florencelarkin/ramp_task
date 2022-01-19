@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 class DataMapWriter {
   DataMapWriter();
 
   Map dataMap = {};
+  var physicalScreenSize = window.physicalSize;
 
   String addQuotesToString(String text) {
     var quoteText = '\"' + text + '\"';
@@ -51,6 +54,10 @@ class DataMapWriter {
         addQuotesToString(totalTrials.toString());
     dataMap[addQuotesToString("ScreenSize")] =
         addQuotesToString("$width x $lpc");
+    dataMap[addQuotesToString("PhysicalScreenSize")] = addQuotesToString(
+        physicalScreenSize.width.toString() +
+            ' x ' +
+            physicalScreenSize.height.toString());
     dataMap[addQuotesToString("IsPractice")] =
         addQuotesToString(isPractice.toString());
     dataMap[addQuotesToString("CompletedTrial")] =

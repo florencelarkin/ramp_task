@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'instruction_page3.dart';
 import 'package:uuid/uuid.dart';
-//import 'instruction_practice.dart';
 
 class InstructionPage2 extends StatefulWidget {
   InstructionPage2({

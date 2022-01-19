@@ -148,6 +148,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   }
 
   void _updateLocation(PointerEvent details) {
+    //checks where thumb is placed on the screen
     setState(() {
       x = details.position.dx;
       y = details.position.dy;
@@ -155,6 +156,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   }
 
   void _pointerCheck(PointerEvent details) {
+    //checks if thumb is on the correct position, otherwise trial does not start
     setState(() {
       _updateLocation(details);
       if ((y / lpc) > 0.78 && (y / lpc) < 0.88) {
@@ -201,6 +203,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   }
 
   Future<void> _initData() async {
+    //returns the local timezone of the device running the app
     try {
       _timezone = await FlutterNativeTimezone.getLocalTimezone();
     } catch (e) {
@@ -215,6 +218,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     bool dataSent = await createData(studycode, guid, dataList, data_version);
     if (dataSent == true) {
       if (posList[0] > -1.3 && posList[0] < -.6) {
+        //trial is complete
         if (trialNumber == totalTrials / 2) {
           Navigator.push(
             context,
@@ -265,6 +269,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               ));
         }
       } else {
+        //trial is incomplete
         restartText = 'Make sure you are closer to the white line next time.';
         Navigator.push(
           context,
@@ -334,6 +339,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   }
 
   void _restartSlider(PointerEvent details) {
+    //called if subject takes thumb off slider, trial is marked incomplete
     setState(() {
       dataMap = dataMapWriter.writeMap(
           taskVersion,
@@ -392,6 +398,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _initData();
+
+    //initialize car engine class
     CarEngine carEngine = CarEngine(
       timeMax: timeMax,
       lpc: lpc,
@@ -402,14 +410,13 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       samplingFreq: samplingFreq,
     );
 
+    //initialize device data class
     DeviceDataWriter deviceDataWriter = DeviceDataWriter();
     deviceDataWriter.initPlatformState().then((String futureDeviceData) {
       setState(() {
         deviceData = futureDeviceData;
       });
     });
-
-    //put in constructors later
 
     // check platform
     platformType = deviceDataWriter.checkWebPlatform();
@@ -439,7 +446,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         prevTime = currentTime;
         currentTime = stopwatch.elapsedMilliseconds.toDouble();
         if (posList[0] < -2.0 || posList[0] > 1.0) {
-          //if you go off the screen in either direction
+          //checks if you go off the screen in either direction, trial is marked incomplete
           dataMap = dataMapWriter.writeMap(
               taskVersion,
               webFlag,
@@ -512,6 +519,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       dataList.add(outputList());
     });
 
+    //Controls whether timer bar is blue or green depending on car position
     colorTimer = Timer.periodic(
         Duration(milliseconds: 17),
         (Timer t) => posList[1] < -lpc * .25 && posList[1] > -lpc * .435
@@ -527,12 +535,14 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  //Timer countdown at beginning of trial
   String get timerString {
     Duration duration =
         _countdownController.duration * _countdownController.value;
     return '${(duration.inSeconds % 60).toString()}';
   }
 
+  //Color of countdown text
   Color get countdownColor {
     Duration duration =
         _countdownController.duration * _countdownController.value;
@@ -543,6 +553,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     }
   }
 
+  //Data list, called approximately every frame
   List outputList() {
     List<dynamic> data = [];
     getAdjustedPos = -posList[0];
