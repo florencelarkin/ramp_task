@@ -15,6 +15,7 @@ import 'device_data_writer.dart';
 import 'data_map_writer.dart';
 import 'alert_dialog.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'dart:convert';
 
 class MainPage extends StatefulWidget {
   MainPage({
@@ -194,7 +195,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           carTimer.cancel();
           colorTimer.cancel();
           trialTimer.cancel();
-          _serverUpload('driving01', uuid, dataMap.toString(), '01');
+          String _dataMap = jsonEncode(dataMap);
+          _serverUpload('driving01', uuid, _dataMap, '01');
         });
       } else {
         pointerCheck = false;

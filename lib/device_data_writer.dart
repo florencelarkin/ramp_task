@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'dart:convert';
 
 class DeviceDataWriter {
   DeviceDataWriter();
@@ -55,7 +56,8 @@ class DeviceDataWriter {
       };
     }
     _deviceData = deviceData;
-    return _deviceData.toString();
+    String deviceDataJson = jsonEncode(_deviceData);
+    return deviceDataJson;
   }
 
   Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {

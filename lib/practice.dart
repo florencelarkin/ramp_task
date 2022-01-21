@@ -12,6 +12,7 @@ import 'device_data_writer.dart';
 import 'data_map_writer.dart';
 import 'alert_dialog.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'dart:convert';
 
 class PracticePage extends StatefulWidget {
   PracticePage({
@@ -280,7 +281,8 @@ class _PracticePageState extends State<PracticePage>
       _demoCarController.stop();
       carTimer.cancel();
       trialTimer.cancel();
-      createData('driving01', uuid, dataMap.toString(), '01');
+      String _dataMap = jsonEncode(dataMap);
+      createData('driving01', uuid, _dataMap, '01');
       restartText =
           'Remember to keep your thumb on the slider until you see the next screen!';
       Navigator.push(
