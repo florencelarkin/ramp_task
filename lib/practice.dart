@@ -281,8 +281,7 @@ class _PracticePageState extends State<PracticePage>
       _demoCarController.stop();
       carTimer.cancel();
       trialTimer.cancel();
-      String _dataMap = jsonEncode(dataMap);
-      createData('driving01', uuid, _dataMap, '01');
+      createData('driving01', uuid, dataMap.toString(), '01');
       restartText =
           'Remember to keep your thumb on the slider until you see the next screen!';
       Navigator.push(
