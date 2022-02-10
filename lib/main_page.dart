@@ -130,10 +130,10 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   String messageText = '';
   String feedbackText = 'Put your thumb on the white dot to begin';
   String restartText = '';
-  String platformType = ""; // the platform: android, ios, windows, linux
-  String deviceData = "";
-  String browserType = "";
-  final String taskVersion = "driving_task:0.9";
+  String platformType = ''; // the platform: android, ios, windows, linux
+  Map deviceData = {};
+  String browserType = '';
+  final String taskVersion = 'driving_task:0.9';
   Future<String> futureDeviceData;
   String _timezone = 'Unknown';
 
@@ -196,7 +196,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           colorTimer.cancel();
           trialTimer.cancel();
           //String _dataMap = jsonEncode(dataMap);
-          _serverUpload('driving01', uuid, dataMap.toString(), '01');
+          _serverUpload('driving01', uuid, dataMap, '01');
         });
       } else {
         pointerCheck = false;
@@ -368,7 +368,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       carTimer.cancel();
       colorTimer.cancel();
       trialTimer.cancel();
-      createData('driving01', uuid, dataMap.toString(), '01');
+      createData('driving01', uuid, dataMap, '01');
       //_serverUpload('driving01', uuid, dataMap.toString(), '01');
       trialTimer.cancel();
       restartText =
@@ -414,7 +414,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
     //initialize device data class
     DeviceDataWriter deviceDataWriter = DeviceDataWriter();
-    deviceDataWriter.initPlatformState().then((String futureDeviceData) {
+    deviceDataWriter.initPlatformState().then((Map futureDeviceData) {
       setState(() {
         deviceData = futureDeviceData;
       });
@@ -425,11 +425,11 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
     // initialize the header of the dataList
     dataList.add([
-      addQuotesToString("times"),
-      addQuotesToString("slider"),
-      addQuotesToString("carPos"),
-      addQuotesToString("carVel"),
-      addQuotesToString("eventcode")
+      'times',
+      'slider',
+      'carPos',
+      'carVel',
+      'eventcode',
     ]);
 
     //animation controllers
@@ -474,7 +474,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           carTimer.cancel();
           colorTimer.cancel();
           trialTimer.cancel();
-          createData('driving01', uuid, dataMap.toString(), '01');
+          createData('driving01', uuid, dataMap, '01');
           restartText = 'Make sure to stay within the screen boundaries!';
           Navigator.push(
             context,

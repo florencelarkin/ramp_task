@@ -9,7 +9,7 @@ class DeviceDataWriter {
 
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   Map<String, dynamic> _deviceData = <String, dynamic>{};
-  String platformType = "";
+  String platformType = '';
 
   String checkWebPlatform() {
     // check the platform and whether web
@@ -29,7 +29,7 @@ class DeviceDataWriter {
     return platformType;
   }
 
-  Future<String> initPlatformState() async {
+  Future<Map> initPlatformState() async {
     var deviceData = <String, dynamic>{};
 
     try {
@@ -56,8 +56,8 @@ class DeviceDataWriter {
       };
     }
     _deviceData = deviceData;
-    String deviceDataJson = jsonEncode(_deviceData);
-    return deviceDataJson;
+    //String deviceDataJson = jsonEncode(_deviceData);
+    return _deviceData;
   }
 
   Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {

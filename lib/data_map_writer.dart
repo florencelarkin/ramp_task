@@ -7,6 +7,10 @@ class DataMapWriter {
   var physicalScreenSize = window.physicalSize;
 
   String addQuotesToString(String text) {
+    return text;
+  }
+
+  String _addQuotesToString(String text) {
     var quoteText = '\"' + text + '\"';
     return quoteText;
   }
@@ -15,7 +19,7 @@ class DataMapWriter {
       String taskVersion,
       bool webFlag,
       String platformType,
-      String deviceData,
+      Map deviceData,
       String subjectId,
       int trialNumber,
       String timezone,
@@ -30,39 +34,39 @@ class DataMapWriter {
       bool completed,
       List dataList,
       double width) {
-    dataMap[addQuotesToString("TaskVersion")] = addQuotesToString(taskVersion);
-    dataMap[addQuotesToString("Web")] = webFlag;
-    dataMap[addQuotesToString("Platform")] = addQuotesToString(platformType);
-    dataMap[addQuotesToString("DeviceData")] = addQuotesToString(deviceData);
-    dataMap[addQuotesToString("SubjectID")] = addQuotesToString(subjectId);
-    dataMap[addQuotesToString("TrialNumber")] =
+    dataMap[addQuotesToString('TaskVersion')] = addQuotesToString(taskVersion);
+    dataMap[addQuotesToString('Web')] = webFlag;
+    dataMap[addQuotesToString('Platform')] = addQuotesToString(platformType);
+    dataMap[addQuotesToString('DeviceData')] = deviceData;
+    dataMap[addQuotesToString('SubjectID')] = addQuotesToString(subjectId);
+    dataMap[addQuotesToString('TrialNumber')] =
         addQuotesToString(trialNumber.toString());
-    dataMap[addQuotesToString("TimeZone")] = addQuotesToString(timezone);
-    dataMap[addQuotesToString("StartTime")] =
+    dataMap[addQuotesToString('TimeZone')] = addQuotesToString(timezone);
+    dataMap[addQuotesToString('StartTime')] =
         addQuotesToString(startTime.toIso8601String());
-    dataMap[addQuotesToString("EndTime")] =
+    dataMap[addQuotesToString('EndTime')] =
         addQuotesToString(DateTime.now().toIso8601String());
-    dataMap[addQuotesToString("Sensitivity")] =
+    dataMap[addQuotesToString('Sensitivity')] =
         addQuotesToString(timeMax.toString());
-    dataMap[addQuotesToString("FilterCutoffFreq")] =
+    dataMap[addQuotesToString('FilterCutoffFreq')] =
         addQuotesToString(cutoffFreq.toString());
-    dataMap[addQuotesToString("FilterOrder")] =
+    dataMap[addQuotesToString('FilterOrder')] =
         addQuotesToString(order.toString());
-    dataMap[addQuotesToString("FilterSamplingFreq")] =
+    dataMap[addQuotesToString('FilterSamplingFreq')] =
         addQuotesToString(samplingFreq.toString());
-    dataMap[addQuotesToString("TotalTrials")] =
+    dataMap[addQuotesToString('TotalTrials')] =
         addQuotesToString(totalTrials.toString());
-    dataMap[addQuotesToString("ScreenSize")] =
-        addQuotesToString("$width x $lpc");
-    dataMap[addQuotesToString("PhysicalScreenSize")] = addQuotesToString(
+    dataMap[addQuotesToString('ScreenSize')] =
+        addQuotesToString('$width x $lpc');
+    dataMap[addQuotesToString('PhysicalScreenSize')] = addQuotesToString(
         physicalScreenSize.width.toString() +
             ' x ' +
             physicalScreenSize.height.toString());
-    dataMap[addQuotesToString("IsPractice")] =
+    dataMap[addQuotesToString('IsPractice')] =
         addQuotesToString(isPractice.toString());
-    dataMap[addQuotesToString("CompletedTrial")] =
+    dataMap[addQuotesToString('CompletedTrial')] =
         addQuotesToString(completed.toString());
-    dataMap[addQuotesToString("Moves")] = dataList;
+    dataMap[addQuotesToString('Moves')] = dataList;
     return dataMap;
   }
 }

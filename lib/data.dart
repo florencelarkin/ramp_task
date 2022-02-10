@@ -44,11 +44,12 @@ class Data {
 }
 
 Future<bool> createData(
-    String studycode, String guid, String dataList, String data_version) async {
+    String studycode, String guid, Map dataList, String data_version) async {
+  dynamic jsonData = JsonEncoder().convert(dataList);
   Data data = Data(
     studycode: studycode,
     guid: guid,
-    data: dataList,
+    data: jsonData,
     data_version: data_version,
   );
   String jsonUser = jsonEncode(data);

@@ -108,11 +108,11 @@ class _PracticePageState extends State<PracticePage>
   String messageText = '';
   String feedbackText = 'Put your thumb on the white circle to begin';
   String restartText = '';
-  String deviceData = "";
+  Map deviceData = {};
   String text = '';
-  String platformType = ""; // the platform: android, ios, windows, linux
-  String browserType = "";
-  final String taskVersion = "driving_task:0.9";
+  String platformType = ''; // the platform: android, ios, windows, linux
+  String browserType = '';
+  final String taskVersion = 'driving_task:0.9';
   Future<String> futureDeviceData;
   String _timezone = 'Unknown';
 
@@ -281,7 +281,7 @@ class _PracticePageState extends State<PracticePage>
       _demoCarController.stop();
       carTimer.cancel();
       trialTimer.cancel();
-      createData('driving01', uuid, dataMap.toString(), '01');
+      createData('driving01', uuid, dataMap, '01');
       restartText =
           'Remember to keep your thumb on the slider until you see the next screen!';
       Navigator.push(
@@ -319,7 +319,7 @@ class _PracticePageState extends State<PracticePage>
     );
 
     DeviceDataWriter deviceDataWriter = DeviceDataWriter();
-    deviceDataWriter.initPlatformState().then((String futureDeviceData) {
+    deviceDataWriter.initPlatformState().then((Map futureDeviceData) {
       setState(() {
         deviceData = futureDeviceData;
       });
@@ -329,12 +329,12 @@ class _PracticePageState extends State<PracticePage>
     platformType = deviceDataWriter.checkWebPlatform();
     // initialize the header of the dataList
     dataList.add([
-      addQuotesToString("times"),
-      addQuotesToString("slider"),
-      addQuotesToString("carPos"),
-      addQuotesToString("carVel"),
-      addQuotesToString("carDelta"),
-      addQuotesToString("eventcode"),
+      'times',
+      'slider',
+      'carPos',
+      'carVel',
+      'carDelta',
+      'eventcode',
     ]);
 
     _carController =
@@ -446,7 +446,7 @@ class _PracticePageState extends State<PracticePage>
               false,
               dataList,
               width);
-          createData('driving01', uuid, dataMap.toString(), '01');
+          createData('driving01', uuid, dataMap, '01');
           _carController.stop();
           _demoCarController.stop();
           carTimer.cancel();
@@ -497,7 +497,7 @@ class _PracticePageState extends State<PracticePage>
           _demoCarController.stop();
           carTimer.cancel();
           trialTimer.cancel();
-          createData('driving01', uuid, dataMap.toString(), '01');
+          createData('driving01', uuid, dataMap, '01');
           restartText =
               'Remember to stay within a closer distance of the red car!';
           Navigator.push(
