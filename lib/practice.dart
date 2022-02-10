@@ -373,7 +373,7 @@ class _PracticePageState extends State<PracticePage>
         _demoCarController.stop();
         _carController.stop();
         carTimer.cancel();
-        _serverUpload('driving01', uuid, dataMap.toString(), '01');
+        _serverUpload('driving01', uuid, dataMap, '01');
         trialTimer.cancel();
       } else {
         dataMap = dataMapWriter.writeMap(
