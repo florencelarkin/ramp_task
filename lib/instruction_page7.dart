@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'continue_trial.dart';
+import 'main_page.dart';
 
 class InstructionPage7 extends StatefulWidget {
   InstructionPage7({
@@ -13,6 +14,7 @@ class InstructionPage7 extends StatefulWidget {
     this.samplingFreq,
     this.lpc,
     this.uuid,
+    this.dataMap,
   });
   final double timeMax;
   final String subjectId;
@@ -24,6 +26,7 @@ class InstructionPage7 extends StatefulWidget {
   final String uuid;
   final double lpc;
   final double width;
+  final Map dataMap;
 
   @override
   _InstructionPage7State createState() => _InstructionPage7State(
@@ -37,6 +40,7 @@ class InstructionPage7 extends StatefulWidget {
         lpc: lpc,
         uuid: uuid,
         width: width,
+        dataMap: dataMap,
       );
 }
 
@@ -52,6 +56,7 @@ class _InstructionPage7State extends State<InstructionPage7> {
     this.samplingFreq,
     this.uuid,
     this.lpc,
+    this.dataMap,
   });
   double timeMax;
   String subjectId;
@@ -63,6 +68,7 @@ class _InstructionPage7State extends State<InstructionPage7> {
   double lpc;
   String uuid;
   double width;
+  Map dataMap;
 
   int trialNumber = 0;
   int blockNumber = 1;
@@ -122,7 +128,7 @@ class _InstructionPage7State extends State<InstructionPage7> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ContinuationPage(
+                        builder: (context) => MainPage(
                           subjectId: subjectId,
                           uuid: uuid,
                           trialNumber: trialNumber,
@@ -135,6 +141,7 @@ class _InstructionPage7State extends State<InstructionPage7> {
                           order: order,
                           samplingFreq: samplingFreq,
                           width: width,
+                          dataMap: {},
                         ),
                       ),
                     );

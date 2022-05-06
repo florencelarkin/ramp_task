@@ -15,7 +15,8 @@ class RestartPage extends StatefulWidget {
     @required this.order,
     @required this.samplingFreq,
     @required this.feedbackText,
-    this.width,
+    @required this.width,
+    @required this.dataMap,
   });
   final String subjectId;
   final String uuid;
@@ -30,6 +31,7 @@ class RestartPage extends StatefulWidget {
   final double samplingFreq;
   final String feedbackText;
   final double width;
+  final Map dataMap;
 
   @override
   _RestartPageState createState() => _RestartPageState(
@@ -46,6 +48,7 @@ class RestartPage extends StatefulWidget {
         samplingFreq: samplingFreq,
         feedbackText: feedbackText,
         width: width,
+        dataMap: dataMap,
       );
 }
 
@@ -64,6 +67,7 @@ class _RestartPageState extends State<RestartPage> {
     this.samplingFreq,
     this.feedbackText,
     this.width,
+    this.dataMap,
   });
   String subjectId;
   double maxVelocity;
@@ -80,6 +84,7 @@ class _RestartPageState extends State<RestartPage> {
   double samplingFreq;
   String feedbackText;
   double width;
+  Map dataMap;
 
   @override
   Widget build(BuildContext context) {
@@ -160,6 +165,7 @@ class _RestartPageState extends State<RestartPage> {
                           order: order,
                           samplingFreq: samplingFreq,
                           width: width,
+                          dataMap: dataMap,
                         ),
                       ),
                     );

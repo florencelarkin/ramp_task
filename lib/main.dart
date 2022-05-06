@@ -1,6 +1,7 @@
 import 'package:driving_task/instruction_page.dart';
 import 'package:flutter/material.dart';
 import 'url_args.dart';
+import 'completed_screen.dart';
 
 void main() => runApp(DrivingTask());
 

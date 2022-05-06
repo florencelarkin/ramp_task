@@ -16,6 +16,7 @@ class ContinuationPage extends StatefulWidget {
     this.order,
     this.samplingFreq,
     this.width,
+    this.dataMap,
   });
   final String subjectId;
   final String uuid;
@@ -29,6 +30,7 @@ class ContinuationPage extends StatefulWidget {
   final int order;
   final double samplingFreq;
   final double width;
+  final Map dataMap;
 
   @override
   _ContinuationPageState createState() => _ContinuationPageState(
@@ -44,6 +46,7 @@ class ContinuationPage extends StatefulWidget {
         order: order,
         samplingFreq: samplingFreq,
         width: width,
+        dataMap: dataMap,
       );
 }
 
@@ -61,6 +64,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
     this.order,
     this.samplingFreq,
     this.width,
+    this.dataMap,
   });
   String subjectId;
   double maxVelocity;
@@ -76,68 +80,56 @@ class _ContinuationPageState extends State<ContinuationPage> {
   int order;
   double samplingFreq;
   double width;
+  Map dataMap;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      backgroundColor: Colors.white,
+      body: ListView(
+        shrinkWrap: true,
         children: <Widget>[
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Text(
-                  'Click start to begin the next trial',
-                  style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                  textAlign: TextAlign.center,
-                ),
+          Center(
+            child: Text('Trial $trialNumber data: Use ctrl+a to select all'),
+          ),
+          SelectableText(
+            dataMap.toString(),
+            toolbarOptions: ToolbarOptions(
+                copy: true, selectAll: true, cut: false, paste: false),
+            style: TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.black),
+            textAlign: TextAlign.center,
+          ),
+          ElevatedButton(
+              child: Text('START'),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green, // background
+                onPrimary: Colors.white, // foreground
               ),
-            ),
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height * .1),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                  child: Text('START'),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.green, // background
-                    onPrimary: Colors.white, // foreground
+              onPressed: () {
+                trialNumber++;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MainPage(
+                      timeMax: timeMax,
+                      subjectId: subjectId,
+                      uuid: uuid,
+                      trialNumber: trialNumber,
+                      blockNumber: blockNumber,
+                      lpc: lpc,
+                      totalTrials: totalTrials,
+                      iceGain: iceGain,
+                      cutoffFreq: cutoffFreq,
+                      order: order,
+                      samplingFreq: samplingFreq,
+                      width: width,
+                    ),
                   ),
-                  onPressed: () {
-                    trialNumber++;
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MainPage(
-                          timeMax: timeMax,
-                          subjectId: subjectId,
-                          uuid: uuid,
-                          trialNumber: trialNumber,
-                          blockNumber: blockNumber,
-                          lpc: lpc,
-                          totalTrials: totalTrials,
-                          iceGain: iceGain,
-                          cutoffFreq: cutoffFreq,
-                          order: order,
-                          samplingFreq: samplingFreq,
-                          width: width,
-                        ),
-                      ),
-                    );
-                  }),
-            ],
-          ),
-          Column(
-            children: <Widget>[
-              SizedBox(height: MediaQuery.of(context).size.height * .3),
-            ],
-          ),
+                );
+              }),
         ],
       ),
     );

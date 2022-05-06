@@ -13,6 +13,7 @@ class InstructionPage5 extends StatefulWidget {
     this.cutoffFreq,
     this.order,
     this.samplingFreq,
+    this.dataMap,
   });
   final double timeMax;
   final String subjectId;
@@ -24,6 +25,7 @@ class InstructionPage5 extends StatefulWidget {
   final String uuid;
   final double lpc;
   final double width;
+  final Map dataMap;
 
   @override
   _InstructionPage5State createState() => _InstructionPage5State(
@@ -37,6 +39,7 @@ class InstructionPage5 extends StatefulWidget {
         uuid: uuid,
         lpc: lpc,
         width: width,
+        dataMap: dataMap,
       );
 }
 
@@ -52,6 +55,7 @@ class _InstructionPage5State extends State<InstructionPage5> {
     this.cutoffFreq,
     this.order,
     this.samplingFreq,
+    this.dataMap,
   });
   double timeMax;
   String subjectId;
@@ -63,6 +67,7 @@ class _InstructionPage5State extends State<InstructionPage5> {
   String uuid;
   double lpc;
   double width;
+  Map dataMap;
 
   @override
   Widget build(BuildContext context) {
@@ -130,6 +135,7 @@ class _InstructionPage5State extends State<InstructionPage5> {
                           uuid: uuid,
                           lpc: lpc,
                           width: width,
+                          dataMap: dataMap,
                         ),
                       ),
                     );

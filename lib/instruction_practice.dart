@@ -156,6 +156,7 @@ class _InstructionPracticeState extends State<InstructionPractice> {
                           cutoffFreq: cutoffFreq,
                           order: order,
                           samplingFreq: samplingFreq,
+                          dataMap: {},
                         ),
                       ),
                     );

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
 import 'car_engine.dart';
-import 'data.dart';
 import 'package:flutter/foundation.dart';
 import 'block_page.dart';
 import 'completed_screen.dart';
@@ -16,6 +15,7 @@ import 'data_map_writer.dart';
 import 'alert_dialog.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'dart:convert';
+//import data.dart
 
 class MainPage extends StatefulWidget {
   MainPage({
@@ -31,6 +31,7 @@ class MainPage extends StatefulWidget {
     this.order,
     this.samplingFreq,
     this.width,
+    this.dataMap,
   });
   final double timeMax;
   final String subjectId;
@@ -44,6 +45,7 @@ class MainPage extends StatefulWidget {
   final int order;
   final double samplingFreq;
   final double width;
+  final Map dataMap;
 
   @override
   _MainPageState createState() => _MainPageState(
@@ -59,6 +61,7 @@ class MainPage extends StatefulWidget {
         order: order,
         samplingFreq: samplingFreq,
         width: width,
+        dataMap: dataMap,
       );
 }
 
@@ -76,6 +79,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     this.order,
     this.samplingFreq,
     this.width,
+    this.dataMap,
   });
   double timeMax;
   double iceGain;
@@ -89,6 +93,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   String subjectId;
   String uuid;
   double width;
+  Map dataMap;
 
   final browser = Browser.detectOrNull();
   DataMapWriter dataMapWriter = DataMapWriter();
@@ -120,7 +125,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   List<dynamic> dataList = [];
   List posList = [0.0, 0.0, 0.0];
-  Map dataMap = {};
+  //Map dataMap = {};
   Map<String, String> urlArgs = {};
 
   Color timerColor = Colors.blue;
@@ -217,66 +222,14 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   }
 
   _serverUpload(studycode, guid, dataList, data_version) async {
-    bool dataSent = await createData(studycode, guid, dataList, data_version);
-    if (dataSent == true) {
-      if (posList[0] > -1.3 && posList[0] < -.6) {
-        //trial is complete
-        if (trialNumber == totalTrials / 2) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BlockPage(
-                subjectId: subjectId,
-                uuid: uuid,
-                trialNumber: trialNumber,
-                blockNumber: blockNumber,
-                lpc: lpc,
-                timeMax: timeMax,
-                totalTrials: totalTrials,
-                iceGain: iceGain,
-                cutoffFreq: cutoffFreq,
-                order: order,
-                samplingFreq: samplingFreq,
-                width: width,
-              ),
-            ),
-          );
-        } else if (trialNumber != totalTrials) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ContinuationPage(
-                subjectId: subjectId,
-                uuid: uuid,
-                trialNumber: trialNumber,
-                blockNumber: blockNumber,
-                lpc: lpc,
-                totalTrials: totalTrials,
-                timeMax: timeMax,
-                iceGain: iceGain,
-                cutoffFreq: cutoffFreq,
-                order: order,
-                samplingFreq: samplingFreq,
-                width: width,
-              ),
-            ),
-          );
-        } else {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CompletedPage(
-                  webFlag: webFlag,
-                ),
-              ));
-        }
-      } else {
-        //trial is incomplete
-        restartText = 'Make sure you are closer to the white line next time.';
+    //bool dataSent = await createData(studycode, guid, dataList, data_version);
+    if (posList[0] > -1.3 && posList[0] < -.6) {
+      //trial is complete
+      if (trialNumber == totalTrials / 2) {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => RestartPage(
+            builder: (context) => BlockPage(
               subjectId: subjectId,
               uuid: uuid,
               trialNumber: trialNumber,
@@ -288,55 +241,65 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               cutoffFreq: cutoffFreq,
               order: order,
               samplingFreq: samplingFreq,
-              feedbackText: restartText,
               width: width,
             ),
           ),
         );
-      }
-    } else if (dataSent == false) {
-      title = 'Error';
-      messageText = 'Data has not been uploaded to the server';
-      alertDialog.showAlertDialog(
-        context,
-        subjectId,
-        uuid,
-        trialNumber,
-        blockNumber,
-        lpc,
-        timeMax,
-        totalTrials,
-        iceGain,
-        cutoffFreq,
-        samplingFreq,
-        order,
-        webFlag,
-        title,
-        messageText,
-        false,
-      );
-    } else {
-      serverTimeout = Timer(Duration(seconds: 15), () {
-        title = 'Error';
-        messageText = 'Server not found';
-        alertDialog.showAlertDialog(
+      } else if (trialNumber != totalTrials) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ContinuationPage(
+              subjectId: subjectId,
+              uuid: uuid,
+              trialNumber: trialNumber,
+              blockNumber: blockNumber,
+              lpc: lpc,
+              totalTrials: totalTrials,
+              timeMax: timeMax,
+              iceGain: iceGain,
+              cutoffFreq: cutoffFreq,
+              order: order,
+              samplingFreq: samplingFreq,
+              width: width,
+              dataMap: dataMap,
+            ),
+          ),
+        );
+      } else {
+        Navigator.push(
             context,
-            subjectId,
-            uuid,
-            trialNumber,
-            blockNumber,
-            lpc,
-            timeMax,
-            totalTrials,
-            iceGain,
-            cutoffFreq,
-            samplingFreq,
-            order,
-            webFlag,
-            title,
-            messageText,
-            false);
-      });
+            MaterialPageRoute(
+              builder: (context) => CompletedPage(
+                webFlag: webFlag,
+                dataMap: dataMap,
+              ),
+            ));
+      }
+    } else {
+      //trial is incomplete
+      restartText = 'Make sure you are closer to the white line next time.';
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => RestartPage(
+            subjectId: subjectId,
+            uuid: uuid,
+            trialNumber: trialNumber,
+            blockNumber: blockNumber,
+            lpc: lpc,
+            timeMax: timeMax,
+            totalTrials: totalTrials,
+            iceGain: iceGain,
+            cutoffFreq: cutoffFreq,
+            order: order,
+            samplingFreq: samplingFreq,
+            feedbackText: restartText,
+            width: width,
+            dataMap: dataMap,
+          ),
+        ),
+      );
     }
   }
 
@@ -368,7 +331,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       carTimer.cancel();
       colorTimer.cancel();
       trialTimer.cancel();
-      createData('driving01', uuid, dataMap, '01');
+      //createData('driving01', uuid, dataMap, '01');
       //_serverUpload('driving01', uuid, dataMap.toString(), '01');
       trialTimer.cancel();
       restartText =
@@ -390,6 +353,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             samplingFreq: samplingFreq,
             feedbackText: restartText,
             width: width,
+            dataMap: dataMap,
           ),
         ),
       );
@@ -474,7 +438,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
           carTimer.cancel();
           colorTimer.cancel();
           trialTimer.cancel();
-          createData('driving01', uuid, dataMap, '01');
+          //createData('driving01', uuid, dataMap, '01');
           restartText = 'Make sure to stay within the screen boundaries!';
           Navigator.push(
             context,
@@ -493,6 +457,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 samplingFreq: samplingFreq,
                 feedbackText: restartText,
                 width: width,
+                dataMap: dataMap,
               ),
             ),
           );

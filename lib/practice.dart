@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
 import 'car_engine.dart';
-import 'data.dart';
 import 'package:flutter/foundation.dart';
 import 'package:web_browser_detect/web_browser_detect.dart';
 import 'practice_completed.dart';
@@ -26,6 +25,7 @@ class PracticePage extends StatefulWidget {
     this.cutoffFreq,
     this.order,
     this.samplingFreq,
+    this.dataMap,
   });
   final double timeMax;
   final String subjectId;
@@ -37,6 +37,7 @@ class PracticePage extends StatefulWidget {
   final int order;
   final double samplingFreq;
   final double width;
+  final Map dataMap;
 
   @override
   _PracticePageState createState() => _PracticePageState(
@@ -50,6 +51,7 @@ class PracticePage extends StatefulWidget {
         cutoffFreq: cutoffFreq,
         order: order,
         samplingFreq: samplingFreq,
+        dataMap: dataMap,
       );
 }
 
@@ -66,6 +68,7 @@ class _PracticePageState extends State<PracticePage>
     this.cutoffFreq,
     this.order,
     this.samplingFreq,
+    this.dataMap,
   });
   double timeMax;
   double iceGain;
@@ -77,6 +80,7 @@ class _PracticePageState extends State<PracticePage>
   int order;
   String uuid;
   double width;
+  Map dataMap;
 
   final browser = Browser.detectOrNull();
   DataMapWriter dataMapWriter = DataMapWriter();
@@ -117,7 +121,7 @@ class _PracticePageState extends State<PracticePage>
   String _timezone = 'Unknown';
 
   Map<String, String> urlArgs = {};
-  Map dataMap = {};
+  //Map dataMap = {};
 
   List posList = [0.0, 0.0, 0.0];
   List<dynamic> dataList = [];
@@ -186,72 +190,25 @@ class _PracticePageState extends State<PracticePage>
   }
 
   _serverUpload(studycode, guid, dataList, dataVersion) async {
-    bool dataSent = await createData(studycode, guid, dataList, dataVersion);
-    print(dataSent);
-    if (dataSent == true) {
-      _demoCarController.stop();
-      _carController.stop();
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PracticeCompleted(
-              lpc: lpc,
-              width: width,
-              subjectId: subjectId,
-              uuid: uuid,
-              cutoffFreq: cutoffFreq,
-              iceGain: iceGain,
-              timeMax: timeMax,
-              totalTrials: totalTrials,
-              samplingFreq: samplingFreq,
-              order: order,
-            ),
-          ));
-    } else if (dataSent == false) {
-      title = 'Error';
-      messageText = 'Data has not been uploaded to the server';
-      alertDialog.showAlertDialog(
+    _demoCarController.stop();
+    _carController.stop();
+    Navigator.push(
         context,
-        subjectId,
-        uuid,
-        0,
-        0,
-        lpc,
-        timeMax,
-        totalTrials,
-        iceGain,
-        cutoffFreq,
-        samplingFreq,
-        order,
-        webFlag,
-        title,
-        messageText,
-        true,
-      );
-    } else {
-      serverTimeout = Timer(Duration(seconds: 15), () {
-        title = 'Error';
-        messageText = 'Server not found';
-        alertDialog.showAlertDialog(
-          context,
-          subjectId,
-          uuid,
-          0,
-          0,
-          lpc,
-          timeMax,
-          totalTrials,
-          iceGain,
-          cutoffFreq,
-          samplingFreq,
-          order,
-          webFlag,
-          title,
-          messageText,
-          true,
-        );
-      });
-    }
+        MaterialPageRoute(
+          builder: (context) => PracticeCompleted(
+            lpc: lpc,
+            width: width,
+            subjectId: subjectId,
+            uuid: uuid,
+            cutoffFreq: cutoffFreq,
+            iceGain: iceGain,
+            timeMax: timeMax,
+            totalTrials: totalTrials,
+            samplingFreq: samplingFreq,
+            order: order,
+            dataMap: dataMap,
+          ),
+        ));
   }
 
   void _restartSlider(PointerEvent details) {
@@ -281,25 +238,24 @@ class _PracticePageState extends State<PracticePage>
       _demoCarController.stop();
       carTimer.cancel();
       trialTimer.cancel();
-      createData('driving01', uuid, dataMap, '01');
       restartText =
           'Remember to keep your thumb on the slider until you see the next screen!';
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => RestartPractice(
-            subjectId: subjectId,
-            uuid: uuid,
-            lpc: lpc,
-            width: width,
-            timeMax: timeMax,
-            totalTrials: totalTrials,
-            iceGain: iceGain,
-            cutoffFreq: cutoffFreq,
-            order: order,
-            samplingFreq: samplingFreq,
-            restartText: restartText,
-          ),
+              subjectId: subjectId,
+              uuid: uuid,
+              lpc: lpc,
+              width: width,
+              timeMax: timeMax,
+              totalTrials: totalTrials,
+              iceGain: iceGain,
+              cutoffFreq: cutoffFreq,
+              order: order,
+              samplingFreq: samplingFreq,
+              restartText: restartText,
+              dataMap: dataMap),
         ),
       );
     });
@@ -415,6 +371,7 @@ class _PracticePageState extends State<PracticePage>
               samplingFreq: samplingFreq,
               restartText:
                   'Make sure you are moving your car and trying to match the target car.',
+              dataMap: dataMap,
             ),
           ),
         );
@@ -446,7 +403,6 @@ class _PracticePageState extends State<PracticePage>
               false,
               dataList,
               width);
-          createData('driving01', uuid, dataMap, '01');
           _carController.stop();
           _demoCarController.stop();
           carTimer.cancel();
@@ -467,6 +423,7 @@ class _PracticePageState extends State<PracticePage>
                 samplingFreq: samplingFreq,
                 restartText:
                     'Make sure you put your thumb on the slider to start the practice session.',
+                dataMap: dataMap,
               ),
             ),
           );
@@ -497,7 +454,6 @@ class _PracticePageState extends State<PracticePage>
           _demoCarController.stop();
           carTimer.cancel();
           trialTimer.cancel();
-          createData('driving01', uuid, dataMap, '01');
           restartText =
               'Remember to stay within a closer distance of the red car!';
           Navigator.push(
@@ -515,6 +471,7 @@ class _PracticePageState extends State<PracticePage>
                 order: order,
                 samplingFreq: samplingFreq,
                 restartText: restartText,
+                dataMap: dataMap,
               ),
             ),
           );

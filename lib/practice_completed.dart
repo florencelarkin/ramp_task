@@ -13,6 +13,7 @@ class PracticeCompleted extends StatefulWidget {
     this.cutoffFreq,
     this.order,
     this.samplingFreq,
+    this.dataMap,
   });
   final String subjectId;
   final String uuid;
@@ -24,6 +25,7 @@ class PracticeCompleted extends StatefulWidget {
   final int order;
   final double samplingFreq;
   final double width;
+  final Map dataMap;
 
   @override
   _PracticeCompletedState createState() => _PracticeCompletedState(
@@ -37,6 +39,7 @@ class PracticeCompleted extends StatefulWidget {
         order: order,
         samplingFreq: samplingFreq,
         width: width,
+        dataMap: dataMap,
       );
 }
 
@@ -52,6 +55,7 @@ class _PracticeCompletedState extends State<PracticeCompleted> {
     this.cutoffFreq,
     this.order,
     this.samplingFreq,
+    this.dataMap,
   });
   String subjectId;
   double maxVelocity;
@@ -65,96 +69,54 @@ class _PracticeCompletedState extends State<PracticeCompleted> {
   int order;
   double samplingFreq;
   double width;
+  Map dataMap;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      backgroundColor: Colors.white,
+      body: ListView(
+        //shrinkWrap: true,
         children: <Widget>[
-          SizedBox(height: MediaQuery.of(context).size.height * .1),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Text(
-                  'Congratulations!',
-                  style: TextStyle(
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
+          Center(
+            child: Text('Practice Data: Use control+A to select all'),
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Text(
-                  'You have completed the practice session.',
-                  style: TextStyle(
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
+          SelectableText(
+            dataMap.toString(),
+            toolbarOptions: ToolbarOptions(
+                copy: true, selectAll: true, cut: false, paste: false),
+            style: TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.black),
+            textAlign: TextAlign.center,
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Text(
-                  'Click \'NEXT\' to read the additional instructions for the task',
-                  style: TextStyle(
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                  textAlign: TextAlign.center,
-                ),
+          ElevatedButton(
+              child: Text('NEXT'),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green, // background
+                onPrimary: Colors.white, // foreground
               ),
-            ),
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height * .1),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                  child: Text('NEXT'),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.green, // background
-                    onPrimary: Colors.white, // foreground
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => InstructionPage4(
+                      timeMax: timeMax,
+                      subjectId: subjectId,
+                      totalTrials: totalTrials,
+                      iceGain: iceGain,
+                      cutoffFreq: cutoffFreq,
+                      order: order,
+                      samplingFreq: samplingFreq,
+                      uuid: uuid,
+                      lpc: lpc,
+                      width: width,
+                      dataMap: dataMap,
+                    ),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => InstructionPage4(
-                          timeMax: timeMax,
-                          subjectId: subjectId,
-                          totalTrials: totalTrials,
-                          iceGain: iceGain,
-                          cutoffFreq: cutoffFreq,
-                          order: order,
-                          samplingFreq: samplingFreq,
-                          uuid: uuid,
-                          lpc: lpc,
-                          width: width,
-                        ),
-                      ),
-                    );
-                  }),
-            ],
-          ),
-          Column(
-            children: <Widget>[
-              SizedBox(height: MediaQuery.of(context).size.height * .3),
-            ],
-          ),
+                );
+              }),
         ],
       ),
     );

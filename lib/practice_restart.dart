@@ -14,6 +14,7 @@ class RestartPractice extends StatefulWidget {
     @required this.samplingFreq,
     this.width,
     this.restartText,
+    this.dataMap,
   });
   final String subjectId;
   final String uuid;
@@ -26,6 +27,7 @@ class RestartPractice extends StatefulWidget {
   final double samplingFreq;
   final String restartText;
   final double width;
+  final Map dataMap;
 
   @override
   _RestartPracticeState createState() => _RestartPracticeState(
@@ -40,6 +42,7 @@ class RestartPractice extends StatefulWidget {
         samplingFreq: samplingFreq,
         restartText: restartText,
         width: width,
+        dataMap: dataMap,
       );
 }
 
@@ -56,6 +59,7 @@ class _RestartPracticeState extends State<RestartPractice> {
     this.samplingFreq,
     this.restartText,
     this.width,
+    this.dataMap,
   });
   String subjectId;
   double maxVelocity;
@@ -70,6 +74,7 @@ class _RestartPracticeState extends State<RestartPractice> {
   double samplingFreq;
   String restartText;
   double width;
+  Map dataMap;
 
   @override
   Widget build(BuildContext context) {
@@ -148,6 +153,7 @@ class _RestartPracticeState extends State<RestartPractice> {
                           cutoffFreq: cutoffFreq,
                           order: order,
                           samplingFreq: samplingFreq,
+                          dataMap: dataMap,
                         ),
                       ),
                     );
