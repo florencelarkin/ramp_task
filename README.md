@@ -9,7 +9,7 @@ which you can do by following the instructions here: https://docs.flutter.dev/ge
 
 It will run on a web browser, and also on iOS and Android devices.
 
-Alternatively you can run it through github pages using this link:(in progress)
+Alternatively you can run it through github pages using this link: https://florencelarkin.github.io/driving_task_raw/#/
 
 
 
