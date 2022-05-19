@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
 class CompletedPage extends StatefulWidget {
   CompletedPage({
@@ -16,6 +17,18 @@ class _CompletedPageState extends State<CompletedPage> {
   _CompletedPageState({this.webFlag, this.dataMap});
   bool webFlag; //true if on web
   Map dataMap;
+  String jsonData = '';
+
+  dynamic getJson(dataMap) {
+    dynamic jsonData = JsonEncoder().convert(dataMap);
+    return jsonData;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    jsonData = getJson(dataMap);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +38,7 @@ class _CompletedPageState extends State<CompletedPage> {
         shrinkWrap: true,
         children: <Widget>[
           SelectableText(
-            dataMap.toString(),
+            jsonData,
             toolbarOptions: ToolbarOptions(
                 copy: true, selectAll: true, cut: false, paste: false),
             style: TextStyle(

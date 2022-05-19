@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'continue_trial.dart';
+import 'dart:convert';
 
 class BlockPage extends StatefulWidget {
   BlockPage(
@@ -78,6 +79,18 @@ class _BlockPageState extends State<BlockPage> {
   double samplingFreq;
   double width;
   Map dataMap;
+  String jsonData = '';
+
+  dynamic getJson(dataMap) {
+    dynamic jsonData = JsonEncoder().convert(dataMap);
+    return jsonData;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    jsonData = getJson(dataMap);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +100,7 @@ class _BlockPageState extends State<BlockPage> {
         children: <Widget>[
           Center(
             child: SelectableText(
-              dataMap.toString(),
+              jsonData,
               toolbarOptions: ToolbarOptions(
                   copy: true, selectAll: true, cut: false, paste: false),
               style: TextStyle(

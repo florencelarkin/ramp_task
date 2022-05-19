@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'instruction_page4.dart';
+import 'dart:convert';
 
 class PracticeCompleted extends StatefulWidget {
   PracticeCompleted({
@@ -70,6 +71,18 @@ class _PracticeCompletedState extends State<PracticeCompleted> {
   double samplingFreq;
   double width;
   Map dataMap;
+  String jsonData = '';
+
+  dynamic getJson(dataMap) {
+    dynamic jsonData = JsonEncoder().convert(dataMap);
+    return jsonData;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    jsonData = getJson(dataMap);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +95,7 @@ class _PracticeCompletedState extends State<PracticeCompleted> {
             child: Text('Practice Data: Use control+A to select all'),
           ),
           SelectableText(
-            dataMap.toString(),
+            jsonData,
             toolbarOptions: ToolbarOptions(
                 copy: true, selectAll: true, cut: false, paste: false),
             style: TextStyle(

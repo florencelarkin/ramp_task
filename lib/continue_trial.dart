@@ -1,6 +1,7 @@
 import 'main_page.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter/services.dart';
+import 'dart:convert';
 
 class ContinuationPage extends StatefulWidget {
   ContinuationPage({
@@ -81,6 +82,18 @@ class _ContinuationPageState extends State<ContinuationPage> {
   double samplingFreq;
   double width;
   Map dataMap;
+  String jsonData = '';
+
+  dynamic getJson(dataMap) {
+    dynamic jsonData = JsonEncoder().convert(dataMap);
+    return jsonData;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    jsonData = getJson(dataMap);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +106,7 @@ class _ContinuationPageState extends State<ContinuationPage> {
             child: Text('Trial $trialNumber data: Use ctrl+a to select all'),
           ),
           SelectableText(
-            dataMap.toString(),
+            jsonData,
             toolbarOptions: ToolbarOptions(
                 copy: true, selectAll: true, cut: false, paste: false),
             style: TextStyle(
