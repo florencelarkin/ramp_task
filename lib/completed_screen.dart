@@ -15,7 +15,7 @@ class CompletedPage extends StatefulWidget {
 
 class _CompletedPageState extends State<CompletedPage> {
   _CompletedPageState({this.webFlag, this.dataMap});
-  bool webFlag; //true if on web
+  bool webFlag; //true if on web.
   Map dataMap;
   String jsonData = '';
 
