@@ -1,4 +1,4 @@
-This is the source code for the mobile version of the Driving Task.
+This is the source code for the mobile version of the RAMP Task.
 
 This is a demo version where the data that is recorded is displayed on screen at the end of each trial.
 
@@ -9,7 +9,7 @@ which you can do by following the instructions here: https://docs.flutter.dev/ge
 
 It will run on a web browser, and also on iOS and Android devices.
 
-Alternatively you can run it through github pages using this link: https://florencelarkin.github.io/driving_task_raw/#/
+Alternatively you can test it on your browser through github pages using this link: https://florencelarkin.github.io/ramp_task/#/
 
 
 
