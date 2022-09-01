@@ -1,6 +1,6 @@
 # RAMP Task
 
-This is the source code for the mobile version of the RAMP Task.
+This is the source code for the mobile version of the RAMP Task. The RAMP task is described in the following paper: [REF TO PAPER]
 
 This is a demo version where the data that is recorded is displayed on screen at the end of each trial.
 
