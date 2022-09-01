@@ -21,15 +21,20 @@ Task code is in the lib folder
 
 Docs folder is for github pages
 
-Files
-‘main.dart’  controls the overall flow of the app: starts the task → practice instructions → practice → task instructions → ‘main_page.dart’ contains task
-‘car_engine.dart’ called during task, this class  controls how the car moves, takes input on position and time from main_page
-‘data_map_writer.dart’ and ‘device_data_writer.dart’ are classes that write the details for each data file that is recorded after every trial
-‘url_args.dart’ pulls out subject id and other variables from individual link
+### Files
+
+1. ‘main.dart’  controls the overall flow of the app: starts the task → practice instructions → practice → task instructions → ‘main_page.dart’ contains task
+
+2. ‘car_engine.dart’ called during task, this class  controls how the car moves, takes input on position and time from main_page
+
+3. ‘data_map_writer.dart’ and ‘device_data_writer.dart’ are classes that write the details for each data file that is recorded after every trial
+
+4. ‘url_args.dart’ pulls out subject id and other variables from individual link
 ‘data.dart’ sends task data to laureate servers
-Operation
-If trial failed, trial is restarted, restart_page.dart gives advice why trial failed
-If trial passed goes to ‘continue.dart’ → loop main_page to continue_trial for the total number of trials, trials that have to be restarted do not count towards total 
-After task is complete, ‘completed_page.dart’ is called and there is a link to exit the task that sends them to LIBR server to complete other tasks 
+
+### Operation
+1. If trial failed, trial is restarted, restart_page.dart gives advice why trial failed
+2. If trial passed goes to ‘continue.dart’ → loop main_page to continue_trial for the total number of trials, trials that have to be restarted do not count towards total 
+3. After task is complete, ‘completed_page.dart’ is called and there is a link to exit the task that sends them to LIBR server to complete other tasks 
 
 
